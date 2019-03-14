@@ -1,20 +1,34 @@
-import sys, re
-from module.config import ConfigSectionMapAdv
-import module.getOptions as opt
-from module import cleanType
+import os
+import json
 
-def findConfig(sysOptions = sys.argv, sysKey = None, readVar = None, confSection = None, confOption = None, confFile = None):
-    ## looks for options handed over by sys.argv and returns it
-    buffer = None
-    if sysKey is not None:
-        buffer = opt.getItm(item = (sysKey + "="), options = sysOptions)
-    if buffer is not None:
-        buffer = buffer[-(len(buffer)-(len(sysKey)+1)):]
-        return cleanType(buffer)
-    elif readVar is not None:
-        ## if no argument has been passed a value from the script can be passed
-        return cleanType(readVar)
-    else:
-        ## if no argument or value has been passed, the config.ini is read
-        buffer = ConfigSectionMapAdv(section = confSection, option = confOption, iniConfig = confFile)
-        return cleanType(buffer)
+os.chdir("../ebisu_uni_gear/")
+
+print(os.getcwd())
+
+with open('input/activities_20151126.json', 'r') as f:
+    jsonActivities = json.load(f)
+print(len(jsonActivities))
+print(jsonActivities[0])
+
+for item in jsonActivities[0]:
+    print(item + " : " + str(jsonActivities[0][item]))
+#
+# lineOne = jsonActivities[6]
+# print(lineOne['date'])
+# print(lineOne['summary'])
+# print(len(lineOne['summary']))
+# print(lineOne['segments'])
+# print(len(lineOne['segments']))
+# print(lineOne['caloriesIdle'])
+# #print(len(lineOne['caloriesIdle']))
+# print(lineOne['lastUpdate'])
+# #print(len(lineOne['lastUpdate']))
+#
+# lineOneSummary = lineOne['summary']
+# print(len(lineOneSummary))
+#
+# lineOneSegments = lineOne['segments']
+# print(len(lineOneSegments))
+#
+# for seg in lineOneSegments:
+#     print(seg)

@@ -1,13 +1,13 @@
 import os
 import json
 
-os.chdir("D:/OneDrive/Dokumente/moves_20180731/json")
+## os.chdir("D:/OneDrive/Dokumente/moves_20180731/json")
 
 print(os.getcwd())
 
 
 ## jsonStoryline = open("json/full/storyline.json")
-with open('json/full/activities.json', 'r') as f:
+with open('input/full/activities.json', 'r') as f:
     jsonActivities = json.load(f)
 print(len(jsonActivities))
 print(jsonActivities[1])
