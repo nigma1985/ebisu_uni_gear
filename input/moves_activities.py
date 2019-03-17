@@ -1,5 +1,31 @@
 import os
 import json
+from db import database
+
+def dict2sql(dictionary = None, tableName = None, database = None, addNames = [], addValues = []):
+    if dictionary is None:
+        raise Exception('missing dictionary')
+    if database is None:
+        raise Exception('missing database')
+    if tableName is None:
+        raise Exception('missing table name')
+    if isinstance(dictionary, dict):
+        raise Exception('dictionary is no dictionary')
+    if len(dictionary) == 0:
+        return('no items in dictionary')
+    if len(addNames) != len(addValues):
+        raise Exception('unequal number of additional names ({})/values ({})'.format(len(addNames),len(addValues)))
+
+    newList = []
+    newTuple = []
+    newDict = []
+
+    for add in len(addNames):
+        dictionary[addNames[add]] = addValues[add]
+
+
+dict2sql(addNames = ['ich', 'du', 'er'], addValues = [1,2,3,4])
+
 
 os.chdir("../ebisu_uni_gear/")
 
