@@ -13,25 +13,33 @@ newTuple = []
 newDict = []
 
 for day in jsonActivities:
-    if isinstance(day, dict):
-        newDict.append(day)
-    if isinstance(day, tuple):
-        newTuple.append(day)
-    if isinstance(day, list):
-        newList.append(day)
-    else:
-        # apply data and get ID
+    for entry in day:
+        if isinstance(day[entry], dict):
+            print('dict')
+            newDict.append(entry)
+        if isinstance(day[entry], tuple):
+            print('tuple')
+            newTuple.append(entry)
+        if isinstance(day[entry], list):
+            print('list')
+            newList.append(entry)
+        else:
+            # apply data and get ID
+            print(entry, ': ', day[entry])
 
     if len(newList) > 0:
-        for item in newList:
+        print('lists: '+ str(len(newList)))
+        # for item in newList:
             # create list-Table
 
     if len(newTuple) > 0:
-        for item in newList:
+        print('tuples: '+ str(len(newTuple)))
+        # for item in newList:
             # create tuple-Table
 
     if len(newDict) > 0:
-        for item in newList:
+        print('dicts: '+ str(len(newDict)))
+        # for item in newList:
             # create dict-Table
 
 
