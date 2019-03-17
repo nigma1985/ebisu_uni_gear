@@ -1,6 +1,10 @@
 import os
 import json
 
+def json2py(jsonPath):
+    with open(jsonPath, 'r') as f:
+        return json.load(f)
+
 os.chdir("../ebisu_uni_gear/")
 
 print(os.getcwd())
