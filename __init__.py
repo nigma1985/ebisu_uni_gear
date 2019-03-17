@@ -1,7 +1,8 @@
 import os
-from db import database
-from input.moves_activities import dict2sql
-from input import json2py
+# from db import database
+from module import json2py
+from module.dict2sql import dict2sql
+from module.list2sql import list2sql
 
 os.chdir("../ebisu_uni_gear/")
 

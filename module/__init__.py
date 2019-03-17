@@ -1,4 +1,11 @@
+import os
+import json
 import psycopg2
+
+def json2py(jsonPath):
+    with open(jsonPath, 'r') as f:
+        return json.load(f)
+
 
 class database:
 
@@ -23,11 +30,3 @@ class database:
 
         self.cur.execute('select * from people')
         self.results = self.cur.fetchall()
-
-## Instantiate the Dog object
-# philo = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
-#
-# for result in philo.results:
-#     print(result)
-
-## print(philo.results)
