@@ -10,3 +10,5 @@ for item in dict:
     item["user"] = 'Konrad'
     for i in item:
         print(i, ' : ', item[i])
+
+import module.dict2sql

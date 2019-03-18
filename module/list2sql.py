@@ -1,4 +1,4 @@
-from dict2sql import dict2sql
+import module.dict2sql as d2s
 
 def list2sql(listing = None, tableName = None, database = None, addItem = []):
     if listing is None:

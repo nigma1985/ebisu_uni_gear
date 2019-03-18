@@ -1,8 +1,8 @@
 import os
 # from db import database
-from module import json2py
-from module.dict2sql import dict2sql
-from module.list2sql import list2sql
+from module import json2py, database
+import module.dict2sql as d2s
+import module.list2sql as l2s
 
 os.chdir("../ebisu_uni_gear/")
 
@@ -10,8 +10,17 @@ os.chdir("../ebisu_uni_gear/")
 activities = json2py(jsonPath = 'input/activities_20151126.json')
 ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
 
-print(len(activities))
-print(activities[0])
+d2s.dict2sql(
+    dictionary = activities[0],
+    tableName = 'moves_activities',
+    database = ebisu,
+    addNames = ['user'],
+    addValues = ['konrad.keck@live.de'])
+
+# print(len(activities))
+# print(activities[0])
+#
+# print(type(ebisu))
 ## convert
 
 ## output
