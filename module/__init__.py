@@ -30,3 +30,10 @@ class database:
 
         self.cur.execute('select * from people')
         self.results = self.cur.fetchall()
+
+    # todo:
+    #     1. does table exist?
+    #     2. if no: create table shell
+    #     3. does entry exist?
+    #     4. if yes: get ID
+    #     5. if no: create entry and get ID
