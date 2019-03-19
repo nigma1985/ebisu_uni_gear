@@ -1,12 +1,14 @@
+
+from module.connectPostgreSQL import database
 # import module.list2sql as l2s
 
 def dict2sql(dictionary = None, tableName = None, database = None, addNames = [], addValues = []):
 
-    print(type(dictionary), " : ", dictionary)
-    print(tableName)
-    print(database)
-    print(addNames)
-    print(addValues)
+    # print(type(dictionary), " : ", dictionary)
+    # print(tableName)
+    # print(database)
+    # print(addNames)
+    # print(addValues)
 
     if dictionary is None:
         raise Exception('missing dictionary')

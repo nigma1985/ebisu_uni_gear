@@ -1,3 +1,5 @@
+
+from module.connectPostgreSQL import database
 import module.dict2sql as d2s
 
 def list2sql(listing = None, tableName = None, database = None, addItem = []):
