@@ -16,13 +16,15 @@ ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohre
 #     database = ebisu,
 #     addNames = ['user'],
 #     addValues = ['konrad.keck@live.de'])
-x = ebisu.results
+# x = ebisu.results
 
-print(
-    type(x),
-    x)
+# print(
+#     type(x),
+#     x)
+#
+# ebisu.createTable('test')
 
-ebisu.createTable('test')
+ebisu.setSQL('select * from people')
 
 # for result in ebisu.results:
 #     print(result)

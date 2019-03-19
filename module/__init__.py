@@ -3,6 +3,7 @@
 import os
 import json
 import psycopg2
+from psycopg2 import Error
 
 def json2py(jsonPath):
     with open(jsonPath, 'r') as f:
@@ -29,11 +30,33 @@ class database:
         if dbname is not None:
             self.conn = self.conn + ' dbname=' + dbname
 
-        self.conn = psycopg2.connect(self.conn)
-        self.cur = self.conn.cursor()
+        # self.conn = psycopg2.connect(self.conn)
+        # self.cur = self.conn.cursor()
+        #
+        # self.cur.execute('select * from people')
+        # self.results = self.cur.fetchall()
 
-        self.cur.execute('select * from people')
-        self.results = self.cur.fetchall()
+    def setSQL(self, query):
+        print(self.conn, " : ", query)
+        try:
+            connection = psycopg2.connect(self.conn)
+            cursor = connection.cursor()
+
+            cursor.execute(query)
+            connection.commit()
+
+        except (Exception, psycopg2.DatabaseError) as error :
+            print ("Error while creating PostgreSQL table", error)
+
+        finally:
+            #closing database connection.
+                if(connection):
+                    cursor.close()
+                    connection.close()
+                    print("PostgreSQL connection is closed")
+
+    def getSQL(self, script):
+        return script
 
     def createTable(self, table_name = None):
         if table_name is not None:
