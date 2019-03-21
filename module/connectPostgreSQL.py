@@ -79,23 +79,23 @@ class database:
         if table_name is not None:
             self.setSQL('INSERT INTO {}({}, {}, {}) VALUES ({}, {}, {});'.format(table_name, listNames[0], listNames[1], listNames[2], listValues[0], listValues[1], listValues[2]))
 
-    def json2sql(self, json = None):
-        self.setSQL('''
-            DO
-            $do$
-            BEGIN
-
-            EXECUTE (
-               SELECT format('CREATE TABLE %I(%s)', metadata->>'tablename', c.cols)
-               FROM   public.json_metadata m
-               CROSS  JOIN LATERAL (
-                  SELECT string_agg(quote_ident(col->>'name')
-                                    || ' ' ||  (col->>'datatype')::regtype, ', ') AS cols
-                  FROM   json_array_elements(metadata->'columns') col
-                  ) c
-               );
-            END
-            $do$;''')
+    # def json2sql(self, json = None):
+    #     self.setSQL('''
+    #         DO
+    #         $do$
+    #         BEGIN
+    #
+    #         EXECUTE (
+    #            SELECT format('CREATE TABLE %I(%s)', metadata->>'tablename', c.cols)
+    #            FROM   public.json_metadata m
+    #            CROSS  JOIN LATERAL (
+    #               SELECT string_agg(quote_ident(col->>'name')
+    #                                 || ' ' ||  (col->>'datatype')::regtype, ', ') AS cols
+    #               FROM   json_array_elements(metadata->'columns') col
+    #               ) c
+    #            );
+    #         END
+    #         $do$;''')
 
     def getID(self, table_name = None, names = [], values = []):
         if table_name is not None:
