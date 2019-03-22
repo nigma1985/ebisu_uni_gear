@@ -60,7 +60,7 @@ class database:
             returnValue = cursor.fetchall()
 
         except (Exception, psycopg2.DatabaseError) as error :
-            print ("Error while creating PostgreSQL table", error)
+            print ("Error while creating PostgreSQL table:", error)
 
         finally:
             #closing database connection.
@@ -75,9 +75,151 @@ class database:
         if table_name is not None:
             self.setSQL('CREATE TABLE IF NOT EXISTS {} (ID INTEGER PRIMARY KEY, {} AUTO, {} AUTO, {} AUTO);'.format(table_name, listNames[0], listNames[1], listNames[2]))
 
-    def newRow(self, table_name = None, listNames = [], listValues = []):
-        if table_name is not None:
-            self.setSQL('INSERT INTO {}({}, {}, {}) VALUES ({}, {}, {});'.format(table_name, listNames[0], listNames[1], listNames[2], listValues[0], listValues[1], listValues[2]))
+    def newRow(self, schema_name = 'public', table_name = None, listNames = [], listValues = [], getID = True):
+        # I need: self, table_name, list of columns, list of values
+        # connect to DB
+        # Check/create table existance
+        # check/insert table cokumns
+        # get all column names from table
+        # insert values (if not existant)
+        # ? get id ?
+        # close connection to DB
+
+        ## check variables
+        if table_name is None:
+            raise Exception('missing table name')
+        if not isinstance(table_name, str):
+            raise Exception('table name is type {}. Only string is allowed.'.format(type(table_name)))
+        if (listNames is None) or (len(listNames) == 0):
+            raise Exception('missing list of names')
+        if (listValues is None) or (len(listValues) == 0):
+            raise Exception('missing list of values')
+        if not isinstance(listNames, (list, tuple)):
+            raise Exception('names are type {}. Only lists or tuples allowed.'.format(type(listNames)))
+        if not isinstance(listValues, (list, tuple)):
+            raise Exception('values are type {}. Only lists or tuples allowed.'.format(type(listValues)))
+        if len(listNames) != len(listValues):
+            raise Exception('unequal number of names ({}) and values ({})'.format(len(listNames),len(listValues)))
+        if not isinstance(getID, bool):
+            raise Exception('getID is type {}. Only boolean is allowed.'.format(type(getID)))
+
+        table = table_name.lower()
+        schema = schema_name.lower()
+        names = []
+        for item in listNames:
+            names.append(item.lower())
+        values = []
+
+        getIDquery = []
+        for n in range( len(names) ):
+            getIDquery.append('\"{}\" = \'{}\''.format(names[n], listValues[n]))
+        getIDquery = '''SELECT MAX(id)
+            FROM \"''' + table + '''\"
+            WHERE ''' + '''
+            AND '''.join(getIDquery) + '''
+            ;'''
+
+        try:
+            ## connect to DB
+            connection = psycopg2.connect(self.conn)
+            cursor = connection.cursor()
+
+            ## create table (if not exists)
+            query = '''CREATE TABLE IF NOT EXISTS \"{}\"
+                (id SERIAL PRIMARY KEY);'''.format(table)
+            print(query)
+            cursor.execute('{}'.format(query))
+            connection.commit()
+
+            ## add columns (if not exists)
+            query = []
+            for n in range( len(names) ):
+                query.append('ADD COLUMN IF NOT EXISTS \"{}\" TEXT'.format(names[n]))
+            query = '''ALTER TABLE IF EXISTS {}
+                '''.format(table) + ''',
+                '''.join(query) + '''
+                ;'''
+            print('{}'.format(query))
+            cursor.execute(query)
+            connection.commit()
+
+            print(getIDquery)
+            cursor.execute(getIDquery)
+            query = cursor.fetchall()
+            # print(query, query[0], type(query[0]), query[0][0], type(query[0][0]))
+            if getID and (query[0][0] is not None):
+                return query[0][0]
+            if not getID and (query[0][0] is not None):
+                return
+
+            ## get all column names
+            query = '''SELECT column_name
+                FROM information_schema.columns
+                WHERE table_schema = \'{}\'
+                AND table_name   = \'{}\'
+                ;'''.format(schema, table)
+            print(query)
+            cursor.execute(query)
+            query = cursor.fetchall()
+
+            listColumns = []
+            for i in query:
+                listColumns.append(i[0])
+            print(listColumns)
+
+            for col in listColumns:
+                if col not in names:
+                    values.append('DEFAULT')
+                else:
+                    for n in range( len(names) ):
+                        if names[n] == col:
+                            values.append("\'" + listValues[n] + "\'")
+            print(values)
+
+            ## standard insert
+            query = '''
+                INSERT INTO \"{}\" (
+                    \"{}\")
+                VALUES (
+                    {})
+                ;'''.format(table, '''\",
+                    \"'''.join(listColumns), ''',
+                    '''.join(values)
+                    )
+
+            ## include conflict treatment
+            # query = '''
+            #     INSERT INTO \"{}\" (
+            #         \"{}\")
+            #     VALUES (
+            #         {})
+            #     ON CONFLICT (
+            #         \"{}\") DO NOTHING
+            #     ;'''.format(table, '''\",
+            #         \"'''.join(listColumns), ''',
+            #         '''.join(values), '''\",
+            #         \"'''.join(names)
+            #         )
+            print('{}'.format(query))
+            cursor.execute(query)
+            connection.commit()
+
+            ## get ID (if required)
+            if getID:
+                print(getIDquery)
+                cursor.execute(getIDquery)
+                return cursor.fetchall()[0][0]
+
+
+        except (Exception, psycopg2.DatabaseError) as error :
+            print ("Error while handling PostgreSQL database:", error)
+
+        finally:
+            ## closing database connection.
+                if(connection):
+                    cursor.close()
+                    connection.close()
+                    print("PostgreSQL connection is closed")
 
     # def json2sql(self, json = None):
     #     self.setSQL('''

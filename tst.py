@@ -1,14 +1,13 @@
-a = {'ID' : 1, 'Name' : 'Albert'}
-b = {'ID' : 2, 'Name' : 'Berta'}
-c = {'ID' : 3, 'Name' : 'Chile'}
-d = {'ID' : 4, 'Name' : 'Dummy'}
+import os
+# from db import database
+from module import json2py
+from module.connectPostgreSQL import database
+import module.dict2sql as d2s
+import module.list2sql as l2s
 
-dict = [a, b, c, d]
+os.chdir("../ebisu_uni_gear/")
 
-for item in dict:
-    print(item)
-    item["user"] = 'Konrad'
-    for i in item:
-        print(i, ' : ', item[i])
+## input
+ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
 
-import module.dict2sql
+print(ebisu.newRow(table_name = 'myTest', listNames = ['driver', 'UsER'], listValues = ['Dummy', 'Konrad']))
