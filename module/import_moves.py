@@ -27,13 +27,14 @@ def dict2sql(
     if len(addNames) != len(addValues):
         raise Exception('unequal number of names ({}) and values ({})'.format(len(addNames),len(addValues)))
 
+    print('--' + table_name + '--')
     names = []
     values = []
 
     subTable = []
 
     for d in dictionary:
-        print(d, type(dictionary[d]))
+        # print(d, type(dictionary[d]))
         if isinstance(dictionary[d], (list, tuple)):
             subTable.append(d)
         elif isinstance(dictionary[d], (dict)):
@@ -68,7 +69,7 @@ def dict2sql(
 
     for sub in subTable:
         if sub in ('summary', 'segments', 'activities', 'place', 'trackPoints'):
-            print('!!', sub, type(dictionary[sub]))
+            # print('!!', sub, type(dictionary[sub]))
             for d in dictionary[sub]:
                 dict2sql(
                     dictionary = d,
@@ -77,7 +78,7 @@ def dict2sql(
                     addNames = [table_name],
                     addValues = [id])
         else:
-            print(sub, type(dictionary[sub]))
+            # print(sub, type(dictionary[sub]))
             for x in dictionary[sub]:
                 print(' ', type(x), ' : ', x)
 
@@ -114,6 +115,8 @@ def mact2sql(
         raise Exception('missing user name')
     if not isinstance(user, str):
         raise Exception('user name is type {}. Only string is allowed.'.format( type(user) ))
+
+    print('--- --- --- ' + table_name + '--- --- --- ')
 
     addNames.append('user')
     addValues.append(user)
