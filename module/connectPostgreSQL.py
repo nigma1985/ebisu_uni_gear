@@ -87,19 +87,29 @@ class database:
         table = table_name.lower()
         schema = schema_name.lower()
         names = []
-        for item in listNames:
-            names.append(item.lower())
+        for i in range( len(listNames) ):
+            # if listValues[i] not in (None, '', 'None', 'Null'):
+            names.append(listNames[i].lower())
         values = []
 
         ## contruct query to read the ID
-        getIDquery = []
-        for n in range( len(names) ):
-            getIDquery.append('\"{}\" = \'{}\''.format(names[n], listValues[n]))
-        getIDquery = '''SELECT MAX(id)
-            FROM \"''' + table + '''\"
-            WHERE ''' + '''
-            AND '''.join(getIDquery) + '''
-            ;'''
+        def getIDquery(table = None, rangeName = [], rangeValues = [], mode = None):
+            if mode is None:
+
+            IDquery = []
+            for n in range( len(names) ):
+                if mode.lower() is 'check':
+                    IDquery.append('(\"{}\" = \'{}\')'.format(names[n], listValues[n]))
+                elif mode.lower() is 'update':
+                    IDquery.append('((\"{}\" = \'{}\') OR (\"{}\" IS NULL))'.format(names[n], listValues[n]), names[n])
+                else:
+                    return Exception('please choose mode for getID query: \'update\' or \'check\'.')
+            IDquery = '''SELECT MAX(id)
+                FROM \"''' + table + '''\"
+                WHERE ''' + '''
+                AND '''.join(IDquery) + '''
+                ;'''
+            return IDquery
 
         try:
             ## connect to DB
@@ -126,13 +136,16 @@ class database:
             connection.commit()
 
             # print(getIDquery)
-            cursor.execute(getIDquery)
+            cursor.execute(getIDquery(table = table, rangeName = names, rangeValues = listValues, mode = 'update'))
             query = cursor.fetchall()
             # print(query, query[0], type(query[0]), query[0][0], type(query[0][0]))
-            if getID and (query[0][0] is not None):
-                return query[0][0]
-            if not getID and (query[0][0] is not None):
-                return
+
+            if query[0][0] is not None:
+                ## update row
+                if getID:
+                    return query[0][0]
+                if not getID:
+                    return
 
             ## get all column names
             query = '''SELECT column_name
