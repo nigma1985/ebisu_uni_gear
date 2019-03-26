@@ -83,19 +83,25 @@ class database:
         if not isinstance(getID, bool):
             raise Exception('getID is type {}. Only boolean is allowed.'.format(type(getID)))
 
+        names = []
+        values = []
+        for i in range( len(listValues) ):
+            if listValues[i].lower() in (None, '', 'none', 'null'):
+                name.append(listNames[i])
+                values.append(listValues[i])
+        listNames = names
+        listValues = values
+        
         ## variables
         table = table_name.lower()
         schema = schema_name.lower()
         names = []
         for i in range( len(listNames) ):
-            # if listValues[i] not in (None, '', 'None', 'Null'):
             names.append(listNames[i].lower())
         values = []
 
         ## contruct query to read the ID
         def getIDquery(table = None, rangeName = [], rangeValues = [], mode = None):
-            if mode is None:
-
             IDquery = []
             for n in range( len(names) ):
                 if mode.lower() is 'check':

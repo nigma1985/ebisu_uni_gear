@@ -31,8 +31,8 @@ for file in files:
 
 size = 0
 file = 0
-type = ''
-path = None
+# type = ''
+# path = None
 
 ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
 
@@ -61,4 +61,4 @@ while size < 10000000:
 
     size = size + files[file][1]
     file = file + 1
-    print(size, file, type, path)
+    print('>> ', size, file, type, path)
