@@ -79,28 +79,39 @@ class database:
             raise Exception('missing table name')
         if not isinstance(table_name, str):
             raise Exception('table name is type {}. Only string is allowed.'.format(type(table_name)))
-        if (listNames is None) or (len(listNames) == 0):
-            raise Exception('missing list of names')
-        if (listValues is None) or (len(listValues) == 0):
-            raise Exception('missing list of values')
-        if not isinstance(listNames, (list, tuple)):
-            raise Exception('names are type {}. Only lists or tuples allowed.'.format(type(listNames)))
-        if not isinstance(listValues, (list, tuple)):
-            raise Exception('values are type {}. Only lists or tuples allowed.'.format(type(listValues)))
-        if len(listNames) != len(listValues):
-            raise Exception('unequal number of names ({}) and values ({})'.format(len(listNames),len(listValues)))
+
+        def chkBalance(a, b):
+            ## check two lists for substance and symetry
+            if (a is None) or (len(a) == 0) or (b is None) or (len(a) == 0):
+                return 'missing value'
+            if not isinstance(a, (list, tuple)) or not isinstance(b, (list, tuple)):
+                return 'missing list (types : {}/{})'.format(type(a),type(b))
+            if len(a) != len(b):
+                return 'uneven lists (lengths : {}/{})'.format(len(a),len(b))
+            else:
+                return False
 
         result = None
         table = table_name.lower()
+
+        ## create query to fetch one ID
         if query = 'get ID':
             result = []
+            bal = chkBalance(listNames, listValues)
+            if bal:
+                raise Exception('can\'t get ID - ', bal)
+
             if option is None:
                 raise Exception('missing option')
             elif not isinstance(option, str):
                 raise Exception('option is type {}. Only string allowed.'.format(type(option)))
+
+            ## strict search: only result for exact match
             elif option is 'strict':
                 for n in range( len(listNames) ):
                     result.append('(\"{}\" = \'{}\')'.format(listNames[n], listValues[n]))
+
+            ## include NULL search: like strict seatch but also includes values that are NULL/None
             elif option is 'include NULL':
                 for n in range( len(listNames) ):
                     result.append('((\"{}\" = \'{}\') OR (\"{}\" IS NULL))'.format(listNames[n], listValues[n]), listNames[n])
@@ -113,13 +124,18 @@ class database:
                 ;'''
             return result
 
+        ## create query to create table (if not exists)
         elif query = 'create table':
             result = '''CREATE TABLE IF NOT EXISTS \"{}\"
                 (id SERIAL PRIMARY KEY);'''.format(table)
             return result
 
+        ## create query to add columns to table (if not exists)
         elif query = 'add columns':
             result = []
+            if (listNames is None) or listNames == 0:
+                raise Exception('can\'t add columns - missing list')
+
             for n in range( len(listNames) ):
                 result.append('ADD COLUMN IF NOT EXISTS \"{}\" TEXT'.format(listNames[n]))
             result = '''ALTER TABLE IF EXISTS {}
@@ -128,17 +144,15 @@ class database:
                 ;'''
             return result
 
+        ## create query to update set: update all names = values, WHERE names = values
         elif query = 'update set':
-            if (whereNames is None) or (len(whereNames) == 0):
-                raise Exception('missing list of names')
-            if (whereValues is None) or (len(whereValues) == 0):
-                raise Exception('missing list of values')
-            if not isinstance(whereNames, (list, tuple)):
-                raise Exception('names are type {}. Only lists or tuples allowed.'.format(type(whereNames)))
-            if not isinstance(whereValues, (list, tuple)):
-                raise Exception('values are type {}. Only lists or tuples allowed.'.format(type(whereValues)))
-            if len(whereNames) != len(whereValues):
-                raise Exception('unequal number of names ({}) and values ({})'.format(len(whereNames),len(whereValues)))
+            bal = chkBalance(listNames, listValues)
+            if bal:
+                raise Exception('can\'t update set - ', bal)
+
+            bal = chkBalance(whereNames, whereValues)
+            if bal:
+                raise Exception('can\'t update set - ', bal)
 
             result = []
             where = []
@@ -154,7 +168,13 @@ class database:
                 ;'''
             return result
 
+        ## create query to get all column names within table
         elif query = 'get columns':
+            if table_schema is None:
+                raise Exception('missing schema name')
+            if not isinstance(table_schema, str):
+                raise Exception('table schema is type {}. Only string is allowed.'.format(type(table_schema)))
+
             result = '''SELECT column_name
                 FROM information_schema.columns
                 WHERE table_schema = \'{}\'
@@ -162,14 +182,19 @@ class database:
                 ;'''.format(schema_name.lower(), table)
             return result
 
+        ## create query to insert set into table: insert all names = values
         elif query = 'insert into':
+            bal = chkBalance(listNames, listValues)
+            if bal:
+                raise Exception('can\'t insert into - ', bal)
+
             result = '''
                 INSERT INTO \"{}\" (
                     \"{}\")
                 VALUES (
                     {})
                 ;'''.format(table, '''\",
-                    \"'''.join(listColumns), ''',
+                    \"'''.join(listNames), ''',
                     '''.join(listValues)
                     )
             return result
@@ -220,21 +245,18 @@ class database:
             cursor = connection.cursor()
 
             ## create table (if not exists)
-            query = '''CREATE TABLE IF NOT EXISTS \"{}\"
-                (id SERIAL PRIMARY KEY);'''.format(table)
+            query = getQuery(
+                query = 'create table',
+                table_name = table):
             # print(query)
             cursor.execute('{}'.format(query))
             connection.commit()
 
             ## add columns (if not exists)
-            query = []
-            for n in range( len(names) ):
-                query.append('ADD COLUMN IF NOT EXISTS \"{}\" TEXT'.format(names[n]))
-            query = '''ALTER TABLE IF EXISTS {}
-                '''.format(table) + ''',
-                '''.join(query) + '''
-                ;'''
-            # print('{}'.format(query))
+            query = getQuery(
+                query = 'add columns',
+                table_name = table,
+                listNames = names)
             cursor.execute(query)
             connection.commit()
 
