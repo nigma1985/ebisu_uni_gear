@@ -6,9 +6,18 @@ from module.import_moves import mact2sql
 
 os.chdir("../ebisu_uni_gear/")
 
-files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
+# files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
+# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
+#     files.append(file)
+
+files = glob.glob("input/*.json")
+# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
+#     files.append(file)
+
+for file in files:files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
 for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
     files.append(file)
+    print(file)
 
 statinfo = None
 ## input

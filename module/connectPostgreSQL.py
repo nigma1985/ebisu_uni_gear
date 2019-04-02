@@ -261,20 +261,23 @@ class database:
             connection.commit()
 
             # print(getIDquery)
-            cursor.execute(getIDquery(table = table, rangeName = names, rangeValues = listValues, mode = 'update'))
+            cursor.execute(
+                getQuery(
+                    query = 'get ID', option = 'include NULL',
+                    table_name = table,
+                    listNames = names, listValues = listValues)
+                )
             query = cursor.fetchall()
             id = query[0][0]
             # print(query, query[0], type(query[0]), query[0][0], type(query[0][0]))
 
             if id is not None:
                 ## update row
-                query = []
-                for n in range( len(names) ):
-                    query.append('(\"{}\" = \'{}\')'.format(names[n], listValues[n]))
-                query = '''UPDATE {} SET
-                    '''.format(table) + ''',
-                    '''.join(query) + '''
-                    WHERE id = {};'''.format(str(id))
+                query = getQuery(
+                    query = 'update set',
+                    table_name = table,
+                    listNames = names, listValues = listValues,
+                    whereNames = ['id'], whereValues = [str(id)])
                 cursor.execute(query)
                 connection.commit()
                 if getID:
@@ -283,11 +286,9 @@ class database:
                     return
 
             ## get all column names
-            query = '''SELECT column_name
-                FROM information_schema.columns
-                WHERE table_schema = \'{}\'
-                AND table_name   = \'{}\'
-                ;'''.format(schema, table)
+            query = getQuery(
+                query = 'get columns',
+                schema_name = table, table_name = table)
             # print(query)
             cursor.execute(query)
             query = cursor.fetchall()
@@ -311,15 +312,15 @@ class database:
             # print(values)
 
             ## standard insert
-            query = '''
-                INSERT INTO \"{}\" (
-                    \"{}\")
-                VALUES (
-                    {})
-                ;'''.format(table, '''\",
-                    \"'''.join(listColumns), ''',
-                    '''.join(values)
-                    )
+            # query = '''
+            #     INSERT INTO \"{}\" (
+            #         \"{}\")
+            #     VALUES (
+            #         {})
+            #     ;'''.format(table, '''\",
+            #         \"'''.join(listColumns), ''',
+            #         '''.join(values)
+            #         )
 
             ## include conflict treatment
             # query = '''
@@ -335,13 +336,23 @@ class database:
             #         \"'''.join(names)
             #         )
             # print('{}'.format(query))
+
+            query = getQuery(
+                query = 'insert into',
+                table_name = table,
+                listNames = listColumns, listValues = values)
             cursor.execute(query)
             connection.commit()
 
             ## get ID (if required)
             if getID:
                 # print(getIDquery)
-                cursor.execute(getIDquery(table = table, rangeName = names, rangeValues = listValues, mode = 'check'))
+                cursor.execute(
+                    getQuery(
+                        query = 'get ID', option = 'strict',
+                        table_name = table,
+                        listNames = names, listValues = listValues)
+                    )
                 return cursor.fetchall()[0][0]
 
 
