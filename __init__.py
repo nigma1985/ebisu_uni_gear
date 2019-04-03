@@ -6,18 +6,15 @@ from module.import_moves import mact2sql
 
 os.chdir("../ebisu_uni_gear/")
 
+## TEST
+files = glob.glob("input/*.json")
+
+## actual run
 # files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
 # for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
 #     files.append(file)
-
-files = glob.glob("input/*.json")
-# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
-#     files.append(file)
-
-for file in files:files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
-for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
-    files.append(file)
-    print(file)
+# for file in files:
+#     print(file)
 
 statinfo = None
 ## input
@@ -59,12 +56,12 @@ while size < 10000000:
         type = 'activities'
 
     mact2sql(
-        moves_activities = summary,
+        moves_activities = moves,
         db_name = ebisu,
         # father_table = None, father_id = None,
         table_name = 'moves',
-        addNames = ['export'],
-        addValues = [type],
+        addNames = [type],
+        addValues = [True],
         user = 'konrad.keck@live.de'
         )
 
