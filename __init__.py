@@ -42,7 +42,7 @@ file = 0
 
 ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
 
-while size < 10000000:
+while (size < 10000000) and (file < len(files)):
     path = files[file][0]
     moves = json2py(jsonPath = path)
 

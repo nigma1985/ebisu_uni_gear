@@ -54,7 +54,7 @@ def getQuery(
         ## include NULL search: like strict seatch but also includes values that are NULL/None
         elif option == 'include NULL':
             for n in range( len(listNames) ):
-                result.append('((\"{}\" = \'{}\') OR (\"{}\" IS NULL))'.format(listNames[n], listValues[n]), listNames[n])
+                result.append('((\"{}\" = \'{}\') OR (\"{}\" IS NULL))'.format(listNames[n], listValues[n], listNames[n]))
         else:
             raise Exception('unknown option: \'{}\''.format(option))
         result = '''SELECT MAX(id)
@@ -97,9 +97,9 @@ def getQuery(
         result = []
         where = []
         for n in range( len(listNames) ):
-            result.append('(\"{}\" = \'{}\')'.format(listNames[n], listValues[n]))
+            result.append('\"{}\" = \'{}\''.format(listNames[n], listValues[n]))
         for n in range( len(whereNames) ):
-            where.append('(\"{}\" = \'{}\')'.format(whereNames[n], whereValues[n]))
+            where.append('\"{}\" = \'{}\''.format(whereNames[n], whereValues[n]))
         result = '''UPDATE {} SET
             '''.format(table) + ''',
             '''.join(result) + '''
@@ -110,10 +110,10 @@ def getQuery(
 
     ## create query to get all column names within table
     elif query == 'get columns':
-        if table_schema is None:
+        if schema_name is None:
             raise Exception('missing schema name')
-        if not isinstance(table_schema, str):
-            raise Exception('table schema is type {}. Only string is allowed.'.format(type(table_schema)))
+        if not isinstance(schema_name, str):
+            raise Exception('table schema is type {}. Only string is allowed.'.format(type(schema_name)))
 
         result = '''SELECT column_name
             FROM information_schema.columns
@@ -226,7 +226,7 @@ class database:
         names = []
         values = []
         for i in range( len(listValues) ):
-            if str(listValues[i]).lower() in (None, '', 'none', 'null'):
+            if str(listValues[i]).lower() not in (None, '', 'none', 'null'):
                 names.append(listNames[i])
                 values.append(listValues[i])
         listNames = names
@@ -236,6 +236,7 @@ class database:
         table = table_name.lower()
         schema = schema_name.lower()
         names = []
+
         for i in range( len(listNames) ):
             names.append(listNames[i].lower())
         values = []
@@ -289,7 +290,7 @@ class database:
             ## get all column names
             query = getQuery(
                 query = 'get columns',
-                schema_name = table, table_name = table)
+                schema_name = schema_name, table_name = table)
             # print(query)
             cursor.execute(query)
             query = cursor.fetchall()
