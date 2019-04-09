@@ -1,0 +1,48 @@
+[ {
+  "date" : "20160320",
+  "segments" : [ {
+    "type" : "place",
+    "startTime" : "20160319T205502+0100",
+    "endTime" : "20160320T125613+0100",
+    "place" : {
+      "id" : 254523175,
+      "name" : "Sascha & Dani Hagen",
+      "type" : "user",
+      "location" : {
+        "lat" : 51.6013642698,
+        "lon" : 7.1004822312
+      }
+    },
+    "lastUpdate" : "20160320T140038Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20160320T143531+0100",
+    "endTime" : "20160320T152423+0100",
+    "place" : {
+      "id" : 255103098,
+      "name" : "McDonald's Emstek, Autohof / A1",
+      "type" : "facebook",
+      "facebookPlaceId" : "193589223987447",
+      "location" : {
+        "lat" : 52.811039,
+        "lon" : 8.215996
+      }
+    },
+    "lastUpdate" : "20160320T162121Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20160320T163017+0100",
+    "endTime" : "20160321T171106+0100",
+    "place" : {
+      "id" : 205586058,
+      "name" : "Home",
+      "type" : "home",
+      "location" : {
+        "lat" : 53.304097141,
+        "lon" : 9.7061522897
+      }
+    },
+    "lastUpdate" : "20160322T171037Z"
+  } ],
+  "lastUpdate" : "20160322T171037Z"
+} ]

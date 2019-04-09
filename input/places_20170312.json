@@ -1,0 +1,104 @@
+[ {
+  "date" : "20170312",
+  "segments" : [ {
+    "type" : "place",
+    "startTime" : "20170311T161446+0100",
+    "endTime" : "20170312T063837+0100",
+    "place" : {
+      "id" : 254523175,
+      "name" : "Sascha & Dani Hagen",
+      "type" : "user",
+      "location" : {
+        "lat" : 51.6013642698,
+        "lon" : 7.1004822312
+      }
+    },
+    "lastUpdate" : "20170312T063017Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T065503+0100",
+    "endTime" : "20170312T065920+0100",
+    "place" : {
+      "id" : 425382046,
+      "type" : "unknown",
+      "location" : {
+        "lat" : 51.590147,
+        "lon" : 7.0505627
+      }
+    },
+    "lastUpdate" : "20170312T074428Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T081822+0100",
+    "endTime" : "20170312T085556+0100",
+    "place" : {
+      "id" : 254510544,
+      "name" : "Mc Donald's Restaurant",
+      "type" : "facebook",
+      "facebookPlaceId" : "153609868012908",
+      "location" : {
+        "lat" : 52.5983075,
+        "lon" : 8.1157525309582
+      }
+    },
+    "lastUpdate" : "20170312T120529Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T101525+0100",
+    "endTime" : "20170312T105136+0100",
+    "place" : {
+      "id" : 257332478,
+      "name" : "Aileen Conrad",
+      "type" : "home",
+      "location" : {
+        "lat" : 53.340098567,
+        "lon" : 9.8751674115
+      }
+    },
+    "lastUpdate" : "20170315T132013Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T110924+0100",
+    "endTime" : "20170312T134523+0100",
+    "place" : {
+      "id" : 248389632,
+      "name" : "Bostelmann's Hotel",
+      "type" : "facebook",
+      "facebookPlaceId" : "153655831342067",
+      "location" : {
+        "lat" : 53.28068808797,
+        "lon" : 9.7120677108122
+      }
+    },
+    "lastUpdate" : "20170312T140944Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T134845+0100",
+    "endTime" : "20170312T153545+0100",
+    "place" : {
+      "id" : 205586058,
+      "name" : "Home",
+      "type" : "home",
+      "location" : {
+        "lat" : 53.304097141,
+        "lon" : 9.7061522897
+      }
+    },
+    "lastUpdate" : "20170312T154144Z"
+  }, {
+    "type" : "place",
+    "startTime" : "20170312T155916+0100",
+    "endTime" : "20170313T070921+0100",
+    "place" : {
+      "id" : 257332478,
+      "name" : "Aileen Conrad",
+      "type" : "home",
+      "location" : {
+        "lat" : 53.340098567,
+        "lon" : 9.8751674115
+      }
+    },
+    "lastUpdate" : "20170315T132013Z"
+  } ],
+  "lastUpdate" : "20170315T132013Z"
+} ]
