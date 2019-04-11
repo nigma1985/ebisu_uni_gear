@@ -42,7 +42,17 @@ file = 0
 
 ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
 
-while (size < 10000000) and (file < len(files)):
+scope = []
+for f in files:
+    scope.append(f[1])
+
+if sum(scope) < 500000:
+    scope = sum(scope)
+else:
+    #scope = 10000000
+    scope = 500000
+
+while (size < scope) and (file < len(files)):
     path = files[file][0]
     moves = json2py(jsonPath = path)
 
@@ -67,4 +77,4 @@ while (size < 10000000) and (file < len(files)):
 
     size = size + files[file][1]
     file = file + 1
-    print('>> ', size, file, type, path)
+    print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
