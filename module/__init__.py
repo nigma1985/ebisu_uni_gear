@@ -1,5 +1,4 @@
-import os
-import json
+import os, json
 # import psycopg2
 # from psycopg2 import Error
 import re, shutil, codecs
@@ -139,7 +138,7 @@ def del_double(listFiles = []):
     countMaxSize = countIF(crit = maxSize, list = listSize)
     countMaxAges = countIF(crit = maxAges, list = listAges)
 
-    if countMaxSize = 1:
+    if countMaxSize == 1:
         # keep if f_age = maxSize or f_size = maxAge
     elif countMaxSize > 1:
         # if f_age = maxSize: keep
