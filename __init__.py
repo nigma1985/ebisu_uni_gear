@@ -5,7 +5,7 @@ from module import json2py, removeFile
 from module.connectPostgreSQL import database
 from module.import_moves import move2sql
 
-# os.chdir("../ebisu_uni_gear/")
+os.chdir("../ebisu_uni_gear/")
 
 cpu_use = rpi.cpu_percent()
 ram = rpi.virtual_memory()
@@ -76,7 +76,6 @@ while (size < scope) and (file < len(files)):
     move2sql(
         moves_activities = moves,
         db_name = ebisu,
-        # father_table = None, father_id = None,
         table_name = 'moves',
         addNames = [type],
         addValues = [True],
