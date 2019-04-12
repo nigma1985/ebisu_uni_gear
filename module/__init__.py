@@ -6,3 +6,6 @@ import json
 def json2py(jsonPath):
     with open(jsonPath, 'r') as f:
         return json.load(f)
+
+def removeFile(file):
+    os.remove(file)

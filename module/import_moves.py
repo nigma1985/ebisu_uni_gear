@@ -84,7 +84,7 @@ def dict2sql(
 
     return id
 
-def mact2sql(
+def move2sql(
     moves_activities = None, db_name = None,
     # father_table = None, father_id = None,
     table_name = None,

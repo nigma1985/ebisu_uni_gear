@@ -2,17 +2,17 @@ import glob, os
 # from db import database
 from module import json2py
 from module.connectPostgreSQL import database
-from module.import_moves import mact2sql
+from module.import_moves import move2sql
 
 os.chdir("../ebisu_uni_gear/")
 
 ## TEST
-# files = glob.glob("input/*.json")
+files = glob.glob("input/*.json")
 
 # actual run
-files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
-for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
-    files.append(file)
+# files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
+# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
+#     files.append(file)
 # for file in files:
 #     print(file)
 
@@ -46,11 +46,11 @@ scope = []
 for f in files:
     scope.append(f[1])
 
-if sum(scope) < 500000:
+if sum(scope) < 4096:
     scope = sum(scope)
 else:
     #scope = 10000000
-    scope = 500000
+    scope = 4096
 
 while (size < scope) and (file < len(files)):
     path = files[file][0]
@@ -65,7 +65,7 @@ while (size < scope) and (file < len(files)):
     if 'activities'in path:
         type = 'activities'
 
-    mact2sql(
+    move2sql(
         moves_activities = moves,
         db_name = ebisu,
         # father_table = None, father_id = None,
