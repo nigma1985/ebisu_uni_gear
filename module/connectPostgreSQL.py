@@ -40,10 +40,10 @@ def getQuery(
     #         return a.replace("'","\'\'")
     #     else:
     #         return a
-    #
-    # result = None
-    # table = table_name.lower()
-    # vals = []
+
+    result = None
+    table = table_name.lower()
+    vals = []
 
     ## create query to fetch one ID
     if query == 'get ID':
@@ -114,10 +114,10 @@ def getQuery(
         result = []
         where = []
         for n in range( len(listNames) ):
-            result.append('\"{}\" = %s'.format(listNames[n], reValue(listValues[n])))
+            result.append('\"{}\" = %s'.format(listNames[n], listValues[n]))
             vals.append(str(listValues[n]))
         for n in range( len(whereNames) ):
-            where.append('\"{}\" = %s'.format(whereNames[n], reValue(whereValues[n])))
+            where.append('\"{}\" = %s'.format(whereNames[n], whereValues[n]))
             vals.append(str(whereValues[n]))
         result = '''UPDATE {} SET
             '''.format(table) + ''',
@@ -280,14 +280,14 @@ class database:
             cursor = connection.cursor()
 
             ## create table (if not exists)
-
             # print('cursor =', cursor)
             print('query =', 'create table')
             print('table_name =', table)
             getQuery(
                 cursor = cursor,
                 query = 'create table',
-                table_name = table)
+                table_name = table
+                )
             connection.commit()
 
             ## add columns (if not exists)
