@@ -368,12 +368,12 @@ class database:
             ## get ID (if required)
             if getID:
                 # print(getIDquery)
-                    getQuery(
-                        cursor = cursor,
-                        query = 'get ID', option = 'strict',
-                        table_name = table,
-                        listNames = names, listValues = listValues
-                    )
+                getQuery(
+                    cursor = cursor,
+                    query = 'get ID', option = 'strict',
+                    table_name = table,
+                    listNames = names, listValues = listValues
+                )
                 return cursor.fetchall()[0][0]
 
 
