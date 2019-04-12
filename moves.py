@@ -1,4 +1,4 @@
-import glob, os
+import glob, os, sys
 import module.read.pi as rpi
 # from db import database
 from module import json2py, removeFile
@@ -7,13 +7,15 @@ from module.import_moves import move2sql
 
 # os.chdir("../ebisu_uni_gear/")
 
-cpu_use = rpi.cpu_percent()
 ram = rpi.virtual_memory()
 
 
 ## TEST
 # files = glob.glob("input/*.json")
 # files = glob.glob("../json/*.json")
+
+if (rpi.cpu_percent() > 66.66) or (ram.percent > 66.66):
+    sys.exit()
 
 # actual run
 files = glob.glob("/home/pi/json/moves/*.json")

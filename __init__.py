@@ -1,5 +1,5 @@
 import glob, os
-import module.read.pi as rpi
+# import module.read.pi as rpi
 # from db import database
 from module import json2py, removeFile
 from module.connectPostgreSQL import database
@@ -7,8 +7,8 @@ from module.import_moves import move2sql
 
 os.chdir("../ebisu_uni_gear/")
 
-cpu_use = rpi.cpu_percent()
-ram = rpi.virtual_memory()
+# cpu_use = rpi.cpu_percent()
+# ram = rpi.virtual_memory()
 
 
 ## TEST
