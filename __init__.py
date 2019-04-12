@@ -73,16 +73,25 @@ while (size < scope) and (file < len(files)):
     if 'activities'in path:
         type = 'activities'
 
-    move2sql(
-        moves_activities = moves,
-        db_name = ebisu,
-        table_name = 'moves',
-        addNames = [type],
-        addValues = [True],
-        user = 'konrad.keck@live.de'
+    print(
+        'moves_activities =', moves,
+        'db_name =', ebisu,
+        'table_name =', 'moves',
+        'addNames =', [type],
+        'addValues =', [True],
+        'user =', 'konrad.keck@live.de'
         )
 
-    # removeFile(path)
-    size = size + files[file][1]
-    file = file + 1
-    print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
+    # move2sql(
+    #     moves_activities = moves,
+    #     db_name = ebisu,
+    #     table_name = 'moves',
+    #     addNames = [type],
+    #     addValues = [True],
+    #     user = 'konrad.keck@live.de'
+    #     )
+    #
+    # # removeFile(path)
+    # size = size + files[file][1]
+    # file = file + 1
+    # print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
