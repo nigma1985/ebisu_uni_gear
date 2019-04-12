@@ -44,9 +44,9 @@ def dict2sql(
                 names.append(table_name + '_' + d)
             else:
                 names.append(d)
-                print(' -1', 'dictionary =', dictionary[d])
-                print(' -1', 'db_name =', db_name)
-                print(' -1', 'table_name =', d)
+                # print(' -1', 'dictionary =', dictionary[d])
+                # print(' -1', 'db_name =', db_name)
+                # print(' -1', 'table_name =', d)
             values.append(
                 dict2sql(
                     dictionary = dictionary[d],
@@ -68,9 +68,9 @@ def dict2sql(
         values.append(addValues[i])
 
     ## regular entry / new row
-    print(' -2', 'table_name =', table_name)
-    print(' -2', 'listNames =', names)
-    print(' -2', 'listValues =', values)
+    # print(' -2', 'table_name =', table_name)
+    # print(' -2', 'listNames =', names)
+    # print(' -2', 'listValues =', values)
     id = db_name.newRow(
         table_name = table_name,
         listNames = names,
@@ -82,11 +82,11 @@ def dict2sql(
         if sub in ('summary', 'segments', 'activities', 'place', 'trackPoints'):
             # print('!!', sub, type(dictionary[sub]))
             for d in dictionary[sub]:
-                print(' -3', 'dictionary =', d)
-                print(' -3', 'db_name =', db_name)
-                print(' -3', 'table_name =', sub)
-                print(' -3', 'addNames =', [table_name])
-                print(' -3', 'addValues =', [id])
+                # print(' -3', 'dictionary =', d)
+                # print(' -3', 'db_name =', db_name)
+                # print(' -3', 'table_name =', sub)
+                # print(' -3', 'addNames =', [table_name])
+                # print(' -3', 'addValues =', [id])
                 dict2sql(
                     dictionary = d,
                     db_name = db_name,
@@ -138,11 +138,11 @@ def move2sql(
     addValues.append(user)
 
     for entry in moves_activities:
-        print(' --','dictionary =', entry)
-        print(' --','db_name =', db_name)
-        print(' --','table_name =', table_name)
-        print(' --','addNames =', addNames)
-        print(' --','addValues =', addValues)
+        # print(' --','dictionary =', entry)
+        # print(' --','db_name =', db_name)
+        # print(' --','table_name =', table_name)
+        # print(' --','addNames =', addNames)
+        # print(' --','addValues =', addValues)
 
         dict2sql(
             dictionary = entry,

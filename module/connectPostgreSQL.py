@@ -256,6 +256,7 @@ class database:
         ## variables
         id = None
         table = table_name.lower()
+        print(table_name, table_name.lower(), table)
         schema = schema_name.lower()
 
         names = []
@@ -279,6 +280,10 @@ class database:
             cursor = connection.cursor()
 
             ## create table (if not exists)
+
+            # print('cursor =', cursor)
+            print('query =', 'create table')
+            print('table_name =', table)
             getQuery(
                 cursor = cursor,
                 query = 'create table',
@@ -286,6 +291,10 @@ class database:
             connection.commit()
 
             ## add columns (if not exists)
+            # print('cursor =', cursor)
+            print('query =', 'add columns')
+            print('table_name =', table)
+            print('listNames =', names)
             getQuery(
                 cursor = cursor,
                 query = 'add columns',
@@ -294,6 +303,10 @@ class database:
             connection.commit()
 
             # print(getIDquery)
+            # print('cursor =', cursor)
+            print('query =', 'get ID', '|', 'option =', 'include NULL')
+            print('table_name =', table)
+            print('listNames =', names, '|', 'listValues =', listValues)
             getQuery(
                 cursor = cursor,
                 query = 'get ID', option = 'include NULL',
@@ -305,6 +318,11 @@ class database:
 
             if id is not None:
                 ## update row
+                # print('cursor =', cursor)
+                print('query =', 'update set')
+                print('table_name =', table)
+                print('listNames =', names, '|', 'listValues =', listValues)
+                print('whereNames =', ['id'], '|', 'whereValues =', [str(id)])
                 getQuery(
                     cursor = cursor,
                     query = 'update set',
@@ -318,6 +336,9 @@ class database:
                     return
 
             ## get all column names
+            # print('cursor =', cursor)
+            print('query =', 'get columns')
+            print('schema_name =', schema_name, '|', 'table_name =', table)
             getQuery(
                 cursor = cursor,
                 query = 'get columns',
@@ -366,6 +387,10 @@ class database:
             #         )
             # print('{}'.format(query))
 
+            # print('cursor =', cursor)
+            print('query =', 'insert into')
+            print('table_name =', table)
+            print('listNames =', listColumns, '|', 'listValues =', values)
             getQuery(
                 cursor = cursor,
                 query = 'insert into',
@@ -376,6 +401,10 @@ class database:
             ## get ID (if required)
             if getID:
                 # print(getIDquery)
+                # print('cursor =', cursor)
+                print('query =', 'get ID', '|', 'option =', 'strict')
+                print('table_name =', table)
+                print('listNames =', names, '|', 'listValues =', listValues)
                 getQuery(
                     cursor = cursor,
                     query = 'get ID', option = 'strict',

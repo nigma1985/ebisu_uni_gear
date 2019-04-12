@@ -73,12 +73,12 @@ while (size < scope) and (file < len(files)):
     if 'activities'in path:
         type = 'activities'
 
-    print('->>','moves_activities =', moves)
-    # print('db_name =', ebisu)
-    print('table_name =', 'moves')
-    print('addNames =', [type])
-    print('addValues =', [True])
-    print('user =', 'konrad.keck@live.de')
+    # print('->>','moves_activities =', moves)
+    # # print('db_name =', ebisu)
+    # print('table_name =', 'moves')
+    # print('addNames =', [type])
+    # print('addValues =', [True])
+    # print('user =', 'konrad.keck@live.de')
 
     move2sql(
         moves_activities = moves,
