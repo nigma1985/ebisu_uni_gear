@@ -17,9 +17,11 @@ files = glob.glob("../json/*.json")
 
 # actual run
 files = glob.glob("../json/moves/*.json")
+print(len(files))
 files.extend(glob.glob("../json/moves/*/*.json"))
+print(len(files))
 files.extend(glob.glob("../json/moves/*/*/*.json"))
-
+print(files, len(files))
 #
 # for file in glob.glob("../json/moves/*/*/*.json"):
 #     files.append(file)
