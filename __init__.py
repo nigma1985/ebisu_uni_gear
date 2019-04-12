@@ -55,10 +55,10 @@ scope = []
 for f in files:
     scope.append(f[1])
 
-if sum(scope) < (2 ** 15):
+if sum(scope) < (2 ** 12):
     scope = sum(scope)
 else:
-    scope = (2 ** 15)
+    scope = (2 ** 12)
 
 while (size < scope) and (file < len(files)):
     path = files[file][0]

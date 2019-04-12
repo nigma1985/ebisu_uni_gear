@@ -33,6 +33,7 @@ def dict2sql(
 
     subTable = []
 
+    ## for right join (n:1)
     for d in dictionary:
         # print(d, type(dictionary[d]))
         if isinstance(dictionary[d], (list, tuple)):
@@ -67,6 +68,8 @@ def dict2sql(
         listNames = names,
         listValues = values)
 
+
+    ## for left join (1:n)
     for sub in subTable:
         if sub in ('summary', 'segments', 'activities', 'place', 'trackPoints'):
             # print('!!', sub, type(dictionary[sub]))

@@ -34,16 +34,16 @@ def getQuery(
         else:
             return False
 
-    def reValue(a):
-        ## check two lists for substance and symetry
-        if isinstance(a, str):
-            return a.replace("'","\'\'")
-        else:
-            return a
-
-    result = None
-    table = table_name.lower()
-    vals = []
+    # def reValue(a):
+    #     ## check two lists for substance and symetry
+    #     if isinstance(a, str):
+    #         return a.replace("'","\'\'")
+    #     else:
+    #         return a
+    #
+    # result = None
+    # table = table_name.lower()
+    # vals = []
 
     ## create query to fetch one ID
     if query == 'get ID':
@@ -76,12 +76,14 @@ def getQuery(
             WHERE ''' + '''
             AND '''.join(result) + '''
             ;'''
+        print(result, vals)
         return cursor.execute(result, vals)
 
     ## create query to create table (if not exists)
     elif query == 'create table':
         result = '''CREATE TABLE IF NOT EXISTS \"{}\"
             (id SERIAL PRIMARY KEY);'''.format(table)
+        print(result)
         return cursor.execute(result)
 
     ## create query to add columns to table (if not exists)
@@ -96,6 +98,7 @@ def getQuery(
             '''.format(table) + ''',
             '''.join(result) + '''
             ;'''
+        print(result)
         return cursor.execute(result)
 
     ## create query to update set: update all names = values, WHERE names = values
@@ -122,6 +125,7 @@ def getQuery(
             WHERE''' + '''
             AND '''.join(where) + '''
             ;'''
+        print(result, vals)
         return cursor.execute(result, vals)
 
     ## create query to get all column names within table
@@ -136,6 +140,7 @@ def getQuery(
             WHERE table_schema = \'{}\'
             AND table_name   = \'{}\'
             ;'''.format(schema_name.lower(), table)
+        print(result)
         return cursor.execute(result)
 
     ## create query to insert set into table: insert all names = values
@@ -161,9 +166,11 @@ def getQuery(
                 \"'''.join(listNames), ''',
                 '''.join(placeholders)
                 )
+        print(result, vals)
         return cursor.execute(result, vals)
 
     else:
+        print('error')
         raise Exception('unknown option: \'{}\''.format(query))
 
 class database:
