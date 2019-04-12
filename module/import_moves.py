@@ -125,9 +125,15 @@ def move2sql(
     addValues.append(user)
 
     for entry in moves_activities:
-        dict2sql(
-            dictionary = entry,
-            db_name = db_name,
-            table_name = table_name,
-            addNames = addNames,
-            addValues = addValues)
+        print(' -','dictionary =', entry)
+        print(' -','db_name =', db_name)
+        print(' -','table_name =', table_name)
+        print(' -','addNames =', addNames)
+        print(' -','addValues =', addValues)
+
+        # dict2sql(
+        #     dictionary = entry,
+        #     db_name = db_name,
+        #     table_name = table_name,
+        #     addNames = addNames,
+        #     addValues = addValues)
