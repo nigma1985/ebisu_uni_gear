@@ -70,7 +70,7 @@ def getQuery(
                 vals.append(str(listValues[n]))
         else:
             raise Exception('unknown option: \'{}\''.format(option))
-            
+
         result = '''SELECT MAX(id)
             FROM \"''' + table + '''\"
             WHERE ''' + '''
@@ -372,7 +372,7 @@ class database:
                         cursor = cursor,
                         query = 'get ID', option = 'strict',
                         table_name = table,
-                        listNames = names, listValues = listValues)
+                        listNames = names, listValues = listValues
                     )
                 return cursor.fetchall()[0][0]
 
