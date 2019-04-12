@@ -161,6 +161,7 @@ def dmv(file = "", dest = "~/"):
     ## test both files
     if all(file,dest):
         # keep youngest
+        pass
     else:
         return mv(f = file, p = dest)
 
