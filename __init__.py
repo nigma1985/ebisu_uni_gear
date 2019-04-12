@@ -73,7 +73,7 @@ while (size < scope) and (file < len(files)):
     if 'activities'in path:
         type = 'activities'
 
-    print('->','moves_activities =', moves)
+    print('->>','moves_activities =', moves)
     # print('db_name =', ebisu)
     print('table_name =', 'moves')
     print('addNames =', [type])
