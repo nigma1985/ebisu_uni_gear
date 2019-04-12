@@ -5,7 +5,7 @@ from module import json2py, removeFile
 from module.connectPostgreSQL import database
 from module.import_moves import move2sql
 
-os.chdir("../ebisu_uni_gear/")
+# os.chdir("../ebisu_uni_gear/")
 
 cpu_use = rpi.cpu_percent()
 ram = rpi.virtual_memory()
@@ -13,18 +13,17 @@ ram = rpi.virtual_memory()
 
 ## TEST
 # files = glob.glob("input/*.json")
-files = glob.glob("../json/*.json")
+# files = glob.glob("../json/*.json")
 
 # actual run
-files = glob.glob("../json/moves/*.json")
+files = glob.glob("/home/pi/json/moves/*.json")
+files.extend(glob.glob("/home/pi/json/moves/*/*.json"))
+files.extend(glob.glob("/home/pi/json/moves/*/*/*.json"))
+
 print(len(files))
-files.extend(glob.glob("../json/moves/*/*.json"))
-print(len(files))
-files.extend(glob.glob("../json/moves/*/*/*.json"))
-print(files, len(files))
 #
-# for file in glob.glob("../json/moves/*/*/*.json"):
-#     files.append(file)
+# # for file in glob.glob("../json/moves/*/*/*.json"):
+# #     files.append(file)
 # # for file in files:
 # #     print(file)
 #
