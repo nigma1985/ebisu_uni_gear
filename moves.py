@@ -1,7 +1,7 @@
 import glob, os
 import module.read.pi as rpi
 # from db import database
-from module import json2py
+from module import json2py, removeFile
 from module.connectPostgreSQL import database
 from module.import_moves import move2sql
 
@@ -14,7 +14,6 @@ ram = rpi.virtual_memory()
 ## TEST
 # files = glob.glob("input/*.json")
 files = glob.glob("../json/*.json")
-print(files)
 
 # actual run
 # files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
@@ -59,29 +58,30 @@ else:
     #scope = 10000000
     scope = 4096
 
-# while (size < scope) and (file < len(files)):
-#     path = files[file][0]
-#     moves = json2py(jsonPath = path)
-#
-#     if 'summary' in path:
-#         type = 'summary'
-#     if 'storyline' in path:
-#         type = 'storyline'
-#     if 'places' in path:
-#         type = 'places'
-#     if 'activities'in path:
-#         type = 'activities'
-#
-#     move2sql(
-#         moves_activities = moves,
-#         db_name = ebisu,
-#         # father_table = None, father_id = None,
-#         table_name = 'moves',
-#         addNames = [type],
-#         addValues = [True],
-#         user = 'konrad.keck@live.de'
-#         )
-#
-#     size = size + files[file][1]
-#     file = file + 1
-#     print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
+while (size < scope) and (file < len(files)):
+    path = files[file][0]
+    moves = json2py(jsonPath = path)
+
+    if 'summary' in path:
+        type = 'summary'
+    if 'storyline' in path:
+        type = 'storyline'
+    if 'places' in path:
+        type = 'places'
+    if 'activities'in path:
+        type = 'activities'
+
+    move2sql(
+        moves_activities = moves,
+        db_name = ebisu,
+        # father_table = None, father_id = None,
+        table_name = 'moves',
+        addNames = [type],
+        addValues = [True],
+        user = 'konrad.keck@live.de'
+        )
+
+    removeFile(path)
+    size = size + files[file][1]
+    file = file + 1
+    print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
