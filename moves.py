@@ -9,36 +9,30 @@ os.chdir("../ebisu_uni_gear/")
 
 cpu_use = rpi.cpu_percent()
 ram = rpi.virtual_memory()
-print(cpu_use, type(cpu_use))
-print(ram, type(ram))
-print(cpu_use < 66.66, ram.percent < 66.66)
-
 
 
 ## TEST
 # files = glob.glob("input/*.json")
-files = glob.glob("/home/json/*.json")
+files = glob.glob("../json/*.json")
 print(files)
 
+# actual run
+# files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
+# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
+#     files.append(file)
+# for file in files:
+#     print(file)
 
-#
-# # actual run
-# # files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
-# # for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
-# #     files.append(file)
-# # for file in files:
-# #     print(file)
-#
-# statinfo = None
-# ## input
-# for f in range( len(files) ):
-#     statinfo = os.stat(files[f])
-#     files[f] = (files[f], statinfo.st_size)
-#
-# # take second element for sort
-# def takeSecond(elem):
-#     return elem[1]
-#
+statinfo = None
+## input
+for f in range( len(files) ):
+    statinfo = os.stat(files[f])
+    files[f] = (files[f], statinfo.st_size)
+
+# take second element for sort
+def takeSecond(elem):
+    return elem[1]
+
 # # random list
 #
 # # sort list with key
