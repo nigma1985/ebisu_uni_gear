@@ -1,17 +1,26 @@
 import glob, os
+import module.read.pi as rpi
 # from db import database
-from module import json2py
+from module import json2py, removeFile
 from module.connectPostgreSQL import database
 from module.import_moves import move2sql
 
-os.chdir("../ebisu_uni_gear/")
+# os.chdir("../ebisu_uni_gear/")
+
+cpu_use = rpi.cpu_percent()
+ram = rpi.virtual_memory()
+
 
 ## TEST
 files = glob.glob("input/*.json")
+# files = glob.glob("../json/*.json")
 
 # actual run
-# files = glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*.json")
-# for file in glob.glob("D:\OneDrive\Dokumente\moves_20180731\json\json\*\*\*.json"):
+# files = glob.glob("/home/pi/json/moves/*.json")
+# files.extend(glob.glob("/home/pi/json/moves/*/*.json"))
+# files.extend(glob.glob("/home/pi/json/moves/*/*/*.json"))
+
+# for file in glob.glob("../json/moves/*/*/*.json"):
 #     files.append(file)
 # for file in files:
 #     print(file)
@@ -46,11 +55,10 @@ scope = []
 for f in files:
     scope.append(f[1])
 
-if sum(scope) < 4096:
+if sum(scope) < (2 ** 15):
     scope = sum(scope)
 else:
-    #scope = 10000000
-    scope = 4096
+    scope = (2 ** 15)
 
 while (size < scope) and (file < len(files)):
     path = files[file][0]
@@ -75,6 +83,7 @@ while (size < scope) and (file < len(files)):
         user = 'konrad.keck@live.de'
         )
 
+    # removeFile(path)
     size = size + files[file][1]
     file = file + 1
     print('>> ', round(size/scope*100,ndigits=2), '%  ', file, 'files  ', type, ' | ', path)
