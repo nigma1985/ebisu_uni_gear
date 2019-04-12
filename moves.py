@@ -33,32 +33,32 @@ for f in range( len(files) ):
 def takeSecond(elem):
     return elem[1]
 
-# # random list
-#
-# # sort list with key
-# files.sort(key=takeSecond)
-#
-# # print list
-# for file in files:
-#     print(file)
-#
-# size = 0
-# file = 0
-# # type = ''
-# # path = None
-#
-# ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
-#
-# scope = []
-# for f in files:
-#     scope.append(f[1])
-#
-# if sum(scope) < 4096:
-#     scope = sum(scope)
-# else:
-#     #scope = 10000000
-#     scope = 4096
-#
+# random list
+
+# sort list with key
+files.sort(key=takeSecond)
+
+# print list
+for file in files:
+    print(file)
+
+size = 0
+file = 0
+# type = ''
+# path = None
+
+ebisu = database(db_type=None, host='copyright', user='pi', password='21255Dohren', dbname='test')
+
+scope = []
+for f in files:
+    scope.append(f[1])
+
+if sum(scope) < 4096:
+    scope = sum(scope)
+else:
+    #scope = 10000000
+    scope = 4096
+
 # while (size < scope) and (file < len(files)):
 #     path = files[file][0]
 #     moves = json2py(jsonPath = path)
