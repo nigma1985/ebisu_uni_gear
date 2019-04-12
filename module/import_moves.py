@@ -44,10 +44,10 @@ def dict2sql(
                 names.append(table_name + '_' + d)
             else:
                 names.append(d)
-            values.append(
                 print(' -1', 'dictionary =', dictionary[d])
                 print(' -1', 'db_name =', db_name)
                 print(' -1', 'table_name =', d)
+            values.append(
                 dict2sql(
                     dictionary = dictionary[d],
                     db_name = db_name,
