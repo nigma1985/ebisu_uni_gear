@@ -70,6 +70,7 @@ def getQuery(
                 vals.append(str(listValues[n]))
         else:
             raise Exception('unknown option: \'{}\''.format(option))
+            
         result = '''SELECT MAX(id)
             FROM \"''' + table + '''\"
             WHERE ''' + '''
@@ -364,16 +365,16 @@ class database:
                 listNames = listColumns, listValues = values)
             connection.commit()
 
-            # ## get ID (if required)
-            # if getID:
-            #     # print(getIDquery)
-            #     cursor.execute(
-            #         getQuery(
-            #             query = 'get ID', option = 'strict',
-            #             table_name = table,
-            #             listNames = names, listValues = listValues)
-            #         )
-            #     return cursor.fetchall()[0][0]
+            ## get ID (if required)
+            if getID:
+                # print(getIDquery)
+                    getQuery(
+                        cursor = cursor,
+                        query = 'get ID', option = 'strict',
+                        table_name = table,
+                        listNames = names, listValues = listValues)
+                    )
+                return cursor.fetchall()[0][0]
 
 
         except (Exception, psycopg2.DatabaseError) as error :
