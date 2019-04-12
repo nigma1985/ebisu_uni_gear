@@ -140,10 +140,13 @@ def del_double(listFiles = []):
 
     if countMaxSize == 1:
         # keep if f_age = maxSize or f_size = maxAge
+        pass
     elif countMaxSize > 1:
         # if f_age = maxSize: keep
+        pass
     else:
         # ERROR
+        pass
 
     for item in listFiles:
         print(item)
