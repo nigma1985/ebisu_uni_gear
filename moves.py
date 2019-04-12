@@ -9,14 +9,15 @@ os.chdir("../ebisu_uni_gear/")
 
 cpu_use = rpi.cpu_percent()
 ram = rpi.virtual_memory()
-print(cpu_use, ram)
+print(cpu_use, type(cpu_use))
+print(ram, type(ram))
 print(cpu_use < 66.66, ram.percent < 66.66)
 
 
 
 ## TEST
 # files = glob.glob("input/*.json")
-files = glob.glob("~/json/*.json")
+files = glob.glob("/home/json/*.json")
 print(files)
 
 
