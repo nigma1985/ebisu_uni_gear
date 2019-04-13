@@ -76,14 +76,14 @@ def getQuery(
             WHERE ''' + '''
             AND '''.join(result) + '''
             ;'''
-        print(result, vals)
+        # print(result, vals)
         return cursor.execute(result, vals)
 
     ## create query to create table (if not exists)
     elif query == 'create table':
         result = '''CREATE TABLE IF NOT EXISTS \"{}\"
             (id SERIAL PRIMARY KEY);'''.format(table)
-        print(result)
+        # print(result)
         return cursor.execute(result)
 
     ## create query to add columns to table (if not exists)
@@ -98,7 +98,7 @@ def getQuery(
             '''.format(table) + ''',
             '''.join(result) + '''
             ;'''
-        print(result)
+        # print(result)
         return cursor.execute(result)
 
     ## create query to update set: update all names = values, WHERE names = values
@@ -125,7 +125,7 @@ def getQuery(
             WHERE''' + '''
             AND '''.join(where) + '''
             ;'''
-        print(result, vals)
+        # print(result, vals)
         return cursor.execute(result, vals)
 
     ## create query to get all column names within table
@@ -140,7 +140,7 @@ def getQuery(
             WHERE table_schema = \'{}\'
             AND table_name   = \'{}\'
             ;'''.format(schema_name.lower(), table)
-        print(result)
+        # print(result)
         return cursor.execute(result)
 
     ## create query to insert set into table: insert all names = values
@@ -166,11 +166,11 @@ def getQuery(
                 \"'''.join(listNames), ''',
                 '''.join(placeholders)
                 )
-        print(result, vals)
+        # print(result, vals)
         return cursor.execute(result, vals)
 
     else:
-        print('error')
+        # print('error')
         raise Exception('unknown option: \'{}\''.format(query))
 
 class database:
@@ -256,7 +256,7 @@ class database:
         ## variables
         id = None
         table = table_name.lower()
-        print(table_name, table_name.lower(), table)
+        # print(table_name, table_name.lower(), table)
         schema = schema_name.lower()
 
         names = []
@@ -264,7 +264,9 @@ class database:
         for i in range( len(listValues) ):
             if str(listValues[i]).lower() not in (None, '', 'none', 'null'):
                 names.append(listNames[i])
-                values.append(listValues[i])
+                values.append(str(listValues[i]))
+
+
         listNames = names
         listValues = values
 
@@ -281,8 +283,8 @@ class database:
 
             ## create table (if not exists)
             # print('cursor =', cursor)
-            print('query =', 'create table')
-            print('table_name =', table)
+            # print('query =', 'create table')
+            # print('table_name =', table)
             getQuery(
                 cursor = cursor,
                 query = 'create table',
@@ -292,9 +294,9 @@ class database:
 
             ## add columns (if not exists)
             # print('cursor =', cursor)
-            print('query =', 'add columns')
-            print('table_name =', table)
-            print('listNames =', names)
+            # print('query =', 'add columns')
+            # print('table_name =', table)
+            # print('listNames =', names)
             getQuery(
                 cursor = cursor,
                 query = 'add columns',
@@ -304,9 +306,9 @@ class database:
 
             # print(getIDquery)
             # print('cursor =', cursor)
-            print('query =', 'get ID', '|', 'option =', 'include NULL')
-            print('table_name =', table)
-            print('listNames =', names, '|', 'listValues =', listValues)
+            # print('query =', 'get ID', '|', 'option =', 'include NULL')
+            # print('table_name =', table)
+            # print('listNames =', names, '|', 'listValues =', listValues)
             getQuery(
                 cursor = cursor,
                 query = 'get ID', option = 'include NULL',
@@ -314,21 +316,21 @@ class database:
                 listNames = names, listValues = listValues)
             query = cursor.fetchall()
             id = query[0][0]
-            # print(query, query[0], type(query[0]), query[0][0], type(query[0][0]))
+            # print('id:', id, '|', query, query[0], type(query[0]), query[0][0], type(query[0][0]))
 
             if id is not None:
                 ## update row
                 # print('cursor =', cursor)
-                print('query =', 'update set')
-                print('table_name =', table)
-                print('listNames =', names, '|', 'listValues =', listValues)
-                print('whereNames =', ['id'], '|', 'whereValues =', [str(id)])
+                # print('query =', 'update set')
+                # print('table_name =', table)
+                # print('listNames =', names, '|', 'listValues =', listValues)
+                # print('whereNames =', ['id'], '|', 'whereValues =', [id])
                 getQuery(
                     cursor = cursor,
                     query = 'update set',
                     table_name = table,
                     listNames = names, listValues = listValues,
-                    whereNames = ['id'], whereValues = [str(id)])
+                    whereNames = ['id'], whereValues = [id])
                 connection.commit()
                 if getID:
                     return id
@@ -337,14 +339,15 @@ class database:
 
             ## get all column names
             # print('cursor =', cursor)
-            print('query =', 'get columns')
-            print('schema_name =', schema_name, '|', 'table_name =', table)
+            # print('query =', 'get columns')
+            # print('schema_name =', schema_name, '|', 'table_name =', table)
             getQuery(
                 cursor = cursor,
                 query = 'get columns',
                 schema_name = schema_name, table_name = table)
             # print(query)
             query = cursor.fetchall()
+            # print(query)
 
             ## create full list of Columns from DB table
             listColumns = []
@@ -388,9 +391,9 @@ class database:
             # print('{}'.format(query))
 
             # print('cursor =', cursor)
-            print('query =', 'insert into')
-            print('table_name =', table)
-            print('listNames =', listColumns, '|', 'listValues =', values)
+            # print('query =', 'insert into')
+            # print('table_name =', table)
+            # print('listNames =', listColumns, '|', 'listValues =', values)
             getQuery(
                 cursor = cursor,
                 query = 'insert into',
@@ -399,19 +402,23 @@ class database:
             connection.commit()
 
             ## get ID (if required)
+            # print('getID', getID)
             if getID:
                 # print(getIDquery)
                 # print('cursor =', cursor)
-                print('query =', 'get ID', '|', 'option =', 'strict')
-                print('table_name =', table)
-                print('listNames =', names, '|', 'listValues =', listValues)
+                # print('query =', 'get ID', '|', 'option =', 'strict')
+                # print('table_name =', table)
+                # print('listNames =', names, '|', 'listValues =', listValues)
                 getQuery(
                     cursor = cursor,
                     query = 'get ID', option = 'strict',
                     table_name = table,
                     listNames = names, listValues = listValues
                 )
-                return cursor.fetchall()[0][0]
+                query = cursor.fetchall()
+                id = query[0][0]
+                # print('id:', id, '|', query, query[0], type(query[0]), query[0][0], type(query[0][0]))
+                return id
 
 
         except (Exception, psycopg2.DatabaseError) as error :
