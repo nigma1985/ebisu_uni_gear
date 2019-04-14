@@ -1,8 +1,9 @@
-SELECT place.id,
-   place.place_id::bigint AS place_id,
-   place.type,
-   place.name,
-   place.facebookplaceid,
-   place.foursquareid,
-   place.location::integer AS location
-  FROM place;
+SELECT
+	id,
+	type,
+	CAST ( place_id AS INTEGER ) AS place_id,
+	CAST ( location AS BIGINT ) AS location,
+	name,
+	facebookplaceid,
+	foursquareid
+FROM public.place;

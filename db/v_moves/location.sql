@@ -1,4 +1,5 @@
-SELECT location.id,
-   location.lat::double precision AS lat,
-   location.lon::double precision AS lon
-  FROM location;
+SELECT
+	id,
+	CAST ( lat AS FLOAT8 ) AS lat,
+	CAST ( lon AS FLOAT8 ) AS lon
+FROM public.location;
