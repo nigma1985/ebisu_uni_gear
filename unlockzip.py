@@ -6,11 +6,11 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-os.chdir("/home/pi/ebisu_uni_gear/")
-# os.chdir("../ebisu_uni_gear/")
+# os.chdir("/home/pi/ebisu_uni_gear/")
+os.chdir("../ebisu_uni_gear/")
 
 zip_file = 'input/Downloads.zip'
-password = 'password'
+# password = 'password'
 
 def getDir(path):
     if path is None:
@@ -54,9 +54,10 @@ def run_perf(start, curent, files):
     return secs / files
 
 def brute_unzip(file):
-    i = 1
-    p = 1
+    i = 0
+    p = 0
     pw = None
+    list_pw = []
     start_sec = time.mktime(datetime.now().timetuple())
 
     print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
@@ -66,7 +67,11 @@ def brute_unzip(file):
         now_sec = time.mktime(datetime.now().timetuple())
         try:
             with ZipFile(file) as zf:
-                zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
+                if i == 0:
+                    zf.extractall(path = getDir(file))
+                else:
+                    list_pw.append(pw)
+                    zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
             print('done! ', i, ' | ', pw)
             print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec')
             print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
@@ -76,7 +81,9 @@ def brute_unzip(file):
         finally:
             # print(i, '|', pw)
             if (i == 2 ** p):
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'pw/sec)')
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
+                print(list_pw)
+                list_pw = []
                 p = p+1
             # if  ((now_sec - start_sec) % (60 * 60) < 1):
             #     pass
