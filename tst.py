@@ -20,4 +20,4 @@ from datetime import timedelta
 import time
 
 nowsecs = time.mktime(datetime.now().timetuple())
-print(nowsecs)
+print(nowsecs, type(nowsecs))

@@ -6,7 +6,8 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-os.chdir("/home/pi/ebisu_uni_gear/")
+# os.chdir("/home/pi/ebisu_uni_gear/")
+os.chdir("../ebisu_uni_gear/")
 
 zip_file = 'input/Downloads.zip'
 password = 'password'
@@ -28,26 +29,25 @@ def cnt2str(cnt):
 
 def run_sec(start, curent):
     secs = curent - start
-    print(curent, start, secs)
+    # print(curent, start, secs)
+    # print(type(curent), type(start), type(secs))
 
-    if secs == 0.0:
-        return '0sec'
-    elif 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
-        return '{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425))
+    if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
+        return '{}Y'.format(round(secs / (60 * 60 * 24 * 365.2425),1))
     elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 /  4))): ## Quarters
-        return '{9.3f}Q'.format(secs / (60 * 60 * 24 * (365.2425 /  4)))
+        return '{}Q'.format(round(secs / (60 * 60 * 24 * (365.2425 /  4)),1))
     elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 / 12))): ## Months
-        return '{9.3f}mon'.format(secs / (60 * 60 * 24 * (365.2425 / 12)))
+        return '{}mon'.format(round(secs / (60 * 60 * 24 * (365.2425 / 12)),1))
     elif 1.1 < (secs / (60 * 60 * 24 * 7)): ## weeks
-        return '{9.3f}w'.format(secs / (60 * 60 * 24 * 7))
+        return '{}w'.format(round(secs / (60 * 60 * 24 * 7),1))
     elif 1.1 < (secs / (60 * 60 * 24)): ## days
-        return '{9.3f}d'.format(secs / (60 * 60 * 24))
+        return '{}d'.format(round(secs / (60 * 60 * 24),1))
     elif 1.1 < (secs / (60 * 60)): ## hours
-        return '{9.3f}h'.format(secs / (60 * 60))
+        return '{}h'.format(round(secs / (60 * 60),1))
     elif 1.1 < (secs / (60)): ## minutes
-        return '{9.3f}min'.format(secs / (60))
+        return '{}min'.format(round(secs / (60),1))
     else: ## seconds (default)
-        return '{9.3f}sec'.format(secs)
+        return '{}sec'.format(round(secs,1))
 
 def run_perf(start, curent, files):
     secs = curent - start
@@ -67,16 +67,20 @@ def brute_unzip(file):
         try:
             with ZipFile(file) as zf:
                 zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
-            print('done! ', i, ' | ', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec)')
+            print('done! ', i, ' | ', pw)
+            print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec')
             print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
             return pw
         except:
             i = i+1
         finally:
             # print(i, '|', pw)
-            if (i == 2 ** p) :
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec)')
+            if (i == 2 ** p):
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'pw/sec)')
                 p = p+1
+            # if  ((now_sec - start_sec) % (60 * 60) < 1):
+            #     pass
+
 
 
 brute_unzip(zip_file)
