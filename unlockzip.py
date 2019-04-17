@@ -31,21 +31,21 @@ def run_sec(start, curent):
     print(curent, start, secs)
 
     if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
-        return('{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425)))
+        return '{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425))
     elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 /  4))): ## Quarters
-        return('{9.3f}Q'.format(secs / (60 * 60 * 24 * (365.2425 /  4))))
+        return '{9.3f}Q'.format(secs / (60 * 60 * 24 * (365.2425 /  4)))
     elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 / 12))): ## Months
-        return('{9.3f}mon'.format(secs / (60 * 60 * 24 * (365.2425 / 12))))
+        return '{9.3f}mon'.format(secs / (60 * 60 * 24 * (365.2425 / 12)))
     elif 1.1 < (secs / (60 * 60 * 24 * 7)): ## weeks
-        return('{9.3f}w'.format(secs / (60 * 60 * 24 * 7)))
+        return '{9.3f}w'.format(secs / (60 * 60 * 24 * 7))
     elif 1.1 < (secs / (60 * 60 * 24)): ## days
-        return('{9.3f}d'.format(secs / (60 * 60 * 24)))
+        return '{9.3f}d'.format(secs / (60 * 60 * 24))
     elif 1.1 < (secs / (60 * 60)): ## hours
-        return('{9.3f}h'.format(secs / (60 * 60)))
+        return '{9.3f}h'.format(secs / (60 * 60))
     elif 1.1 < (secs / (60)): ## minutes
-        return('{9.3f}min'.format(secs / (60)))
+        return '{9.3f}min'.format(secs / (60))
     else: ## seconds (default)
-        return('{9.3f}Y'.format(secs))
+        return '{9.3f}Y'.format(secs)
 
 def run_perf(start, curent, files):
     secs = curent - start
