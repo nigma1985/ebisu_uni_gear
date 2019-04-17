@@ -27,6 +27,9 @@ files.extend(glob.glob("/home/pi/json/moves/*/*/*.json"))
 # for file in files:
 #     print(file)
 
+if len(files) = 0 or files is None:
+    sys.exit()
+
 statinfo = None
 ## input
 for f in range( len(files) ):
