@@ -28,7 +28,7 @@ def cnt2str(cnt):
 
 def run_sec(start, curent):
     secs = curent - start
-    print(current, start, secs)
+    print(curent, start, secs)
 
     if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
         return('{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425)))
