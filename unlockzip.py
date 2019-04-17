@@ -6,7 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-os.chdir("../ebisu_uni_gear/")
+# os.chdir("../ebisu_uni_gear/")
 
 zip_file = 'input/Downloads.zip'
 password = 'password'
@@ -27,10 +27,29 @@ def cnt2str(cnt):
     return sym_list[cur_cnt -1]
 
 def run_sec(start, curent):
-    return
+    secs = curent - start
+    print(current, start, secs)
 
-def run_perf(secs, files):
-    return
+    if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
+        return('{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425)))
+    elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 /  4))): ## Quarters
+        return('{9.3f}Q'.format(secs / (60 * 60 * 24 * (365.2425 /  4))))
+    elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 / 12))): ## Months
+        return('{9.3f}mon'.format(secs / (60 * 60 * 24 * (365.2425 / 12))))
+    elif 1.1 < (secs / (60 * 60 * 24 * 7)): ## weeks
+        return('{9.3f}w'.format(secs / (60 * 60 * 24 * 7)))
+    elif 1.1 < (secs / (60 * 60 * 24)): ## days
+        return('{9.3f}d'.format(secs / (60 * 60 * 24)))
+    elif 1.1 < (secs / (60 * 60)): ## hours
+        return('{9.3f}h'.format(secs / (60 * 60)))
+    elif 1.1 < (secs / (60)): ## minutes
+        return('{9.3f}min'.format(secs / (60)))
+    else: ## seconds (default)
+        return('{9.3f}Y'.format(secs))
+
+def run_perf(start, curent, files):
+    secs = curent - start
+    return secs / files
 
 def brute_unzip(file):
     i = 1
@@ -46,40 +65,16 @@ def brute_unzip(file):
         try:
             with ZipFile(file) as zf:
                 zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
-            print('done! ', i, ' | ', pw)
+            print('done! ', i, ' | ', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec)')
             print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
             return pw
         except:
             i = i+1
         finally:
             # print(i, '|', pw)
-            if i == 2 ** p:
-                print('n^'+str(p), '|', i, '|', pw)
+            if (i == 2 ** p) :
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec)')
                 p = p+1
 
 
 brute_unzip(zip_file)
-
-#
-# pw = 'Konrad'
-# goes = ''
-# while goes != pw:
-#     i = i+1
-#     goes = cnt2str(i)
-#     if i == 2 ** p:
-#         p = p+1
-#         print('n^'+str(p), '|', i, '|', goes)
-#
-# print(i, '|', goes, pw)
-
-# path = getDir(zip_file)
-#
-# print(zip_file, path, password)
-
-# with ZipFile(zip_file) as zf:
-#   zf.extractall(path = getDir(zip_file), pwd=bytes(password,'utf-8'))
-
-# # import zipfile
-# zip_ref = zipfile.ZipFile(path_to_zip_file, 'r')
-# zip_ref.extractall(directory_to_extract_to)
-# zip_ref.close()
