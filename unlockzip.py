@@ -6,8 +6,8 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-# os.chdir("/home/pi/ebisu_uni_gear/")
-os.chdir("../ebisu_uni_gear/")
+os.chdir("/home/pi/ebisu_uni_gear/")
+# os.chdir("../ebisu_uni_gear/")
 
 zip_file = 'input/Downloads.zip'
 password = 'password'
