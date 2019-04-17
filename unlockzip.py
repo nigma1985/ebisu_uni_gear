@@ -2,6 +2,9 @@ import glob, os
 from zipfile import ZipFile
 from pathlib import Path
 
+from datetime import datetime
+from datetime import timedelta
+import time
 
 os.chdir("../ebisu_uni_gear/")
 
@@ -23,17 +26,28 @@ def cnt2str(cnt):
         return cnt2str(int(nxt_cnt)) + sym_list[cur_cnt -1]
     return sym_list[cur_cnt -1]
 
+def run_sec(start, curent):
+    return
+
+def run_perf(secs, files):
+    return
+
 def brute_unzip(file):
     i = 1
     p = 1
     pw = None
+    start_sec = time.mktime(datetime.now().timetuple())
+
+    print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
 
     while True:
         pw = cnt2str(i)
+        now_sec = time.mktime(datetime.now().timetuple())
         try:
             with ZipFile(file) as zf:
                 zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
-            print('done: ', i, ' | ', pw)
+            print('done! ', i, ' | ', pw)
+            print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
             return pw
         except:
             i = i+1
