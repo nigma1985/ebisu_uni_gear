@@ -1,6 +1,8 @@
-import glob, os
+import glob, os, sys
 from zipfile import ZipFile
 from pathlib import Path
+
+# import module.files as fls
 
 from datetime import datetime
 from datetime import timedelta
@@ -9,7 +11,13 @@ import time
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
 
-zip_file = 'input/Downloads.zip'
+
+
+zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
+# if zip_file is None or fls.is_pathname_valid(pathname = zip_file):
+#     print('no valid path')
+#     sys.exit()
+
 # password = 'password'
 
 def getDir(path):
@@ -59,6 +67,7 @@ def brute_unzip(file):
     pw = None
     list_pw = []
     start_sec = time.mktime(datetime.now().timetuple())
+    pw0 = None
 
     print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
 
@@ -75,19 +84,21 @@ def brute_unzip(file):
             print('done! ', i, ' | ', pw)
             print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec')
             print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
+            print('files put here:', getDir(file))
             return pw
         except:
             i = i+1
         finally:
             # print(i, '|', pw)
             if (i == 2 ** p):
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
                 print(list_pw)
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
                 list_pw = []
                 p = p+1
-            # if  ((now_sec - start_sec) % (60 * 60) < 1):
-            #     pass
-
-
+            elif pw0 != pw[0]:
+                print(list_pw)
+                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
+                list_pw = []
+                pw0 = pw[0]
 
 brute_unzip(zip_file)
