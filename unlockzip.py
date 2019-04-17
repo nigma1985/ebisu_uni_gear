@@ -30,7 +30,9 @@ def run_sec(start, curent):
     secs = curent - start
     print(curent, start, secs)
 
-    if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
+    if secs == 0.0:
+        return '0sec'
+    elif 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
         return '{9.3f}Y'.format(secs / (60 * 60 * 24 * 365.2425))
     elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 /  4))): ## Quarters
         return '{9.3f}Q'.format(secs / (60 * 60 * 24 * (365.2425 /  4)))
@@ -45,7 +47,7 @@ def run_sec(start, curent):
     elif 1.1 < (secs / (60)): ## minutes
         return '{9.3f}min'.format(secs / (60))
     else: ## seconds (default)
-        return '{9.3f}Y'.format(secs)
+        return '{9.3f}sec'.format(secs)
 
 def run_perf(start, curent, files):
     secs = curent - start
