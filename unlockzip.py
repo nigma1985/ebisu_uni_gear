@@ -8,16 +8,12 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
+from random import sample
+
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
 
-
-
-zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
-# if zip_file is None or fls.is_pathname_valid(pathname = zip_file):
-#     print('no valid path')
-#     sys.exit()
-
+zip_file = '/home/pi/json/DEÜV_Meldung_2018_01_917400_Container.ZIP'
 # password = 'password'
 
 def getDir(path):
@@ -61,8 +57,7 @@ def run_perf(start, curent, files):
     secs = curent - start
     return secs / files
 
-def brute_unzip(file):
-    i = 0
+def brute_unzip(file = None, i = 0):
     p = 0
     pw = None
     list_pw = []
@@ -101,4 +96,7 @@ def brute_unzip(file):
                 list_pw = []
                 pw0 = pw[0]
 
-brute_unzip(zip_file)
+            if len(list_pw) > 111:
+                list_pw = random.sample(list_pw, 99)
+
+brute_unzip(zip_file, 67108860)
