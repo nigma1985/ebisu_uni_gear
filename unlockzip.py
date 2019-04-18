@@ -8,7 +8,7 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-from random import sample
+from random import sample as random
 
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
