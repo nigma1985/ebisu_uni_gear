@@ -8,7 +8,7 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-from random import sample as random
+from random import sample
 
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
@@ -97,6 +97,6 @@ def brute_unzip(file = None, i = 0):
                 pw0 = pw[0]
 
             if len(list_pw) > 111:
-                list_pw = random.sample(list_pw, 99)
+                list_pw = sample(list_pw, 99)
 
 brute_unzip(zip_file, 67108860)
