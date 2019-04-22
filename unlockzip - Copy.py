@@ -124,6 +124,10 @@ def brute_unzip(file = None, i = 0):
                 if round((now_sec - start_sec) % (60 * 10),0) > 1:
                     show = True
 
-            list_pw = sample(list_pw, 9)
+            try:
+                list_pw = sample(list_pw, 9)
+            except:
+                pass
 
-brute_unzip(zip_file, 540291590)
+
+brute_unzip(zip_file, 558183611)
