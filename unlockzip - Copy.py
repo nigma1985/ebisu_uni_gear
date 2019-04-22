@@ -8,12 +8,12 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-from random import sample
+from random import sample, randint
 
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
 
-zip_file = '/home/pi/json/DEÜV_Meldung_2018_01_917400_Container.ZIP'
+zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
 # password = 'password'
 
 def getDir(path):
@@ -58,12 +58,15 @@ def run_perf(start, curent, files):
     return secs / files
 
 def brute_unzip(file = None, i = 0):
-    p = None
-    if i = 0:
+
+    p = 0
+    show = True
+    if i == 0:
         p = 0
     else:
-        while 2 ** p <= i
+        while 2 ** p <= i:
             p = p+1
+    i_start = i
 
     pw = None
     list_pw = []
@@ -75,6 +78,7 @@ def brute_unzip(file = None, i = 0):
     while True:
         pw = cnt2str(i)
         now_sec = time.mktime(datetime.now().timetuple())
+
         try:
             with ZipFile(file) as zf:
                 if i == 0:
@@ -83,7 +87,7 @@ def brute_unzip(file = None, i = 0):
                     list_pw.append(pw)
                     zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
             print('done! ', i, ' | ', pw)
-            print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i), 'tries/sec')
+            print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i-i_start), 'tries/sec')
             print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
             print('files put here:', getDir(file))
             return pw
@@ -92,16 +96,34 @@ def brute_unzip(file = None, i = 0):
         finally:
             # print(i, '|', pw)
             if (i == 2 ** p):
-                print(list_pw)
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
-                list_pw = []
+                # print(list_pw)
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                # list_pw = []
                 p = p+1
-            elif pw0 != pw[0] or round((now_sec - start_sec) % (60 * 5),0) = 0:
+            elif pw0 != pw[0]:
                 print(list_pw)
-                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i),5), 'pw/sec )')
+                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
                 list_pw = []
                 pw0 = pw[0]
-            elif len(list_pw) > 11:
-                list_pw = sample(list_pw, 9)
+            elif show:
+                if round((now_sec - start_sec) % (60 * 10),0) == 0:
+                    # print(list_pw)
+                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                    # list_pw = []
+                    # pw0 = pw[0]
+                    show = False
+                elif randint(1,int(2**19.5)) == 1 :
+                    print(list_pw)
+                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                    list_pw = []
+                    # pw0 = pw[0]
+                    show = False
+                else:
+                    pass
+            else:
+                if round((now_sec - start_sec) % (60 * 10),0) > 1:
+                    show = True
 
-brute_unzip(zip_file, 67108860)
+            list_pw = sample(list_pw, 9)
+
+brute_unzip(zip_file, 540291590)
