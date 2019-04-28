@@ -97,24 +97,24 @@ def brute_unzip(file = None, i = 0):
             # print(i, '|', pw)
             if (i == 2 ** p):
                 # print(list_pw)
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
                 # list_pw = []
                 p = p+1
             elif pw0 != pw[0]:
                 print(list_pw)
-                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
                 list_pw = []
                 pw0 = pw[0]
             elif show:
                 if round((now_sec - start_sec) % (60 * 10),0) == 0:
                     # print(list_pw)
-                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
                     # list_pw = []
                     # pw0 = pw[0]
                     show = False
                 elif randint(1,int(2**19.5)) == 1 :
                     print(list_pw)
-                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'pw/sec )', '|', datetime.now())
+                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
                     list_pw = []
                     # pw0 = pw[0]
                     show = False
@@ -130,4 +130,4 @@ def brute_unzip(file = None, i = 0):
                 pass
 
 
-brute_unzip(zip_file, 558183611)
+brute_unzip(zip_file, 1586898540 )
