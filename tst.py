@@ -22,12 +22,18 @@ import time
 # nowsecs = time.mktime(datetime.now().timetuple())
 # print(nowsecs, type(nowsecs))
 
-def afunc(x):
-    return x ** 2, 2 ** x
+# def afunc(x):
+#     return x ** 2, 2 ** x
+#
+# a, b = afunc(10)
+#
+# c = afunc(5)
+#
+# print(a, b)
+# print(c)
 
-a, b = afunc(10)
 
-c = afunc(5)
+def ret_dict(x):
+    return {'x^2': x ** 2, '2^x': 2 ** x}
 
-print(a, b)
-print(c)
+print(ret_dict(11))

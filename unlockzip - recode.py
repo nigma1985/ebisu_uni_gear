@@ -16,42 +16,7 @@ os.chdir("../ebisu_uni_gear/")
 zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
 # password = 'password'
 
-def getDir(path):
-    if path is None:
-        return
-    return Path(path).parent.absolute()
 
-def cnt2str(cnt):
-    if cnt is None or not isinstance(cnt, int):
-        return
-    sym_list = '0123456789' + 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'äÄöÖüÜß' + '°!§$%&/()=?"`^´²³{[\\]}@€+*~\'#<>|,.-;:_ '
-    cur_cnt = cnt % len(sym_list)
-    nxt_cnt = (cnt - (cnt % len(sym_list))) / len(sym_list)
-    if nxt_cnt > 0:
-        return cnt2str(int(nxt_cnt)) + sym_list[cur_cnt -1]
-    return sym_list[cur_cnt -1]
-
-def run_sec(start, curent):
-    secs = curent - start
-    # print(curent, start, secs)
-    # print(type(curent), type(start), type(secs))
-
-    if 1.1 < (secs / (60 * 60 * 24 * 365.2425)): ## Year
-        return '{}Y'.format(round(secs / (60 * 60 * 24 * 365.2425),1))
-    elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 /  4))): ## Quarters
-        return '{}Q'.format(round(secs / (60 * 60 * 24 * (365.2425 /  4)),1))
-    elif 1.1 < (secs / (60 * 60 * 24 * (365.2425 / 12))): ## Months
-        return '{}mon'.format(round(secs / (60 * 60 * 24 * (365.2425 / 12)),1))
-    elif 1.1 < (secs / (60 * 60 * 24 * 7)): ## weeks
-        return '{}w'.format(round(secs / (60 * 60 * 24 * 7),1))
-    elif 1.1 < (secs / (60 * 60 * 24)): ## days
-        return '{}d'.format(round(secs / (60 * 60 * 24),1))
-    elif 1.1 < (secs / (60 * 60)): ## hours
-        return '{}h'.format(round(secs / (60 * 60),1))
-    elif 1.1 < (secs / (60)): ## minutes
-        return '{}min'.format(round(secs / (60),1))
-    else: ## seconds (default)
-        return '{}sec'.format(round(secs,1))
 
 def run_perf(start, curent, files):
     secs = curent - start
@@ -135,6 +100,27 @@ brute_unzip(zip_file, 1586898540 )
 
 
 class unzip:
+    def getDir(self, path):
+        if path is None:
+            return
+        return Path(path).parent.absolute()
+
+    def cnt2str(self, cnt):
+        if cnt is None:
+            return None
+        elif not isinstance(cnt, int):
+            return None
+        elif cnt <= 0:
+            return None
+        else:
+            pass
+
+        sym_list = '0123456789' + 'abcdefghijklmnopqrstuvwxyz' + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' + 'äÄöÖüÜß' + '°!§$%&/()=?"`^´²³{[\\]}@€+*~\'#<>|,.-;:_ '
+        cur_cnt = cnt % len(sym_list)
+        nxt_cnt = (cnt - (cnt % len(sym_list))) / len(sym_list)
+        if nxt_cnt > 0:
+            return cnt2str(int(nxt_cnt)) + sym_list[cur_cnt -1]
+        return sym_list[cur_cnt -1]
 
     def run_sec(self, start, curent):
         secs = curent - start
@@ -158,11 +144,16 @@ class unzip:
         else: ## seconds (default)
             return 'sec', secs, secs
 
+
     # Initializer / Instance Attributes
     def __init__(self, zipfile = None, start = time.mktime(datetime.now().timetuple()), password = None, passnum = None):
         self.zipfile = None
         if zipfile is not None:
             self.zipfile = zipfile
+        else:
+            raise
+
+        self.zipDir = self.getDir(self.zipfile)
 
         self.start = None
         if start is not None:
@@ -179,3 +170,12 @@ class unzip:
         self.passnum = None
         if passnum is not None:
             self.passnum = passnum
+
+        if password is None and passnum is not None:
+            self.password = self.cnt2str(self.passnum)
+
+    def run_perf(self, time = self.secs, files = None):
+        if any(time = None, files = None, not isinstance(files, int)):
+            return None
+        else:
+            return {'sec/n': secs / files, 'n/sec': files / secs}
