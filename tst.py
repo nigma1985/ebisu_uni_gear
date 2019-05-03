@@ -19,5 +19,15 @@ from datetime import datetime
 from datetime import timedelta
 import time
 
-nowsecs = time.mktime(datetime.now().timetuple())
-print(nowsecs, type(nowsecs))
+# nowsecs = time.mktime(datetime.now().timetuple())
+# print(nowsecs, type(nowsecs))
+
+def afunc(x):
+    return x ** 2, 2 ** x
+
+a, b = afunc(10)
+
+c = afunc(5)
+
+print(a, b)
+print(c)
