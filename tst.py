@@ -32,8 +32,12 @@ import time
 # print(a, b)
 # print(c)
 
+#
+# def ret_dict(x):
+#     return {'x^2': x ** 2, '2^x': 2 ** x}
+#
+# print(ret_dict(11))
 
-def ret_dict(x):
-    return {'x^2': x ** 2, '2^x': 2 ** x}
+printout = ">>", 123, "<<"
 
-print(ret_dict(11))
+print("{} - {} - {}".format(printout))

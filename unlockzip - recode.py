@@ -9,94 +9,10 @@ from datetime import timedelta
 import time
 
 from random import sample, randint
+start_time = time.mktime(datetime.now().timetuple())
 
 # os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
-
-zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
-# password = 'password'
-
-
-
-def run_perf(start, curent, files):
-    secs = curent - start
-    return secs / files
-
-def brute_unzip(file = None, i = 0):
-
-    p = 0
-    show = True
-    if i == 0:
-        p = 0
-    else:
-        while 2 ** p <= i:
-            p = p+1
-    i_start = i
-
-    pw = None
-    list_pw = []
-    start_sec = time.mktime(datetime.now().timetuple())
-    pw0 = None
-
-    print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
-
-    while True:
-        pw = cnt2str(i)
-        now_sec = time.mktime(datetime.now().timetuple())
-
-        try:
-            with ZipFile(file) as zf:
-                if i == 0:
-                    zf.extractall(path = getDir(file))
-                else:
-                    list_pw.append(pw)
-                    zf.extractall(path = getDir(file), pwd=bytes(pw,'utf-8'))
-            print('done! ', i, ' | ', pw)
-            print(run_sec(start_sec, now_sec), '::', run_perf(start_sec, now_sec, i-i_start), 'tries/sec')
-            print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
-            print('files put here:', getDir(file))
-            return pw
-        except:
-            i = i+1
-        finally:
-            # print(i, '|', pw)
-            if (i == 2 ** p):
-                # print(list_pw)
-                print('n^'+str(p), '|', i, '|', pw, '(', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
-                # list_pw = []
-                p = p+1
-            elif pw0 != pw[0]:
-                print(list_pw)
-                print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
-                list_pw = []
-                pw0 = pw[0]
-            elif show:
-                if round((now_sec - start_sec) % (60 * 10),0) == 0:
-                    # print(list_pw)
-                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
-                    # list_pw = []
-                    # pw0 = pw[0]
-                    show = False
-                elif randint(1,int(2**19.5)) == 1 :
-                    print(list_pw)
-                    print(' >>', i, '|', pw, '(', len(pw), 'digits', '::', run_sec(start_sec, now_sec), '::', round(run_perf(start_sec, now_sec, i-i_start),5), 'sec/pw )', '|', datetime.now())
-                    list_pw = []
-                    # pw0 = pw[0]
-                    show = False
-                else:
-                    pass
-            else:
-                if round((now_sec - start_sec) % (60 * 10),0) > 1:
-                    show = True
-
-            try:
-                list_pw = sample(list_pw, 9)
-            except:
-                pass
-
-
-brute_unzip(zip_file, 1586898540 )
-
 
 
 class unzip:
@@ -119,11 +35,11 @@ class unzip:
         cur_cnt = cnt % len(sym_list)
         nxt_cnt = (cnt - (cnt % len(sym_list))) / len(sym_list)
         if nxt_cnt > 0:
-            return cnt2str(int(nxt_cnt)) + sym_list[cur_cnt -1]
+            return self.cnt2str(int(nxt_cnt)) + sym_list[cur_cnt -1]
         return sym_list[cur_cnt -1]
 
-    def run_sec(self, start, curent):
-        secs = curent - start
+    def run_sec(self, start, current):
+        secs = current - start
         # print(curent, start, secs)
         # print(type(curent), type(start), type(secs))
 
@@ -144,24 +60,45 @@ class unzip:
         else: ## seconds (default)
             return 'sec', secs, secs
 
+    def run_perf(self, time = 0, files = None):
+        if time is None or files is None or not isinstance(files, (int, float)):
+            return None
+        else:
+            if time == 0:
+                if self.secs not in (0, None):
+                    time = self.secs
+                else:
+                    time = 1/ (10**10)
+            else:
+                pass
+
+            if files == 0:
+                if self.progress not in (0, None):
+                    files = self.progress
+                else:
+                    files = -1* (10**10)
+            else:
+                pass
+
+            return {'sec/n': time / files, 'n/sec': files / time}
 
     # Initializer / Instance Attributes
-    def __init__(self, zipfile = None, start = time.mktime(datetime.now().timetuple()), password = None, passnum = None):
+    def __init__(self,
+        zipfile = None,
+        start = time.mktime(datetime.now().timetuple()),
+        password = None,
+        passnum = None,
+        passnum0 = 0):
+
         self.zipfile = None
         if zipfile is not None:
             self.zipfile = zipfile
         else:
             raise
 
-        self.zipDir = self.getDir(self.zipfile)
-
         self.start = None
         if start is not None:
             self.start = start
-
-        self.current = time.mktime(datetime.now().timetuple())
-
-        self.timemeasure, self.timelength, self.secs = self.run_sec(start = self.start, self.current)
 
         self.password = None
         if password is not None:
@@ -171,11 +108,99 @@ class unzip:
         if passnum is not None:
             self.passnum = passnum
 
-        if password is None and passnum is not None:
+        self.passnum0 = None
+        if passnum0 is not None:
+            self.passnum0 = passnum0
+
+        self.zipDir = self.getDir(self.zipfile)
+        self.current = time.mktime(datetime.now().timetuple())
+        self.timemeasure, self.timelength, self.secs = self.run_sec(start = self.start, current = self.current)
+        self.progress = self.passnum - self.passnum0
+        self.perf = self.run_perf(time = self.secs, files = self.progress)
+
+        if self.password is None and self.passnum is not None:
             self.password = self.cnt2str(self.passnum)
 
-    def run_perf(self, time = self.secs, files = None):
-        if any(time = None, files = None, not isinstance(files, int)):
-            return None
+    # def logResult(self, path, file_name, tst)
+
+
+
+
+
+    def unzip_file(self):
+        try:
+            with ZipFile(self.zipfile) as zf:
+                if i == 0:
+                    zf.extractall(path = self.zipDir)
+                else:
+                    zf.extractall(path = self.zipDir, pwd=bytes(self.password,'utf-8'))
+            return True
+        except:
+            return False
+        # finally:
+
+    def report(self, files = None):
+        # if files is not None:
+        #     perf = self.run_perf(files = files)
+        # else:
+        #     perf = self.run_perf(files = self.progress)
+
+        return ">> {} >> {}  ( {} digits :: {}{} :: {} {})  {}".format(
+            self.passnum,
+            self.password,
+            len(self.password),
+            round(self.timelength,1),
+            self.timemeasure,
+            round(self.perf['n/sec'],1),
+            'n/sec',
+            datetime.now())
+
+
+def brute_unzip(file = None, p = 0):
+    ##
+
+    p_start = p
+
+    pw = None
+    list_pw = []
+    start_sec = time.mktime(datetime.now().timetuple())
+    pw0 = None
+    nmin = 1/3*10000
+
+    print('--- --- ---', file, '|', datetime.now(), '--- --- ---')
+
+    while True:
+        zipper = unzip(zipfile = zip_file, start = start_sec, passnum = p, passnum0 = p_start)
+
+        if zipper.unzip_file():
+            print('success:', zipper.password)
+            print(zipper.report())
+            print('--- --- ---', zip_file, '--- --- ---')
+            print('files put here:', zipper.zipDir)
+            sys.exit()
         else:
-            return {'sec/n': secs / files, 'n/sec': files / secs}
+            # print(nmin)
+            if randint(1,int(nmin * 5)) == 1:
+            # if randint(1,1000) == 1:
+                print(list_pw)
+                print(zipper.report())
+                list_pw = []
+                nmin = zipper.perf['n/sec'] * 60
+                # print(nmin * 3)
+            else:
+                list_pw.append(zipper.password)
+                try:
+                    list_pw = sample(list_pw, 10)
+                except:
+                    pass
+            p = p+1
+
+
+    print(zipper.report(files = 100))
+
+
+zip_file = 'C:/Users/Konrad/OneDrive/E-Mail-Anhänge/DEÜV_Meldung_2018_01_917400_Container.ZIP'
+# password = 'password'
+
+
+brute_unzip(zip_file, 4086898540)
