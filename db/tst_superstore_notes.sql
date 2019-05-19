@@ -27,33 +27,32 @@ ALTER TABLE "SuperStore"
 	ADD COLUMN orderPriority TEXT
 ;
 
-DROP VIEW IF EXISTS v_superstore CASCADE;
-
-CREATE VIEW v_superstore AS
-	(SELECT
-		CAST ( rowID AS INTEGER ) AS rowID,
-		orderID,
-		CAST ( orderDate AS DATE ) AS orderDate,
-		CAST ( shipDate AS DATE ) AS shipDate,
-		shipMode,
-		customerID,
-		customerName,
-		segment,
-		city,
-		"state",
-		country,
-		CASE WHEN po = '' THEN NULL ELSE CAST ( po AS INTEGER ) END AS po,
-		market,
-		region,
-		productID,
-		category,
-		subCategory,
-		TRIM(both '"' from productName) AS productName,
-		CAST ( sales AS REAL ) AS sales,
-		CAST ( quantity AS INTEGER ) AS quantity,
-		CAST ( discount AS REAL ) AS discount,
-		CAST ( profit AS REAL ) AS profit,
-		CAST ( shippingCost AS REAL ) AS shippingCost,
-		CAST ( orderPriority AS TEXT ) AS orderPriority
-	FROM "SuperStore"
-);
+CREATE OR REPLACE VIEW public.v_superstore AS
+ SELECT "SuperStore".rowid::integer AS rowid,
+    "SuperStore".orderid,
+    "SuperStore".orderdate::date AS orderdate,
+    "SuperStore".shipdate::date AS shipdate,
+    "SuperStore".shipmode,
+    "SuperStore".customerid,
+    "SuperStore".customername,
+    "SuperStore".segment,
+    "SuperStore".city,
+    "SuperStore".state,
+    "SuperStore".country,
+        CASE
+            WHEN "SuperStore".po = ''::text THEN NULL::integer
+            ELSE "SuperStore".po::integer
+        END AS po,
+    "SuperStore".market,
+    "SuperStore".region,
+    "SuperStore".productid,
+    "SuperStore".category,
+    "SuperStore".subcategory,
+    btrim("SuperStore".productname, '"'::text) AS productname,
+    "SuperStore".sales::real AS sales,
+    "SuperStore".quantity::integer AS quantity,
+    "SuperStore".discount::real AS discount,
+    "SuperStore".profit::real AS profit,
+    "SuperStore".shippingcost::real AS shippingcost,
+    "SuperStore".orderpriority
+   FROM "SuperStore";
