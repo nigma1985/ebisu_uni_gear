@@ -151,8 +151,8 @@ class unzip:
             len(self.password),
             round(self.timelength,1),
             self.timemeasure,
-            round(self.perf['n/sec'],1),
-            'n/sec',
+            round(self.perf['sec/n'],7),
+            'sec/n',
             datetime.now())
 
 
@@ -179,8 +179,8 @@ def brute_unzip(file = None, p = 0):
             print('files put here:', zipper.zipDir)
             sys.exit()
         else:
-            # print(nmin)
-            if randint(1,int(nmin * 5)) == 1:
+            # print(p, nmin, zipper.password)
+            if randint(1,int(nmin * 1)) == 1:
             # if randint(1,1000) == 1:
                 print(list_pw)
                 print(zipper.report())
@@ -199,8 +199,8 @@ def brute_unzip(file = None, p = 0):
     print(zipper.report(files = 100))
 
 
-zip_file = 'C:/Users/Konrad/OneDrive/E-Mail-Anhänge/DEÜV_Meldung_2018_01_917400_Container.ZIP'
+zip_file = 'C:/Users/Konrad/Desktop/zips/DEÜV_Meldung_2018_01_917400_Container.ZIP'
 # password = 'password'
 
 
-brute_unzip(zip_file, 4086898540)
+brute_unzip(zip_file, 6317168783)
