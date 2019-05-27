@@ -14,7 +14,7 @@ ram = rpi.virtual_memory()
 # files = glob.glob("input/*.json")
 # files = glob.glob("../json/*.json")
 
-if (rpi.cpu_percent() > 66.66) or (ram.percent > 66.66):
+if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (2/3*100)):
     sys.exit()
 
 # actual run
