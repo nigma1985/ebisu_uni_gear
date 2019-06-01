@@ -169,5 +169,9 @@ def json2py(jsonPath):
     with open(jsonPath, 'r') as f:
         return json.load(f)
 
+def py2json(data, jsonPath):
+    with open(jsonPath, 'w') as outfile:
+        json.dump(data, outfile)
+
 def removeFile(file):
     os.remove(file)

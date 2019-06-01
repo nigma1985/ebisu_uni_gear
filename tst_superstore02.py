@@ -65,6 +65,7 @@ cat_cnts = pd.pivot_table(df,
     index='category',
     columns='segment',
     values="profit",
+    fill_value=None,
     aggfunc=lambda x: len(x.dropna()))
 
 op_max = 0
