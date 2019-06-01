@@ -247,4 +247,4 @@ zip_file = 'C:/Users/Konrad/Desktop/RPi3/DEÜV_Meldung_2018_01_917400_Container.
 # password = 'password'
 
 
-brute_unzip(zip_file, 100)
+brute_unzip(zip_file, 7806800810)
