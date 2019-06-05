@@ -2,9 +2,9 @@ import json
 from module import json2py, py2json
 
 file = 'data.json'
+
+
 data = {}
-
-
 try:
     data = json2py(file)
 except:
