@@ -34,23 +34,20 @@ xp = x / span
 print(span, xp)
 
 
-cur_time = a.replace(microsecond=0,second=0,minute=0,hour=0)
-times = []
-vals = []
-print(cur_time, times, vals)
+cur_time = a.replace(microsecond=0,second=0)
+# print(cur_time, times, vals)
 print()
+data = []
+step = 0
+
+while cur_time < b.replace(microsecond=0,second=0)+timedelta(minutes=1):
+    step = (min(b, cur_time + timedelta(minutes=1))-max(a, cur_time)).total_seconds() * xp
+    if step in (None, 0):
+        pass
+    else:
+        data.append( (cur_time, step) )
+    cur_time = cur_time + timedelta(minutes=1)
 
 
-while cur_time < b.replace(microsecond=0,second=0,minute=0,hour=0)+timedelta(days=1):
-    times.append(cur_time)
-    print('start : ', max(a, cur_time))
-    print('end   : ', min(b, cur_time + timedelta(days=1)))
-
-    print((min(b, cur_time + timedelta(days=1))-max(a, cur_time)).total_seconds() * xp)
-
-    # vals.append()
-    cur_time = cur_time + timedelta(days=1)
-    print(cur_time)
-    print()
-
-print(times, vals)
+frame = pd.DataFrame([(d[1:]) for d in data], columns = ['vals'], index = [(t[0]) for t in data])
+print(frame)
