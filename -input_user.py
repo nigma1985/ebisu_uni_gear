@@ -6,6 +6,25 @@ from module import json2py, py2json
 
 os.chdir("../ebisu_uni_gear/")
 
+class frame:
+    def __init__(self,
+        entries = []):
+        self.entries = None
+        if not isinstance(entries, list) or entries is None:
+            raise Exception("not list")
+        elif len(entries) <= 0:
+             raise Exception("missing entries")
+        else:
+            self.entries = entries
+
+    def getHeads(self, data):
+        print('heads')
+    def getLines(self, data):
+        print('lines')
+    def getEntries(self, data):
+        print('entries')
+
+
 
 class details:
     def read(self, file):
@@ -35,6 +54,17 @@ class details:
             raise Exception("missing file")
 
         self.details = self.read(self.json)
+        self.len = len(self.details)
+
+    def enter(self, data = None):
+        if data is None:
+            data = self.details
+        elif not isinstance(data, list):
+            raise Exception("this is not the propper data")
+        else:
+            pass
+
+        if
 
     def write(self, data = None, file = None):
         if data is None:
@@ -51,5 +81,5 @@ class details:
         py2json(data, file)
 
 new = details()
-print(new.details)
+print(new.details, new.len)
 new.write()
