@@ -36,7 +36,7 @@ class details:
 
         self.details = self.read(self.json)
 
-    def write(self, data, file):
+    def write(self, data = None, file = None):
         if data is None:
             data = self.details
         else:
@@ -49,3 +49,7 @@ class details:
 
         print('data written to', file)
         py2json(data, file)
+
+new = details()
+print(new.details)
+new.write()
