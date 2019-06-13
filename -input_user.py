@@ -17,12 +17,55 @@ class frame:
         else:
             self.entries = entries
 
-    def getHeads(self, data):
-        print('heads')
-    def getLines(self, data):
-        print('lines')
-    def getEntries(self, data):
-        print('entries')
+    def getKeys(self, data = None):
+        lst = []
+        if data is None:
+            data = self.entries
+        else:
+            pass
+
+        for line in data:
+            for key in line:
+                if key in lst:
+                    pass
+                else:
+                    lst.append(key)
+        print('Keys', lst)
+        return lst
+
+
+    def getValues(self, data = None, keys = None):
+        lst = []
+        if data is None:
+            data = self.entries
+        else:
+            pass
+
+        if keys is not None or isinstance(keys, (list, tuple)):
+            pass
+        else:
+            keys = [keys]
+
+        if keys is None:
+            for line in data:
+                for key in line:
+                    if line[key] in lst:
+                        pass
+                    else:
+                        lst.append(line[key])
+        else:
+            for line in data:
+                for key in line:
+                    if line[key] in lst:
+                        pass
+                    elif key in keys:
+                        lst.append(line[key])
+
+        print('Values', lst)
+        return lst
+
+    def getEntry(self, data):
+        print('Entry')
 
 
 
@@ -34,7 +77,7 @@ class details:
             pass
 
         try:
-            print('file {} opened'.format(file))
+            print('file {} is open'.format(file))
             return json2py(file)
         except:
             print('no file opened')
@@ -64,7 +107,7 @@ class details:
         else:
             pass
 
-        if
+        # if
 
     def write(self, data = None, file = None):
         if data is None:
@@ -81,5 +124,18 @@ class details:
         py2json(data, file)
 
 new = details()
+keys = frame(new.details)
 print(new.details, new.len)
+
+print(keys.getKeys())
+print(keys.getValues())
+
+print(keys.getValues(keys = 'user'))
+print(keys.getValues(keys = ['user', 'provider']))
+
+
 new.write()
+
+# print(
+#     json2py('../details - Copy.json')
+#     )
