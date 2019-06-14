@@ -98,6 +98,7 @@ class details:
 
         self.details = self.read(self.json)
         self.len = len(self.details)
+        self.search = frame(entries = self.details)
 
     def enter(self, data = None):
         if data is None:
@@ -123,18 +124,50 @@ class details:
         print('data written to', file)
         py2json(data, file)
 
+    def prnt_lst(self, data = None):
+        if isinstance(data, (list, tuple, dict)):
+            [print(n, data[n]) for n in range(len(data))]
+        else:
+            raise Exception("Your data is type {}. Only lists, tuples or directories allowed.".format(str(type(data))))
+        # print('---------')
+
+    def work(self, old = None):
+        if old is None:
+            old = self.details
+            dct = self.search
+        else:
+            dct = frame(entries = old)
+
+        new = {}
+
+        print("welcome to tool")
+        lst = dct.getKeys()
+        print(lst)
+        self.prnt_lst(data = lst)
+        print('x', 'add new key')
+        x = input("Enter number: ")
+        if x in ('x', 'X'):
+            print('new key')
+        elif int(x) not in range(len(lst)):
+            print('not in range')
+        else:
+            print('you chose', x, lst[int(x)])
+        print('done')
+
 new = details()
-keys = frame(new.details)
-print(new.details, new.len)
+# keys = frame(new.details)
+# print(new.details, new.len)
+#
+# print(keys.getKeys())
+# print(keys.getValues())
+#
+# print(keys.getValues(keys = 'user'))
+# print(keys.getValues(keys = ['user', 'provider']))
 
-print(keys.getKeys())
-print(keys.getValues())
+new.prnt_lst(new.details)
+new.work()
 
-print(keys.getValues(keys = 'user'))
-print(keys.getValues(keys = ['user', 'provider']))
-
-
-new.write()
+# new.write()
 
 # print(
 #     json2py('../details - Copy.json')
