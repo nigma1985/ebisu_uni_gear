@@ -142,57 +142,55 @@ class details:
         theKey = None
 
         print("welcome to tool")
-        lst = dct.getKeys()
-        print(lst)
-        self.prnt_lst(data = lst)
-        print('x', 'add new key')
         while True:
-            x = input("Enter number: ")
-            if x in ('x', 'X'):
-                theKey = input('please name new Key: ')
-                break
-            elif int(x) in range(len(lst)):
-                theKey = lst[int(x)]
-                print('you chose', x,'"', theKey, '"')
-                break
-            elif int(x) not in range(len(lst)):
-                print('not in range')
+            lst = dct.getKeys()
+            print(lst)
+            self.prnt_lst(data = lst)
+            print('x', 'add new key')
+            while True:
+                x = input("Enter number: ")
+                if x in ('x', 'X'):
+                    theKey = input('please name new Key: ')
+                    break
+                elif int(x) in range(len(lst)):
+                    theKey = lst[int(x)]
+                    print('you chose', x,'"', theKey, '"')
+                    break
+                elif int(x) not in range(len(lst)):
+                    print('not in range')
+                else:
+                    print('sorry?')
+            lst = dct.getValues(keys = theKey)
+            print(lst)
+            self.prnt_lst(data = lst)
+            print('x', 'add new value')
+            while True:
+                x = input("Enter number: ")
+                if x in ('x', 'X'):
+                    new[theKey] = input('please name new Value: ')
+                    break
+                elif int(x) in range(len(lst)):
+                    new[theKey] = lst[int(x)]
+                    print('you chose', x,'"', new[theKey], '"')
+                    break
+                elif int(x) not in range(len(lst)):
+                    print('not in range')
+                else:
+                    print('sorry?')
+            print('----- -----  ----- -----  ----- -----')
+            print('results:')
+            for e in new:
+                print(e, new[e])
+
+            if input('are you done? - Type "NO" if you want to continue:') in ('no', 'n', 'NO', 'N'):
+                print('----- -----  ----- -----  -----   -----  ----- -----  ----- -----')
             else:
-                print('sorry?')
-
-        lst = dct.getValues(keys = theKey)
-        print(lst)
-        self.prnt_lst(data = lst)
-        print('x', 'add new value')
-
-        while True:
-            x = input("Enter number: ")
-            if x in ('x', 'X'):
-                new[theKey] = input('please name new Key: ')
                 break
-            elif int(x) in range(len(lst)):
-                new[theKey] = lst[int(x)]
-                print('you chose', x,'"', new[theKey], '"')
-                break
-            elif int(x) not in range(len(lst)):
-                print('not in range')
-            else:
-                print('sorry?')
 
-        print('result:  ', theKey, '/', new[theKey])
-        # while True:
-        #     x = input("Enter number: ")
-        #     if x in ('x', 'X'):
-        #         theKey = input('please name new Value: ')
-        #         print('new value')
-        #     elif int(x) not in range(len(lst)):
-        #         print('not in range')
-        #     else:
-        #         theKey = lst[int(x)]
-        #         print('you chose', x,'"', theKey, '"')
-        #         break
-        # print('done')
-        input('done')
+
+        # old.append(new)
+        self.write(data = old.append(new))
+        input('done ')
 
 new = details()
 # keys = frame(new.details)
