@@ -139,20 +139,60 @@ class details:
             dct = frame(entries = old)
 
         new = {}
+        theKey = None
 
         print("welcome to tool")
         lst = dct.getKeys()
         print(lst)
         self.prnt_lst(data = lst)
         print('x', 'add new key')
-        x = input("Enter number: ")
-        if x in ('x', 'X'):
-            print('new key')
-        elif int(x) not in range(len(lst)):
-            print('not in range')
-        else:
-            print('you chose', x, lst[int(x)])
-        print('done')
+        while True:
+            x = input("Enter number: ")
+            if x in ('x', 'X'):
+                theKey = input('please name new Key: ')
+                break
+            elif int(x) in range(len(lst)):
+                theKey = lst[int(x)]
+                print('you chose', x,'"', theKey, '"')
+                break
+            elif int(x) not in range(len(lst)):
+                print('not in range')
+            else:
+                print('sorry?')
+
+        lst = dct.getValues(keys = theKey)
+        print(lst)
+        self.prnt_lst(data = lst)
+        print('x', 'add new value')
+
+        while True:
+            x = input("Enter number: ")
+            if x in ('x', 'X'):
+                new[theKey] = input('please name new Key: ')
+                break
+            elif int(x) in range(len(lst)):
+                new[theKey] = lst[int(x)]
+                print('you chose', x,'"', new[theKey], '"')
+                break
+            elif int(x) not in range(len(lst)):
+                print('not in range')
+            else:
+                print('sorry?')
+
+        print('result:  ', theKey, '/', new[theKey])
+        # while True:
+        #     x = input("Enter number: ")
+        #     if x in ('x', 'X'):
+        #         theKey = input('please name new Value: ')
+        #         print('new value')
+        #     elif int(x) not in range(len(lst)):
+        #         print('not in range')
+        #     else:
+        #         theKey = lst[int(x)]
+        #         print('you chose', x,'"', theKey, '"')
+        #         break
+        # print('done')
+        input('done')
 
 new = details()
 # keys = frame(new.details)
