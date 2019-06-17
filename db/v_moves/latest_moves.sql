@@ -28,3 +28,4 @@ LEFT JOIN (
 	) AS mc USING (lastupdate, "user", date)
 LEFT JOIN v_segments AS sa ON sa.moves = mb.id
 LEFT JOIN v_activities AS aa ON aa.segments = sa.id
+;
