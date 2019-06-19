@@ -1,7 +1,33 @@
 import urllib.request, json
 from module import json2py, py2json
 
-class tankerkoenig:
+class tankerkoenig_api:
+    def getVar(self,
+        default = None,
+        dictKey = None,
+        value = None,
+        theDict = {}):
+        if any(
+            theDict is None,
+            not isinstance(dictKey, dict),
+            len(dictKey) < 1):
+            raise Exception("dict missing")
+        elif value is not None:
+            return value
+        elif isinstance(dictKey, (list, tuple)):
+            for entry in dictKey:
+                try:
+                    return theDict[entry]
+                except:
+                    pass
+        elif isinstance(dictKey, (number, str)):
+            try:
+                return theDict[dictKey]
+            except:
+                pass
+        else:
+            return default
+
     def __init__(self,
         dictionary = {},
         lat = None,
@@ -22,74 +48,45 @@ class tankerkoenig:
         else:
             self.dictionary = dictionary
 
+        self.lat = self.getVar(
+            default = None,
+            dictKey = 'lat',
+            value = lat,
+            theDict = self.dictionary)
+        self.lng = self.getVar(
+            default = None,
+            dictKey = 'lng',
+            value = lng,
+            theDict = self.dictionary)
+        self.rad = self.getVar(
+            default = 5.0,
+            dictKey = 'rad',
+            value = rad,
+            theDict = self.dictionary)
+        self.sort = self.getVar(
+            default = 'dist',
+            dictKey = 'sort',
+            value = sort,
+            theDict = self.dictionary)
+        self.type = self.getVar(
+            default = 'all',
+            dictKey = 'type',
+            value = type,
+            theDict = self.dictionary)
+        self.apikey = self.getVar(
+            default = None,
+            dictKey = ['apikey', 'key'],
+            value = apikey,
+            theDict = self.dictionary)
 
-        self.lat = None  ## default value
-        if lat is not None:
-            self.lat = lat
-        else:
-            try:
-                self.lat = self.dictionary['lat']
-            exception:
-                pass
-
-        self.lng = None  ## default value
-        if lng is not None:
-            self.lng = lng
-        else:
-            try:
-                self.lng = self.dictionary['lng']
-            exception:
-                pass
-
-        self.rad = None
-        if lng is not None:
-            self.rad = rad
-        else:
-            try:
-                self.rad = self.dictionary['rad']
-            exception:
-                self.rad = 5.0 ## default value
-
-        self.sort = None
-        if sort is not None:
-            self.sort = sort
-        else:
-            try:
-                self.sort = self.dictionary['sort']
-            exception:
-                self.sort = 'dist' ## default value
-
-        self.type = None
-        if type is not None:
-            self.type = type
-        else:
-            try:
-                self.type = self.dictionary['type']
-            exception:
-                self.type = 'all' ## default value
-
-
-        self.type = None
-        if type is not None:
-            self.type = type
-        else:
-            try:
-                self.type = self.dictionary['type']
-            exception:
-                self.type = 'all'  ## default value
-
-        self.apikey = None ## default value
-        if apikey is not None:
-            self.apikey = apikey
-        else:
-            try:
-                self.apikey = self.dictionary['apikey']
-            exception:
-                try:
-                    self.apikey = self.dictionary['key']
-                exception:
-                    pass
-
+    def prt_all(self):
+        print(self.lat,
+            self.lng,
+            self.rad,
+            self.sort,
+            self.type,
+            self.apikey)
+        print(self.dictionary)
 
 details = '../details.json'
 details = json2py(details)
@@ -120,3 +117,7 @@ apikey = call['key']
 # with urllib.request.urlopen(url) as site:
 #     data = json.loads(site.read().decode())
 #     print(data)
+
+
+tk = tankerkoenig_api(rad = 2.5, dictionary = call)
+tk.prt_all()
