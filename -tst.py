@@ -1,24 +1,10 @@
-# import json
-# from module import json2py, py2json
+# tst_list = [None, 1, 2, 3, None, 'A', 'B', 'C', None]
+# print(tst_list)
 #
-# file = 'data.json'
-#
-#
-# data = {}
-# try:
-#     data = json2py(file)
-# except:
-#     data['name'] = 'JohnDoe'
-#     data['place'] = 'AnotherTown'
-#     data['time'] = 'later'
-#     data['var'] = 0
-#     data['nothing'] = None
-#
-#
-# data['var'] = data['var'] + 1
-#
-#
-# py2json(data, file)
+# [print(t if t is not None) for t in tst_list]
 
-x = input()
-print(x, type(x), int(x), type(int(x)))
+x = {'a': 'alpha', 'b': 'bertha', 'c': 'chrlie', 'd': 'donald'}
+
+y = '&'.join([i + '=' + x[i] for i in x])
+
+print(y)
