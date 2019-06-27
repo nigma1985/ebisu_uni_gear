@@ -109,7 +109,13 @@ class tankerkoenig_api:
         if options is None or len(options) < 1:
             return '{}/{}/{}'.format(url, format, file)
         elif isinstance(options, dict):
-            return '{}/{}/{}?{}'.format(url, format, file, '&'.join([o + '=' + options[o] for o in options]))   ########
+            temp = {}
+            for o in options:
+                if options[o] is None:
+                    pass
+                else:
+                    temp[o] = options[o]
+            return '{}/{}/{}?{}'.format(url, format, file, '&'.join([str(o) + '=' + str(temp[o]) for o in temp]))   ########
 
 
     def prt_all(self):
@@ -163,12 +169,96 @@ class tankerkoenig_api:
                 theDict = dictionary)
             }
 
-        return norm_dict
+        return tk.call(file = 'list.php', options = norm_dict)
 
-    def get_prices(self):
-        pass
-    def get_detail(self):
-        pass
+    def get_prices(self,
+        lat = None,
+        lng = None,
+        rad = None,
+        sort = None,
+        type = None,
+        apikey = None,
+        dictionary = {}):
+
+        norm_dict = {
+            'lat' : self.getVar(
+                default = self.lat,
+                dictKey = 'lat',
+                value = lat,
+                theDict = dictionary),
+            'lng' : self.getVar(
+                default = self.lng,
+                dictKey = 'lng',
+                value = lng,
+                theDict = dictionary),
+            'rad' : self.getVar(
+                default = self.rad,
+                dictKey = 'rad',
+                value = rad,
+                theDict = dictionary),
+            'sort' : self.getVar(
+                default = self.sort,
+                dictKey = 'sort',
+                value = sort,
+                theDict = dictionary),
+            'type' : self.getVar(
+                default = self.type,
+                dictKey = 'type',
+                value = type,
+                theDict = dictionary),
+            'apikey' : self.getVar(
+                default = self.apikey,
+                dictKey = ['apikey', 'key'],
+                value = apikey,
+                theDict = dictionary)
+            }
+
+        return tk.call(file = 'prices.php', options = norm_dict)
+
+    def get_detail(self,
+        lat = None,
+        lng = None,
+        rad = None,
+        sort = None,
+        type = None,
+        apikey = None,
+        dictionary = {}):
+
+        norm_dict = {
+            'lat' : self.getVar(
+                default = self.lat,
+                dictKey = 'lat',
+                value = lat,
+                theDict = dictionary),
+            'lng' : self.getVar(
+                default = self.lng,
+                dictKey = 'lng',
+                value = lng,
+                theDict = dictionary),
+            'rad' : self.getVar(
+                default = self.rad,
+                dictKey = 'rad',
+                value = rad,
+                theDict = dictionary),
+            'sort' : self.getVar(
+                default = self.sort,
+                dictKey = 'sort',
+                value = sort,
+                theDict = dictionary),
+            'type' : self.getVar(
+                default = self.type,
+                dictKey = 'type',
+                value = type,
+                theDict = dictionary),
+            'apikey' : self.getVar(
+                default = self.apikey,
+                dictKey = ['apikey', 'key'],
+                value = apikey,
+                theDict = dictionary)
+            }
+
+        return tk.call(file = 'detail.php', options = norm_dict)
+
     def get_complaint(self):
         pass
 
@@ -205,4 +295,5 @@ apikey = call['key']
 
 tk = tankerkoenig_api(rad = 2.5, dictionary = call)
 tk.prt_all()
-print(tk.get_list())
+# print('options: ', opt)
+print('url: ', tk.get_list())
