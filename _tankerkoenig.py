@@ -4,28 +4,30 @@ from module import json2py, py2json
 class tankerkoenig_api:
     # see documentation on:
     # https://creativecommons.tankerkoenig.de/
+
+    # create variable from multiple sources
     def getVar(self,
         default = None,
         dictKey = None,
         value = None,
         theDict = {}):
-        if theDict is None:
-            raise Exception("dictionary missing")
-        elif not isinstance(theDict, dict):
-            print(theDict, type(theDict), len(theDict))
-            raise Exception("dictionary is no dictionary")
+        if not isinstance(theDict, dict):
+            theDict = None
         elif len(theDict) < 1:
-            raise Exception("dictionary empty")
+            theDict = None
+        else:
+            pass
 
-        elif value is not None:
+        if value is not None:
             return value
-        elif isinstance(dictKey, (list, tuple)):
+
+        elif isinstance(dictKey, (list, tuple)) and theDict is not None:
             for entry in dictKey:
                 try:
                     return theDict[entry]
                 except:
                     pass
-        elif isinstance(dictKey, (int, float, str)):
+        elif isinstance(dictKey, (int, float, str)) and theDict is not None:
             try:
                 return theDict[dictKey]
             except:
