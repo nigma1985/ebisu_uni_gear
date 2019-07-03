@@ -296,4 +296,10 @@ apikey = call['key']
 tk = tankerkoenig_api(rad = 2.5, dictionary = call)
 tk.prt_all()
 # print('options: ', opt)
-print('url: ', tk.get_list())
+
+# example : Heide (25746), 54.194505, 9.100905
+
+myurl = tk.get_list(lat = 54.194505, lng = 9.100905)
+print('url: ', myurl)
+mytk = json2py(myurl)
+print('GET: ', mytk)
