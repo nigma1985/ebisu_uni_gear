@@ -1,4 +1,4 @@
-import urllib.request, json
+# import urllib.request, json
 from module import json2py, py2json
 
 class tankerkoenig_api:
@@ -303,3 +303,17 @@ myurl = tk.get_list(lat = 54.194505, lng = 9.100905)
 print('url: ', myurl)
 mytk = json2py(myurl)
 print('GET: ', mytk)
+
+for i in mytk:
+    if isinstance(mytk[i], dict):
+        for j in mytk[i]:
+            print(i, mytk[i], mytk[i][j])
+    elif isinstance(mytk[i], (tuple, list)):
+        for j in mytk[i]:
+            if isinstance(j, dict):
+                for k in j:
+                    print(i, k, j[k])
+            else:
+                print(i, j)
+    else:
+        print(i, mytk[i])

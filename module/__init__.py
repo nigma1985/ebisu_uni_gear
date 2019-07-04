@@ -1,4 +1,4 @@
-import os, json
+import os, json, urllib.request
 # import psycopg2
 # from psycopg2 import Error
 import re, shutil, codecs
@@ -165,9 +165,15 @@ def dmv(file = "", dest = "~/"):
     else:
         return mv(f = file, p = dest)
 
+
+
 def json2py(jsonPath):
-    with open(jsonPath, 'r') as f:
-        return json.load(f)
+    try:
+        with open(jsonPath, 'r') as f:
+            return json.load(f)
+    except:
+        with urllib.request.urlopen(jsonPath) as url:
+            return json.loads(url.read().decode())
 
 def py2json(data, jsonPath):
     with open(jsonPath, 'w') as outfile:
