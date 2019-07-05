@@ -210,39 +210,16 @@ class tankerkoenig_api:
         return tk.call(file = 'prices.php', options = norm_dict)
 
     def get_detail(self,
-        lat = None,
-        lng = None,
-        rad = None,
-        sort = None,
-        type = None,
-        apikey = None,
+        # Parameter	Bedeutung	Format
+        ids = [],       # ID der Tankstelle UUID if more are given only 1 random id is processed
+        apikey = None,  # apikey	Der persönliche API-Key	UUID
         dictionary = {}):
 
         norm_dict = {
-            'lat' : self.getVar(
-                default = self.lat,
-                dictKey = 'lat',
-                value = lat,
-                theDict = dictionary),
-            'lng' : self.getVar(
-                default = self.lng,
-                dictKey = 'lng',
-                value = lng,
-                theDict = dictionary),
-            'rad' : self.getVar(
-                default = self.rad,
-                dictKey = 'rad',
-                value = rad,
-                theDict = dictionary),
-            'sort' : self.getVar(
-                default = self.sort,
-                dictKey = 'sort',
-                value = sort,
-                theDict = dictionary),
-            'type' : self.getVar(
-                default = self.type,
-                dictKey = 'type',
-                value = type,
+            'id' : self.getVar(
+                default = self.ids,
+                dictKey = 'ids',
+                value = ids,
                 theDict = dictionary),
             'apikey' : self.getVar(
                 default = self.apikey,
@@ -250,6 +227,15 @@ class tankerkoenig_api:
                 value = apikey,
                 theDict = dictionary)
             }
+
+        if norm_dict['id'] is None:
+            return
+        elif isinstance(norm_dict['id'], (list, tuple)):
+            if len(norm_dict['id']) > 1:
+                norm_dict['id'] = sample(norm_dict['id'], 1)
+            norm_dict['id'] = ','.join(norm_dict['id'])
+        else:
+            pass
 
         return tk.call(file = 'detail.php', options = norm_dict)
 
@@ -303,10 +289,26 @@ tk.prt_all()
 # id : f37267d6-c8b2-480e-b9d0-1768c40fb68c
 # id : d17ba98f-2cb7-4a61-830e-05bdc65ba8c7
 # id : ba911f03-5026-4f38-8348-e8d76266cb24
-
+# id : 474e5046-deaf-4f9b-9a32-9797b778f047
+# id : 4429a7d9-fb2d-4c29-8cfe-2ca90323f9f8
+# id : 278130b1-e062-4a0f-80cc-19e486b4c024
+mids = [
+    '3a17ce41-4292-4c29-944e-a557416c695b',
+    'ee5bf10a-1c15-4fe4-9b48-12fb39758738',
+    '792fee57-1fc3-4457-9b5d-8d95626ddad4',
+    '3e25b5b1-f309-43a8-8a6d-b7baa463ff92',
+    '5f49cd98-8ccd-4978-af58-879af91f1331',
+    'd5c6a7e6-ce23-4650-a8d8-00f50dc13f7e',
+    'adaa7e08-4768-41ed-89c8-684f0218c997',
+    'f37267d6-c8b2-480e-b9d0-1768c40fb68c',
+    'd17ba98f-2cb7-4a61-830e-05bdc65ba8c7',
+    'ba911f03-5026-4f38-8348-e8d76266cb24',
+    '474e5046-deaf-4f9b-9a32-9797b778f047',
+    '4429a7d9-fb2d-4c29-8cfe-2ca90323f9f8',
+    '278130b1-e062-4a0f-80cc-19e486b4c024']
 
 # myurl = tk.get_list(lat = 54.194505, lng = 9.100905)
-myurl = tk.get_prices(ids = ['f37267d6-c8b2-480e-b9d0-1768c40fb68c', 'd17ba98f-2cb7-4a61-830e-05bdc65ba8c7'])
+myurl = tk.get_detail(ids = mids)
 print('url: ', myurl)
 mytk = json2py(myurl)
 print('GET: ', mytk)
