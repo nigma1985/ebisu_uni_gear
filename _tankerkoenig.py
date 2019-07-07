@@ -1,6 +1,6 @@
 # import urllib.request, json
 from module import json2py, py2json
-from random import sample
+from random import sample, random
 
 class tankerkoenig_api:
     # see documentation on:
@@ -44,6 +44,7 @@ class tankerkoenig_api:
         sort = 'dist',
         type = 'all',
         ids = [],
+        calls_per_minute = 1,
         apikey = None
         ):
         self.dictionary = None
@@ -87,6 +88,11 @@ class tankerkoenig_api:
             default = [],
             dictKey = 'ids',
             value = ids,
+            theDict = self.dictionary)
+        self.calls_per_minute = self.getVar(
+            default = 1,
+            dictKey = 'calls per minute',
+            value = calls_per_minute,
             theDict = self.dictionary)
         self.apikey = self.getVar(
             default = None,
@@ -242,6 +248,27 @@ class tankerkoenig_api:
     def get_complaint(self):
         pass
 
+    def rnd_call(self,
+        calls_per_minute = None,
+        apikey = None,  # apikey	Der persönliche API-Key	UUID
+        dictionary = {}):
+        calls_per_minute = self.getVar(
+            default = self.calls_per_minute,
+            dictKey = ['calls_per_minute', 'calls per minute'],
+            value = calls_per_minute,
+            theDict = dictionary)
+        norm_dict = {
+            'apikey' : self.getVar(
+                default = self.apikey,
+                dictKey = ['apikey', 'key'],
+                value = apikey,
+                theDict = dictionary)
+            }
+
+        if random() < 1 / calls_per_minute :
+
+
+
 details = '../details.json'
 details = json2py(details)
 
@@ -308,7 +335,8 @@ mids = [
     '278130b1-e062-4a0f-80cc-19e486b4c024']
 
 # myurl = tk.get_list(lat = 54.194505, lng = 9.100905)
-myurl = tk.get_detail(ids = mids)
+myurl = tk.get_prices(ids = mids)
+# myurl = tk.get_detail(ids = mids)
 print('url: ', myurl)
 mytk = json2py(myurl)
 print('GET: ', mytk)
