@@ -23,3 +23,26 @@ else:
 print(postgres, postgres['host'], postgres['password'])
 
 ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], user=postgres['user'], password=postgres['password'], dbname=postgres['database'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tankerkoenig2sql(
+    tankerkoenig_reply = moves,
+    db_name = ebisu,
+    # father_table = None, father_id = None,
+    table_name = 'tankerkoenig',
+    # addNames = [type],
+    # addValues = [True],
+    user = 'konrad.keck@live.de'
+    )

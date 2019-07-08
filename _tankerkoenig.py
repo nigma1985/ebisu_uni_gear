@@ -266,6 +266,7 @@ class tankerkoenig_api:
             }
 
         if random() < 1 / calls_per_minute :
+            pass
 
 
 
@@ -335,22 +336,34 @@ mids = [
     '278130b1-e062-4a0f-80cc-19e486b4c024']
 
 # myurl = tk.get_list(lat = 54.194505, lng = 9.100905)
-myurl = tk.get_prices(ids = mids)
+# myurl = tk.get_prices(ids = mids)
 # myurl = tk.get_detail(ids = mids)
-print('url: ', myurl)
-mytk = json2py(myurl)
-print('GET: ', mytk)
+# print('url: ', myurl)
+# mytk = json2py(myurl)
+# print('GET: ', mytk)
+#
+# for i in mytk:
+#     if isinstance(mytk[i], dict):
+#         for j in mytk[i]:
+#             print(i, mytk[i], mytk[i][j])
+#     elif isinstance(mytk[i], (tuple, list)):
+#         for j in mytk[i]:
+#             if isinstance(j, dict):
+#                 for k in j:
+#                     print(i, k, j[k])
+#             else:
+#                 print(i, j)
+#     else:
+#         print(i, mytk[i])
 
-for i in mytk:
-    if isinstance(mytk[i], dict):
-        for j in mytk[i]:
-            print(i, mytk[i], mytk[i][j])
-    elif isinstance(mytk[i], (tuple, list)):
-        for j in mytk[i]:
-            if isinstance(j, dict):
-                for k in j:
-                    print(i, k, j[k])
-            else:
-                print(i, j)
-    else:
-        print(i, mytk[i])
+# print(tk.get_list(lat = 54.194505, lng = 9.100905))
+# print(tk.get_prices(ids = mids))
+# print(tk.get_detail(ids = mids))'
+
+lst = json2py('../list.json')
+prcs = json2py('../prices.json')
+dtls = json2py('../detail.json')
+
+print('list.php', lst)
+print('prices.php', prcs)
+print('detail.php', dtls)
