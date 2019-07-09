@@ -1,4 +1,4 @@
-from module.connectPostgreSQL import database, dict2sqle
+from module.connectPostgreSQL import database, dict2sql
 
 # def dict2sql(
 #     dictionary = None, db_name = None,
@@ -90,7 +90,7 @@ from module.connectPostgreSQL import database, dict2sqle
 #     return id
 
 def tankerkoenig2sql(
-    tankerkoenig = None, db_name = None,
+    tankerkoenig_reply = None, db_name = None,
     # father_table = None, father_id = None,
     table_name = None,
     addNames = [], addValues = [],
@@ -99,7 +99,7 @@ def tankerkoenig2sql(
     if tankerkoenig_reply is None:
         raise Exception('missing json: tankerkoenig_reply')
     if not isinstance(tankerkoenig_reply, (list, tuple)):
-        raise Exception('tankerkoenig_reply is type {}. Only lists or tuples allowed.'.format(type(moves_activities)))
+        raise Exception('tankerkoenig_reply is type {}. Only lists or tuples allowed.'.format(type(tankerkoenig_reply)))
     if db_name is None:
         raise Exception('missing database')
     if table_name is None:

@@ -2,6 +2,14 @@
 from module import json2py, py2json
 from random import sample, random
 from module.connectPostgreSQL import database
+from module.import_tankerkoenig import tankerkoenig2sql
+
+from datetime import datetime
+from datetime import timedelta
+import time, sys
+
+
+
 
 
 details = '../details.json'
@@ -34,15 +42,42 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 
 
+##############################################
+#
+# if dict then key + value[key]
+#
+# add date
+#
 
 
+
+
+
+
+lst = '../list.json'
+prcs = '../prices.json'
+dtls = '../detail.json'
+
+path = lst
+tankerkoenig = json2py(jsonPath = path)
+
+if 'list.php' in path:
+    method = 'list.php'
+elif 'prices.php' in path:
+    method = 'prices.php'
+elif 'detail.php' in path:
+    method = 'detail.php'
+elif 'complaint.php' in path:
+    method = 'complaint.php' ## not implemented
+else:
+    method = None
 
 tankerkoenig2sql(
-    tankerkoenig_reply = moves,
+    tankerkoenig_reply = tankerkoenig,
     db_name = ebisu,
     # father_table = None, father_id = None,
     table_name = 'tankerkoenig',
-    # addNames = [type],
-    # addValues = [True],
-    user = 'konrad.keck@live.de'
+    addNames = ['method', 'utc_datetime'],
+    addValues = [method, datetime.utcnow()],
+    user = 'John.Doe@test.tst'
     )
