@@ -98,8 +98,8 @@ def tankerkoenig2sql(
 
     if tankerkoenig_reply is None:
         raise Exception('missing json: tankerkoenig_reply')
-    if not isinstance(tankerkoenig_reply, (list, tuple)):
-        raise Exception('tankerkoenig_reply is type {}. Only lists or tuples allowed.'.format(type(tankerkoenig_reply)))
+    if not isinstance(tankerkoenig_reply, dict):
+        raise Exception('tankerkoenig_reply is type {}. Only dictionaries allowed.'.format(type(tankerkoenig_reply)))
     if db_name is None:
         raise Exception('missing database')
     if table_name is None:
@@ -126,16 +126,16 @@ def tankerkoenig2sql(
     addNames.append('user')
     addValues.append(user)
 
-    for entry in tankerkoenig_reply:
-        # print(' --','dictionary =', entry)
-        # print(' --','db_name =', db_name)
-        # print(' --','table_name =', table_name)
-        # print(' --','addNames =', addNames)
-        # print(' --','addValues =', addValues)
+    # for entry in tankerkoenig_reply:
+    #     print(' --','dictionary =', entry)
+    #     print(' --','db_name =', db_name)
+    #     print(' --','table_name =', table_name)
+    #     print(' --','addNames =', addNames)
+    #     print(' --','addValues =', addValues)
 
-        dict2sql(
-            dictionary = entry,
-            db_name = db_name,
-            table_name = table_name,
-            addNames = addNames,
-            addValues = addValues)
+    dict2sql(
+        dictionary = tankerkoenig_reply,
+        db_name = db_name,
+        table_name = table_name,
+        addNames = addNames,
+        addValues = addValues)

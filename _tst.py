@@ -24,11 +24,11 @@ for d in details:
         pass
 
 if len(postgres) > 0:
-    postgres = postgres[0]
+    postgres = postgres[1]
 else:
     pass
 
-print(postgres, postgres['host'], postgres['password'])
+# print(postgres, postgres['host'], postgres['password'])
 
 ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], user=postgres['user'], password=postgres['password'], dbname=postgres['database'])
 
@@ -42,13 +42,6 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 
 
-##############################################
-#
-# if dict then key + value[key]
-#
-# add date
-#
-
 
 
 
@@ -58,7 +51,7 @@ lst = '../list.json'
 prcs = '../prices.json'
 dtls = '../detail.json'
 
-path = lst
+path = dtls
 tankerkoenig = json2py(jsonPath = path)
 
 if 'list.php' in path:
@@ -81,3 +74,6 @@ tankerkoenig2sql(
     addValues = [method, datetime.utcnow()],
     user = 'John.Doe@test.tst'
     )
+
+
+# print(type(ebisu.getSQL('SELECT COUNT(*) FROM public."SuperStore";')))
