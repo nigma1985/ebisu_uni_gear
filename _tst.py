@@ -64,33 +64,33 @@ if 'list.' in path:
             result['results'] = tankerkoenig[i]
         else:
             result[i] = tankerkoenig[i]
-#
-# elif 'prices.' in path:
-#     result['method'] = 'prices.php'
-#     tmp_list = []
-#     for i in tankerkoenig:
-#         if i == 'prices':
-#             # result['stations'] = tankerkoenig[i]
-#             for j in tankerkoenig[i]:
-#                 tankerkoenig[i][j]['id'] = j
-#                 tmp_list.append(tankerkoenig[i][j])
-#                 # print(j, tankerkoenig[i][j])
-#             result['results'] = tmp_list
-#         else:
-#             result[i] = tankerkoenig[i]
-#
-# elif 'detail.' in path:
-#     # print('details')
-#     result['method'] = 'detail.php'
-#     for i in tankerkoenig:
-#         if i == 'station':
-#             result['results'] = [tankerkoenig[i]]
-#         else:
-#             result[i] = tankerkoenig[i]
-# elif 'complaint.php' in path:
-#     result['method'] = 'complaint.php' ## not implemented
-# else:
-#     result['method'] = None
+
+elif 'prices.' in path:
+    result['method'] = 'prices.php'
+    tmp_list = []
+    for i in tankerkoenig:
+        if i == 'prices':
+            # result['stations'] = tankerkoenig[i]
+            for j in tankerkoenig[i]:
+                tankerkoenig[i][j]['id'] = j
+                tmp_list.append(tankerkoenig[i][j])
+                # print(j, tankerkoenig[i][j])
+            result['results'] = tmp_list
+        else:
+            result[i] = tankerkoenig[i]
+
+elif 'detail.' in path:
+    # print('details')
+    result['method'] = 'detail.php'
+    for i in tankerkoenig:
+        if i == 'station':
+            result['results'] = [tankerkoenig[i]]
+        else:
+            result[i] = tankerkoenig[i]
+elif 'complaint.php' in path:
+    result['method'] = 'complaint.php' ## not implemented
+else:
+    result['method'] = None
 
 print('tankerkoenig', len(tankerkoenig), tankerkoenig)
 for i in tankerkoenig:
@@ -104,23 +104,26 @@ for i in result:
 
 
 def sub_table(super_table = {}, replace = '', find = ()):
-    print(replace, find, super_table)
-    for line in range(len(super_table) - 1):
+    # print(replace, find, len(super_table), super_table)
+    for line in range(len(super_table)):
         super_table[line][replace] = {}
-        for key in super_table[line]:
+        for key in [k for k in super_table[line]]:
             if key in find:
+                # print('found', key)
                 super_table[line][replace][key] = super_table[line][key]
                 del super_table[line][key]
             else:
+                # print('not found', key)
                 pass
-        print(line, super_table[line])
+        # print(line, super_table[line])
         # super_table[line] =
     return super_table
         # print(line, super_table[line])
 
-sub_table(super_table = result['results'], replace = 'key', find = ('dist', 'diesel', 'e5', 'e10', 'isOpen'))
+result['results'] = sub_table(super_table = result['results'], replace = 'station_values', find = ('dist', 'diesel', 'e5', 'e10', 'isOpen', 'status'))
+result['results'] = sub_table(super_table = result['results'], replace = 'station_location', find = ('id', 'name', 'brand', 'street', 'place', 'lat', 'lng', 'houseNumber', 'postCode', 'wholeday'))
 
-
+print(result)
 
 
 
@@ -151,15 +154,15 @@ sub_table(super_table = result['results'], replace = 'key', find = ('dist', 'die
 # prcs: ok, licence, data, prices [dict]
 # dtls: ok, licence, data, status, station [dict]
 
-# tankerkoenig2sql(
-#     tankerkoenig_reply = result,
-#     db_name = ebisu,
-#     # father_table = None, father_id = None,
-#     table_name = 'tankerkoenig',
-#     addNames = ['utc_datetime'],
-#     addValues = [datetime.utcnow()],
-#     user = 'John.Doe@test.tst'
-#     )
+tankerkoenig2sql(
+    tankerkoenig_reply = result,
+    db_name = ebisu,
+    # father_table = None, father_id = None,
+    table_name = 'tankerkoenig',
+    addNames = ['utc_datetime'],
+    addValues = [datetime.utcnow()],
+    user = 'John.Doe@test.tst'
+    )
 #
 #
 # # print(type(ebisu.getSQL('SELECT COUNT(*) FROM public."SuperStore";')))
