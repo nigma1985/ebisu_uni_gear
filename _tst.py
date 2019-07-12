@@ -102,12 +102,46 @@ for i in result:
 
 # print(result['results'][1])
 
-for k in result['results']:
-    k['situation'] = []
-    tmp_list = {}
-    #     tmp_list[k] = result['results'][k]
-    #     del result['results'][k]
-    # result['results']['situation'].append(tmp_list)
+
+def sub_table(super_table = {}, replace = '', find = ()):
+    print(replace, find, super_table)
+    for line in range(len(super_table) - 1):
+        super_table[line][replace] = {}
+        for key in super_table[line]:
+            if key in find:
+                super_table[line][replace][key] = super_table[line][key]
+                del super_table[line][key]
+            else:
+                pass
+        print(line, super_table[line])
+        # super_table[line] =
+    return super_table
+        # print(line, super_table[line])
+
+sub_table(super_table = result['results'], replace = 'key', find = ('dist', 'diesel', 'e5', 'e10', 'isOpen'))
+
+
+
+
+
+# for item in result['results']:
+#     item['situation'] = []
+#     for entry in item:
+#         station_details = {}
+#         station_values = {}
+#         if entry in ('id', 'name', 'brand', 'street', 'place', 'lat', 'lng', 'houseNumber', 'postCode'):
+#             station_details[entry] = item[entry]
+#         elif entry in ('dist', 'diesel', 'e5', 'e10', 'isOpen'):
+#             station_values[entry] = item[entry]
+#             del entry
+#         else:
+#             pass
+#
+#         item['station details'] = station_details
+#         item['station values'] = station_values
+#     #     tmp_list[k] = result['results'][k]
+#     #     del result['results'][k]
+#     # result['results']['situation'].append(tmp_list)
 #
 # print('result', len(result), result)
 # for i in result:
