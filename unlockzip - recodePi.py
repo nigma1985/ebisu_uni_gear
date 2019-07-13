@@ -216,7 +216,7 @@ def brute_unzip(file = None, p = 0, resume = None):
                 nmin = zipper.perf['n/sec'] * 60
                 # print(nmin * 3)
 
-                if randint(1,10) == 1:
+                if randint(1,5) == 1:
                     data['success'] = False
                     data['password number'] = p
                     data['password'] = zipper.password

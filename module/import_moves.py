@@ -79,24 +79,13 @@ def dict2sql(
 
     ## for left join (1:n)
     for sub in subTable:
-        if sub in ('summary', 'segments', 'activities', 'place', 'trackPoints'):
-            # print('!!', sub, type(dictionary[sub]))
-            for d in dictionary[sub]:
-                # print(' -3', 'dictionary =', d)
-                # print(' -3', 'db_name =', db_name)
-                # print(' -3', 'table_name =', sub)
-                # print(' -3', 'addNames =', [table_name])
-                # print(' -3', 'addValues =', [id])
-                dict2sql(
-                    dictionary = d,
-                    db_name = db_name,
-                    table_name = sub,
-                    addNames = [table_name],
-                    addValues = [id])
-        else:
-            # print(sub, type(dictionary[sub]))
-            for x in dictionary[sub]:
-                print(' ', type(x), ' : ', x)
+        for d in dictionary[sub]:
+            dict2sql(
+                dictionary = d,
+                db_name = db_name,
+                table_name = sub,
+                addNames = [table_name],
+                addValues = [id])
 
     return id
 
