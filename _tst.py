@@ -51,7 +51,7 @@ lst = '../list.json'
 prcs = '../prices.json'
 dtls = '../detail.json'
 
-path = lst
+path = dtls
 tankerkoenig = json2py(jsonPath = path)
 
 # print(path, '.php' in path)
@@ -121,38 +121,10 @@ def sub_table(super_table = {}, replace = '', find = ()):
         # print(line, super_table[line])
 
 result['results'] = sub_table(super_table = result['results'], replace = 'station_values', find = ('dist', 'diesel', 'e5', 'e10', 'isOpen', 'status'))
-result['results'] = sub_table(super_table = result['results'], replace = 'station_location', find = ('id', 'name', 'brand', 'street', 'place', 'lat', 'lng', 'houseNumber', 'postCode', 'wholeday'))
+result['results'] = sub_table(super_table = result['results'], replace = 'station_location', find = ('id', 'name', 'brand', 'street', 'place', 'lat', 'lng', 'houseNumber', 'postCode', 'wholeDay'))
 
 print(result)
 
-
-
-# for item in result['results']:
-#     item['situation'] = []
-#     for entry in item:
-#         station_details = {}
-#         station_values = {}
-#         if entry in ('id', 'name', 'brand', 'street', 'place', 'lat', 'lng', 'houseNumber', 'postCode'):
-#             station_details[entry] = item[entry]
-#         elif entry in ('dist', 'diesel', 'e5', 'e10', 'isOpen'):
-#             station_values[entry] = item[entry]
-#             del entry
-#         else:
-#             pass
-#
-#         item['station details'] = station_details
-#         item['station values'] = station_values
-#     #     tmp_list[k] = result['results'][k]
-#     #     del result['results'][k]
-#     # result['results']['situation'].append(tmp_list)
-#
-# print('result', len(result), result)
-# for i in result:
-#     print(type(result[i]), i, result[i])
-
-# lst: ok, licence, data, status, stations [list]
-# prcs: ok, licence, data, prices [dict]
-# dtls: ok, licence, data, status, station [dict]
 
 tankerkoenig2sql(
     tankerkoenig_reply = result,

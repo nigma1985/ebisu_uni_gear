@@ -98,7 +98,7 @@ def getQuery(
             '''.format(table) + ''',
             '''.join(result) + '''
             ;'''
-        print(result)
+        # print(result)
         return cursor.execute(result)
 
     ## create query to update set: update all names = values, WHERE names = values
