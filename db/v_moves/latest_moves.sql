@@ -27,3 +27,38 @@ WHERE act.segments IN (
 		GROUP BY mova."user", mova.date
 		)
 );
+
+
+
+
+
+
+-----------------------
+
+WITH tab AS (
+SELECT
+	m.id AS moves_id,
+	m.lastupdate::TIMESTAMP AS moves_lastupdate,
+	m.user AS "user",
+	s.id AS segments_id,
+	s.lastupdate::TIMESTAMP AS segments_lastupdate,
+	a.*
+FROM
+	moves AS m
+LEFT JOIN
+	segments AS s ON (s.moves::integer = m.id)
+LEFT JOIN
+	activities AS a ON (a.segments::integer = s.id)
+-- ORDER BY
+	-- m.id ASC
+)
+
+SELECT
+	*
+FROM
+	tab
+WHERE
+	tab.id IS NOT NULL
+LIMIT
+	100
+;
