@@ -1,6 +1,6 @@
-DROP VIEW IF EXISTS v_coordinates CASCADE;
+DROP VIEW IF EXISTS v_coordinates_tankerkoenig CASCADE;
 
-CREATE VIEW v_coordinates AS
+CREATE VIEW v_coordinates_tankerkoenig AS
 (SELECT
 	loca.lat AS lat,
 	loca.lng AS lng,
