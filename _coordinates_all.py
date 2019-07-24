@@ -39,6 +39,14 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 
 # Find all views with name "v_coordinates_*"
+
+# SELECT 
+# 	table_name AS nm
+# FROM
+# 	INFORMATION_SCHEMA.views AS v
+# WHERE
+#     v.table_name LIKE 'v_coordinates%' ;
+
 # random call view from database
 # get 1000 rows from view
 # summerize priority values
