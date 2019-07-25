@@ -39,15 +39,12 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 
 # Find all views with name "v_coordinates_*"
-
-print(ebisu.getViews())
-# print(ebisu.getSQL(result))
-# SELECT
-# 	table_name AS nm
-# FROM
-# 	INFORMATION_SCHEMA.views AS v
-# WHERE
-#     v.table_name LIKE 'v_coordinates%' ;
+xxx = []
+for y in ebisu.getViews():
+    # print(y)
+    if 'v_coordinates' in y:
+        xxx.append(y)
+print(xxx)
 
 # random call view from database
 # get 1000 rows from view
