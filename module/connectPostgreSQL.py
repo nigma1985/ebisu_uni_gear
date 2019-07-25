@@ -431,6 +431,14 @@ class database:
                 connection.close()
                 print("PostgreSQL connection is closed")
 
+    def getViews(self):
+        return [i[0] for i in self.getSQL('''
+            SELECT
+                table_name AS nm
+            FROM
+                INFORMATION_SCHEMA.views AS v
+            ;''')]
+
 def dict2sql(
     dictionary = None, db_name = None,
     # father_table = None, father_id = None,

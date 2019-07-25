@@ -40,7 +40,9 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 # Find all views with name "v_coordinates_*"
 
-# SELECT 
+print(ebisu.getViews())
+# print(ebisu.getSQL(result))
+# SELECT
 # 	table_name AS nm
 # FROM
 # 	INFORMATION_SCHEMA.views AS v
