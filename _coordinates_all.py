@@ -46,7 +46,18 @@ for y in ebisu.getViews():
         xxx.append(y)
 print(xxx)
 
+
 # random call view from database
+xxx = sample(xxx, 1)[0]
+print(xxx)
+
 # get 1000 rows from view
+sql = ebisu.getSQL('''SELECT * FROM {}'''.format(xxx))
+try:
+    sql = sample(sql, 100)
+except:
+    pass
+print(sql)
+
 # summerize priority values
 # send lat, long, priority and date with view name to table
