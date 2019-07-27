@@ -2,12 +2,15 @@ DROP VIEW IF EXISTS v_coordinates_moves_location CASCADE;
 
 CREATE VIEW v_coordinates_moves_location AS
 (SELECT
-	dta.lat,
-	dta.lon,
-	MAX(dta.endtime) AS "timestamp",
-	dta."user" ,
-	SUM(dta.duration) AS duration,
-	COUNT(dta.*) AS n
+	dta.lat AS latitude,
+	dta.lon AS longitude,
+	MAX(dta.endtime) AS last_visit,
+	dta."user" AS "user",
+	CASE
+		WHEN SUM(dta.duration) IS NOT NULL OR SUM(dta.duration) > 0
+		THEN SUM(dta.duration)
+		ELSE 1/(24*60*60)
+		END * COUNT(dta.*) AS prio
 FROM (
 	SELECT
 		lc.lat,

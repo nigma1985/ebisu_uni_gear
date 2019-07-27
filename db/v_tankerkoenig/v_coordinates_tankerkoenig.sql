@@ -2,12 +2,11 @@ DROP VIEW IF EXISTS v_coordinates_tankerkoenig CASCADE;
 
 CREATE VIEW v_coordinates_tankerkoenig AS
 (SELECT
-	loca.lat AS lat,
-	loca.lng AS lng,
-	COUNT(DISTINCT res.tankerkoenig) AS n,
- 	MAX(tk.utc_datetime) AS utc_datetime,
- 	tk."user" AS "user",
-	'tankerkoenig' AS "source"
+	loca.lat AS latitude,
+	loca.lng AS longitude,
+	COUNT(DISTINCT res.tankerkoenig) AS prio,
+ 	MAX(tk.utc_datetime) AS last_visit,
+ 	tk."user" AS "user"
 FROM
 	public.results AS res
 LEFT JOIN
