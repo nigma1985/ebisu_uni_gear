@@ -39,25 +39,48 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 
 
 # Find all views with name "v_coordinates_*"
-xxx = []
-for y in ebisu.getViews():
+table_name = []
+for table in ebisu.getViews():
     # print(y)
-    if 'v_coordinates' in y:
-        xxx.append(y)
-print(xxx)
+    if 'v_coordinates_' in table:
+        table_name.append(table)
+print(table_name)
 
 
 # random call view from database
-xxx = sample(xxx, 1)[0]
-print(xxx)
+table_name = sample(table_name, 1)[0]
+print(table_name)
 
 # get 1000 rows from view
-sql = ebisu.getSQL('''SELECT * FROM {}'''.format(xxx))
+sql_data = ebisu.getSQL('''
+    SELECT
+        a.latitude,
+        a.longitude,
+        a.prio::FLOAT / (SELECT MAX(b.prio) FROM {} AS b WHERE a."user" = b."user"),
+        a.last_visit,
+        a."user"
+    FROM
+        {} AS a'''.format(table_name, table_name))
 try:
-    sql = sample(sql, 100)
+    sql_data = sample(sql_data, 1000)
 except:
     pass
-print(sql)
+print(sql_data)
 
 # summerize priority values
+## done
+data = []
+for row in sql_data:
+    data.append(
+        {
+            'latitude': row[0],
+            'longitude': row[1],
+            'prio': row[2],
+            'last_visit': row[3],
+            'user': row[4],
+            'table': table_name[14:],
+        }
+    )
+
+print(data)
 # send lat, long, priority and date with view name to table
