@@ -1,7 +1,7 @@
 import glob, os, sys
 from zipfile import ZipFile
 from pathlib import Path
-from module.connectPostgreSQL import database
+from module.connectPostgreSQL import database, dict2sql
 from module.import_tankerkoenig import tankerkoenig2sql
 from module import json2py, py2json
 
@@ -69,18 +69,40 @@ print(sql_data)
 
 # summerize priority values
 ## done
-data = []
+# data = []
+# for row in sql_data:
+#     data.append(
+#         {
+#             'latitude': row[0],
+#             'longitude': row[1],
+#             'prio': row[2],
+#             'last_visit': row[3],
+#             'user': row[4],
+#             'table': table_name[14:],
+#         }
+#     )
+#
+# print(data)
+# # send lat, long, priority and date with view name to table
+#
+# dict2sql(
+#     dictionary = data,
+#     db_name = ebisu,
+#     table_name = 'tab_coordinates_all'
+#     )
+
 for row in sql_data:
-    data.append(
-        {
+    dict2sql(
+        dictionary = {
             'latitude': row[0],
             'longitude': row[1],
             'prio': row[2],
             'last_visit': row[3],
             'user': row[4],
             'table': table_name[14:],
-        }
-    )
+            },
+        db_name = ebisu,
+        table_name = 'tab_coordinates_all'
+        )
 
-print(data)
 # send lat, long, priority and date with view name to table
