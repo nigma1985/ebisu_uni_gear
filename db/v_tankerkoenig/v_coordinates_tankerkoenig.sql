@@ -5,7 +5,7 @@ CREATE VIEW v_coordinates_tankerkoenig AS
 	loca.lat AS latitude,
 	loca.lng AS longitude,
 	COUNT(DISTINCT res.tankerkoenig) AS prio,
- 	MAX(tk.utc_datetime) AS last_visit,
+ 	MAX(tk.utc_datetime)::timestamptz AS last_visit,
  	tk."user" AS "user"
 FROM
 	public.results AS res
