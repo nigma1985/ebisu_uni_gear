@@ -101,6 +101,27 @@ def getQuery(
         # print(result)
         return cursor.execute(result)
 
+    ###########################################################################
+    ## create query to add columns to table (if not exists)
+    elif query == 'add with types columns':
+        result = []
+
+        bal = chkBalance(listNames, listValues)
+        if bal:
+            raise Exception('can\'t add columns - ', bal)
+
+        for n in range( len(listNames) ):
+            result.append('ADD COLUMN IF NOT EXISTS \"{}\" {}'.format(
+                listNames[n],
+                'TEXT' if listValues[n] is None else listValues[n]))
+        result = '''ALTER TABLE IF EXISTS {}
+            '''.format(table) + ''',
+            '''.join(result) + '''
+            ;'''
+        # print(result)
+        return cursor.execute(result)
+    ###########################################################################
+
     ## create query to update set: update all names = values, WHERE names = values
     elif query == 'update set':
         bal = chkBalance(listNames, listValues)

@@ -31,3 +31,8 @@ else:
 # print(postgres, postgres['host'], postgres['password'])
 
 ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], user=postgres['user'], password=postgres['password'], dbname=postgres['database'])
+
+
+liste = ['Ich', 'Du', 'Er', 'Sie', 'Es', None]
+# print([i.lower() for i in liste])
+print([i.upper() if i is not None else None for i in liste])
