@@ -165,7 +165,17 @@ def dmv(file = "", dest = "~/"):
     else:
         return mv(f = file, p = dest)
 
-
+def create_file(path):
+    file = None
+    try:
+        file = open(path)
+        file.close()
+    except:
+        with open(path, 'w') as file:
+            data = ''
+            file.write(data)
+    # finally:
+        # file.close()
 
 def json2py(jsonPath):
     try:
@@ -176,8 +186,13 @@ def json2py(jsonPath):
             return json.loads(url.read().decode())
 
 def py2json(data, jsonPath):
-    with open(jsonPath, 'w') as outfile:
-        json.dump(data, outfile)
+    try:
+        with open(jsonPath, 'w') as outfile:
+            json.dump(data, outfile)
+    except:
+        create_file(jsonPath)
+        with open(jsonPath, 'w') as outfile:
+            json.dump(data, outfile)
 
 def removeFile(file):
     os.remove(file)

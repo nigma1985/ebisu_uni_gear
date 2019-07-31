@@ -40,10 +40,26 @@ if json_line is None:
 else:
     details_dict = details_json[json_line]
 
-print(details_dict)
+# print(details_dict)
 
 if details_dict['nextbike'] < 1:
     print('run')
+
+    save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
+    str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
+
+    try:
+        legacy = json2py(save_file)
+    except:
+        legacy = []
+
+    legacy.append({
+        'datetime_utc': str_dtime,
+        'response': json2py(api_url)
+        })
+
+    py2json(legacy, save_file)
+    details_dict['nextbike'] = randint(10, 20)
 else:
     print('sleep', details_dict['nextbike'])
     details_dict['nextbike'] = details_dict['nextbike'] - 1
