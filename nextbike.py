@@ -6,6 +6,7 @@ from pathlib import Path
 from datetime import datetime
 from datetime import timedelta
 import time
+current = datetime.now()
 
 from random import sample, randint, random
 
@@ -15,13 +16,19 @@ from random import sample, randint, random
 import module.read.pi as rpi
 from module import json2py, py2json
 
-# os.chdir("/home/pi/ebisu_uni_gear/")
 os.chdir("../ebisu_uni_gear/")
+save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
+str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
+details_file = '../details.json'
+
+# details_file = 'details.json'
+# save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.py'
+# str_dtime = current.strftime("%Y-%m-%d %H:%M:%S%z")
 
 def search_dict_in_list(input_list = [], search = None):
     for line in range(len(input_list)):
         try:
-            if input_list[line][search]:
+            if isinstance(input_list[line][search], int):
                 return line
             else:
                 pass
@@ -30,9 +37,8 @@ def search_dict_in_list(input_list = [], search = None):
     return None
 
 api_url = 'https://api.nextbike.net/maps/nextbike-live.json'
-current = datetime.now()
 
-details_file = '../details.json'
+
 details_json = json2py(details_file)
 json_line = search_dict_in_list(input_list = details_json, search = 'nextbike')
 if json_line is None:
@@ -40,13 +46,9 @@ if json_line is None:
 else:
     details_dict = details_json[json_line]
 
-# print(details_dict)
 
 if details_dict['nextbike'] < 1:
     print('run')
-
-    save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
-    str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
 
     try:
         legacy = json2py(save_file)
@@ -60,12 +62,14 @@ if details_dict['nextbike'] < 1:
 
     py2json(legacy, save_file)
     details_dict['nextbike'] = randint(10, 20)
+
 else:
-    print('sleep', details_dict['nextbike'])
     details_dict['nextbike'] = details_dict['nextbike'] - 1
+
 
 try:
     details_json[json_line] = details_dict
 except:
     details_json.append(details_dict)
+
 py2json(details_json, details_file)
