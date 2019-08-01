@@ -24,7 +24,7 @@ from module import json2py, py2json
 
 details_file = 'details.json'
 
-save_file = 'nextbike_' + current.strftime('%Y-%m-%d_%H-%M-%S%z') + '.py'
+save_file = 'nextbike/nextbike_' + current.strftime('%Y-%m-%d_%H-%M-%S%z') + '.py'
 # save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.py'
 # str_dtime = current.strftime("%Y-%m-%d %H:%M:%S%z")
 
