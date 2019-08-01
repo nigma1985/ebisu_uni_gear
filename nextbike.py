@@ -1,4 +1,4 @@
-import time, glob, os, sys, urllib, shutil, strftime
+import time, glob, os, sys, urllib, shutil
 from zipfile import ZipFile
 from pathlib import Path
 # import module.files as fls
@@ -23,8 +23,6 @@ from module import json2py, py2json
 # details_file = '../details.json'
 
 details_file = 'details.json'
-
-strftime('%Y-%m-%d-%H:%M:%S')
 
 save_file = 'nextbike_' + current.strftime('%Y-%m-%d_%H-%M-%S%z') + '.py'
 # save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.py'
