@@ -1,4 +1,4 @@
-import time, glob, os, sys
+import time, glob, os, sys, urllib, shutil
 from zipfile import ZipFile
 from pathlib import Path
 # import module.files as fls
@@ -16,12 +16,14 @@ from random import sample, randint, random
 import module.read.pi as rpi
 from module import json2py, py2json
 
-os.chdir("../ebisu_uni_gear/")
-save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
-str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
-details_file = '../details.json'
+# os.chdir("../ebisu_uni_gear/")
+# # save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
+# # str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
+# save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d%H%M%S}'+'UTC.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
+# details_file = '../details.json'
 
-# details_file = 'details.json'
+details_file = 'details.json'
+save_file = 'nextbike_'+f'{current:%Y-%m-%d_%H-%M-%S%z}'+'.py'
 # save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.py'
 # str_dtime = current.strftime("%Y-%m-%d %H:%M:%S%z")
 
@@ -50,17 +52,22 @@ else:
 if details_dict['nextbike'] < 1:
     print('run')
 
-    try:
-        legacy = json2py(save_file)
-    except:
-        legacy = []
-
-    legacy.append({
-        'datetime_utc': str_dtime,
-        'response': json2py(api_url)
-        })
-
-    py2json(legacy, save_file)
+    # api_file = urllib.URLopener()
+    urllib.request.urlretrieve(api_url, save_file)
+    #
+    # try:
+    #     legacy = json2py(save_file)
+    # except:
+    #     legacy = []
+    #
+    # legacy.append({
+    #     'datetime_utc': str_dtime,
+    #     # 'response': {} #
+    #     'response': json2py(api_url)
+    #     })
+    #
+    # py2json(legacy, save_file)
+    # details_dict['nextbike'] = randint(1, 2)
     details_dict['nextbike'] = randint(10, 20)
 
 else:
