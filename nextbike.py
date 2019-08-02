@@ -19,13 +19,13 @@ from module import json2py, py2json
 # os.chdir("../ebisu_uni_gear/")
 # # save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d}'+'.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
 # # str_dtime = f'{current:%Y-%m-%d %H:%M:%S%z}'
-# save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d%H%M%S}'+'UTC.py' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
+# save_file = '../nextbike/nextbike_'+f'{current:%Y%m%d%H%M%S}'+'UTC.json' #'../nextbike/{%Y-%m-%d %H:%M:%S%z}'.format(current)
 # details_file = '../details.json'
 
 details_file = 'details.json'
 
-save_file = 'nextbike/nextbike_' + current.strftime('%Y-%m-%d_%H-%M-%S%z') + '.py'
-# save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.py'
+save_file = 'nextbike/nextbike_' + current.strftime('%Y-%m-%d_%H-%M-%S%z') + '.json'
+# save_file = 'nextbike/nextbike_'+ current.strftime("%Y%m%d") +'.json'
 # str_dtime = current.strftime("%Y-%m-%d %H:%M:%S%z")
 
 def search_dict_in_list(input_list = [], search = None):
