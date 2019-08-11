@@ -29,7 +29,7 @@ ram = rpi.virtual_memory()
 
 if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (2/3*100)):
     pass
-elif random() < 1/60:
+elif random() < 1/6:
     import coordinates_all
 else:
     pass
