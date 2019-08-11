@@ -1,6 +1,8 @@
-import glob, os, sys
+import glob, os, sys, psycopg2
 from zipfile import ZipFile
 from pathlib import Path
+from psycopg2 import Error
+
 from module.connectPostgreSQL import database, dict2sql, getQuery
 from module.import_tankerkoenig import tankerkoenig2sql
 from module import json2py, py2json
@@ -23,9 +25,12 @@ details = json2py(details)
 print('details', details)
 postgres = []
 for d in details:
-    if d['provider'] == 'PostgreSQL' and d['host'] == 'localhost':
-        postgres.append(d)
-    else:
+    try:
+        if d['provider'] == 'PostgreSQL' and d['host'] == 'localhost':
+            postgres.append(d)
+        else:
+            pass
+    except:
         pass
 
 if len(postgres) > 0:
@@ -60,9 +65,11 @@ def newRow(database = None, schema_name = 'public', table_name = None, listNames
 
     for i in range( len(listNames) ):
         names.append(listNames[i].lower())
-        if listNames[i].lower() in listValues:
+        if listNames[i].lower() in listWhere:
             where[listNames[i].lower()] = listValues[i]
+        print(i, listNames[i].lower(), listValues[i])
     values = []
+    print(where)
 
     try:
         ## connect to DB
@@ -89,9 +96,11 @@ def newRow(database = None, schema_name = 'public', table_name = None, listNames
             query = 'get ID', option = 'include NULL',
             table_name = table,
             listNames = [key for key in where], ### only selected columns
-            listValues = [entry for key, entry in where])
+            listValues = [where[key] for key in where])
         query = cursor.fetchall()
         id = query[0][0]
+
+        # print([entry for key, entry in where])
 
         if id is not None:
             getQuery(
@@ -176,7 +185,7 @@ ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], use
 table_name = []
 for table in ebisu.getViews():
     # print(y)
-    if 'v_coordinates_' in table:
+    if 'v_coordinates_' in table and 'v_coordinates_all' not in table:
         table_name.append(table)
 print(table_name)
 
@@ -227,26 +236,26 @@ print(sql_data)
 
 for row in sql_data:
     newRow(
-        database = None,
+        database = ebisu,
         schema_name = 'public',
-        table_name = None,
-        listNames = [],
-        listValues = [],
-        listWhere = ['latitude', 'longitude', 'user', 'table'], 
-        listTypes = ['FLOAT', 'FLOAT', 'FLOAT', 'TIMESTAMPTZ', 'TEXT', None])
-    dict2sql(
-        dictionary = {
-            'latitude': row[0],
-            'longitude': row[1],
-            'prio': row[2],
-            'last_visit': row[3],
-            'user': row[4],
-            'table': table_name[14:],
-            },
-        db_name = ebisu,
         table_name = 'tab_coordinates_all',
-        listTypes = ,
-        listWhere =
-        )
+        listNames = ['latitude', 'longitude', 'prio', 'last_visit', 'user', 'table'],
+        listValues = [row[0], row[1], row[2], row[3], row[4], table_name[14:]],
+        listWhere = ['latitude', 'longitude', 'user', 'table'],
+        listTypes = ['FLOAT', 'FLOAT', 'FLOAT', 'TIMESTAMPTZ', 'TEXT', None])
+    # dict2sql(
+    #     dictionary = {
+    #         'latitude': row[0],
+    #         'longitude': row[1],
+    #         'prio': row[2],
+    #         'last_visit': row[3],
+    #         'user': row[4],
+    #         'table': table_name[14:],
+    #         },
+    #     db_name = ebisu,
+    #     table_name = 'tab_coordinates_all',
+    #     listTypes = ,
+    #     listWhere =
+        # )
 
 # send lat, long, priority and date with view name to table

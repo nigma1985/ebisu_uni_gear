@@ -101,8 +101,9 @@ def getQuery(
         # print(result)
         return cursor.execute(result)
 
-    ###########################################################################
+    ############################################################################
     ## create query to add columns to table (if not exists)
+    # whereNames = [], whereValues = []
     elif query == 'add with types columns':
         result = []
 
@@ -120,7 +121,7 @@ def getQuery(
             ;'''
         # print(result)
         return cursor.execute(result)
-    ###########################################################################
+    ############################################################################
 
     ## create query to update set: update all names = values, WHERE names = values
     elif query == 'update set':
