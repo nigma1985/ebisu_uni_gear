@@ -32,7 +32,7 @@ import module.read.pi as rpi
 
 ram = rpi.virtual_memory()
 
-if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (2/3*100)):
+if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (4/5*100)):
     print(datetime.now())
     print("> CPU: {}%".format(rpi.cpu_percent()))
     print("> RAM: {}%".format(ram.percent))
