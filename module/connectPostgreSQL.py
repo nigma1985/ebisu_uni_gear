@@ -549,3 +549,131 @@ def dict2sql(
                 addValues = [id])
 
     return id
+
+def insertRow(database = None, schema_name = 'public', table_name = None, listNames = [], listValues = [], listWhere = [], listTypes = [], getID = True):
+    ## variables
+    id = None
+    table = table_name.lower()
+    # print(table_name, table_name.lower(), table)
+    schema = schema_name.lower()
+
+    names = []
+    values = []
+    where = {}
+    for i in range( len(listValues) ):
+        if str(listValues[i]).lower() not in (None, '', 'none', 'null'):
+            names.append(listNames[i])
+            values.append(str(listValues[i]))
+
+    listNames = names
+    listValues = values
+    listWhere = [i.lower() for i in listWhere]
+    listTypes = [i.upper() if i is not None else None for i in listTypes]
+
+    names = []
+
+    for i in range( len(listNames) ):
+        names.append(listNames[i].lower())
+        if listNames[i].lower() in listWhere:
+            where[listNames[i].lower()] = listValues[i]
+        print(i, listNames[i].lower(), listValues[i])
+    values = []
+    print(where)
+
+    try:
+        ## connect to DB
+        connection = psycopg2.connect(database.conn)
+        cursor = connection.cursor()
+
+        getQuery(
+            cursor = cursor,
+            query = 'create table',
+            table_name = table
+            )
+        connection.commit()
+
+        getQuery(
+            cursor = cursor,
+            query = 'add with types columns',
+            table_name = table,
+            listNames = listNames,
+            listValues = listTypes)
+        connection.commit()
+
+        getQuery(
+            cursor = cursor,
+            query = 'get ID', option = 'include NULL',
+            table_name = table,
+            listNames = [key for key in where], ### only selected columns
+            listValues = [where[key] for key in where])
+        query = cursor.fetchall()
+        id = query[0][0]
+
+        # print([entry for key, entry in where])
+
+        if id is not None:
+            getQuery(
+                cursor = cursor,
+                query = 'update set',
+                table_name = table,
+                listNames = names, listValues = listValues,
+                whereNames = ['id'], whereValues = [id])
+            connection.commit()
+            if getID:
+                return id
+            if not getID:
+                return
+
+        getQuery(
+            cursor = cursor,
+            query = 'get columns',
+            schema_name = schema_name, table_name = table)
+        # print(query)
+        query = cursor.fetchall()
+        # print(query)
+
+        ## create full list of Columns from DB table
+        listColumns = []
+        for i in query:
+            listColumns.append(i[0])
+        # print(listColumns)
+
+        for col in listColumns:
+            if col not in names:
+                values.append('DEFAULT')
+            else:
+                for n in range( len(names) ):
+                    if names[n] == col:
+                        values.append(listValues[n])
+        # print(values)
+
+        getQuery(
+            cursor = cursor,
+            query = 'insert into',
+            table_name = table,
+            listNames = listColumns, listValues = values)
+        connection.commit()
+
+        ## get ID (if required)
+        # print('getID', getID)
+        if getID:
+            getQuery(
+                cursor = cursor,
+                query = 'get ID', option = 'strict',
+                table_name = table,
+                listNames = names, listValues = listValues
+            )
+            query = cursor.fetchall()
+            id = query[0][0]
+            return id
+
+
+    except (Exception, psycopg2.DatabaseError) as error :
+        print ("Error while handling PostgreSQL database:", error)
+
+    finally:
+        ## closing database connection.
+        if(connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
