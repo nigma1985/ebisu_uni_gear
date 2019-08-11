@@ -36,13 +36,19 @@ for d in details:
         pass
 
 if len(postgres) > 0:
-    postgres = postgres[1]
+    postgres = postgres[0]
 else:
     pass
 
 # print(postgres, postgres['host'], postgres['password'])
 
-ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], user=postgres['user'], password=postgres['password'], dbname=postgres['database'])
+ebisu = database(
+    db_type=None,
+    port=postgres['port'],
+    host=postgres['host'],
+    user=postgres['user'],
+    password=postgres['password'],
+    dbname=postgres['database'])
 
 
 # Find all views with name "v_coordinates_*"
