@@ -17,16 +17,18 @@ from random import sample, randint, random
 start_time = time.mktime(datetime.now().timetuple())
 
 # os.chdir("/home/pi/ebisu_uni_gear/")
-os.chdir("../ebisu_uni_gear/")
+# os.chdir("../ebisu_uni_gear/")
+# details = '../details.json'
 
-details = '../details.json'
+details = 'details.json'
 details = json2py(details)
 
 print('details', details)
 postgres = []
 for d in details:
     try:
-        if d['provider'] == 'PostgreSQL' and d['host'] == 'localhost':
+        # if d['provider'] == 'PostgreSQL' and d['host'] == 'localhost':
+        if d['provider'] == 'PostgreSQL':
             postgres.append(d)
         else:
             pass
@@ -72,29 +74,6 @@ except:
     pass
 print(sql_data)
 
-# summerize priority values
-## done
-# data = []
-# for row in sql_data:
-#     data.append(
-#         {
-#             'latitude': row[0],
-#             'longitude': row[1],
-#             'prio': row[2],
-#             'last_visit': row[3],
-#             'user': row[4],
-#             'table': table_name[14:],
-#         }
-#     )
-#
-# print(data)
-# # send lat, long, priority and date with view name to table
-#
-# dict2sql(
-#     dictionary = data,
-#     db_name = ebisu,
-#     table_name = 'tab_coordinates_all'
-#     )
 
 for row in sql_data:
     insertRow(
@@ -105,19 +84,3 @@ for row in sql_data:
         listValues = [row[0], row[1], row[2], row[3], row[4], table_name[14:]],
         listWhere = ['latitude', 'longitude', 'user', 'table'],
         listTypes = ['FLOAT', 'FLOAT', 'FLOAT', 'TIMESTAMPTZ', 'TEXT', None])
-    # dict2sql(
-    #     dictionary = {
-    #         'latitude': row[0],
-    #         'longitude': row[1],
-    #         'prio': row[2],
-    #         'last_visit': row[3],
-    #         'user': row[4],
-    #         'table': table_name[14:],
-    #         },
-    #     db_name = ebisu,
-    #     table_name = 'tab_coordinates_all',
-    #     listTypes = ,
-    #     listWhere =
-        # )
-
-# send lat, long, priority and date with view name to table
