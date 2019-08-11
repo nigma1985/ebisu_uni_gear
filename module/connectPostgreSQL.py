@@ -209,7 +209,7 @@ class database:
         if user is not None:
             self.conn = self.conn + ' user=' + user
         if port is not None:
-            self.conn = self.conn + ' port=' + port
+            self.conn = self.conn + ' port=' + str(port)
         if password is not None:
             self.conn = self.conn + ' password=' + password
         if dbname is not None:
