@@ -23,6 +23,11 @@
 #   3c. write data to database
 
 from random import sample, randint, random
+
+from datetime import datetime
+from datetime import timedelta
+import time, sys
+
 import module.read.pi as rpi
 
 ram = rpi.virtual_memory()
