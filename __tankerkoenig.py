@@ -29,6 +29,7 @@ from datetime import timedelta
 import time, sys
 
 import module.read.pi as rpi
+from module.connectPostgreSQL import database
 
 cpu = rpi.cpu_percent()
 ram = rpi.virtual_memory()
@@ -42,3 +43,37 @@ elif random() < 1/6:
     import coordinates_all
 else:
     pass
+
+
+
+details = 'details.json'
+details = json2py(details)
+
+print('details', details)
+postgres = []
+for d in details:
+    if d['provider'] == 'PostgreSQL':
+        postgres.append(d)
+    else:
+        pass
+
+if len(postgres) > 0:
+    postgres = postgres[0]
+else:
+    pass
+
+# print(postgres, postgres['host'], postgres['password'])
+
+ebisu = database(db_type=None, port=postgres['port'], host=postgres['host'], user=postgres['user'], password=postgres['password'], dbname=postgres['database'])
+
+
+[print(line) for line in ebisu.getSQL('''
+    SELECT
+        "user",
+        "table",
+        MAX(last_visit) AS last_visit,
+ 	    COUNT(*) AS CNT
+    GROUP BY
+        "user",
+        "table"
+    ;''')]
