@@ -23,13 +23,14 @@
 #   3c. write data to database
 
 from random import sample, randint, random
+from pathlib import Path
 
 from datetime import datetime
 from datetime import timedelta
 import time, sys
 
-from module import json2py
 import module.read.pi as rpi
+from module import json2py
 from module.connectPostgreSQL import database
 
 cpu = rpi.cpu_percent()
