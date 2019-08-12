@@ -28,7 +28,7 @@ from datetime import datetime
 from datetime import timedelta
 import time, sys
 
-import module as json2pi
+import module as json2py
 import module.read.pi as rpi
 from module.connectPostgreSQL import database
 
