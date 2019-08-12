@@ -13,8 +13,14 @@ ram = rpi.virtual_memory()
 ## TEST
 # files = glob.glob("input/*.json")
 # files = glob.glob("../json/*.json")
+cpu = rpi.cpu_percent()
+ram = rpi.virtual_memory()
+ram = ram.percent
 
-if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (4/5*100)):
+if (cpu > (2/3*100)) or (ram > (4/5*100)):
+    print(datetime.now())
+    print("> CPU: {}%".format(cpu))
+    print("> RAM: {}%".format(ram))
     sys.exit()
 
 # actual run

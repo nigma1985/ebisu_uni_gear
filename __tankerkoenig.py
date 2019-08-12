@@ -30,12 +30,14 @@ import time, sys
 
 import module.read.pi as rpi
 
+cpu = rpi.cpu_percent()
 ram = rpi.virtual_memory()
+ram = ram.percent
 
-if (rpi.cpu_percent() > (2/3*100)) or (ram.percent > (4/5*100)):
+if (cpu > (2/3*100)) or (ram > (4/5*100)):
     print(datetime.now())
-    print("> CPU: {}%".format(rpi.cpu_percent()))
-    print("> RAM: {}%".format(ram.percent))
+    print("> CPU: {}%".format(cpu))
+    print("> RAM: {}%".format(ram))
 elif random() < 1/6:
     import coordinates_all
 else:
