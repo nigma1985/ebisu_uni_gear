@@ -51,12 +51,16 @@ else:
 details = 'details.json'
 details = json2py(details)
 
-print('details', details)
 postgres = []
+
 for d in details:
-    if d['provider'] == 'PostgreSQL':
-        postgres.append(d)
-    else:
+    try:
+        # if d['provider'] == 'PostgreSQL' and d['host'] == 'localhost':
+        if d['provider'] == 'PostgreSQL':
+            postgres.append(d)
+        else:
+            pass
+    except:
         pass
 
 if len(postgres) > 0:
