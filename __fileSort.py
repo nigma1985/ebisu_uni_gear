@@ -12,11 +12,24 @@ import time, sys, os
 # os.chdir("C:\\Users\\Konrad\\Dropbox\\Versicherung\\Haftpflicht\\DEVK\\")
 os.chdir("C:\\Users\\Konrad\\Desktop\\")
 print(os.getcwd())
+#
+# files_list = fm.get_files(os.getcwd())
+# [print("["+str(entry)+"]", files_list[entry], ) for entry in range( len(files_list) )]
+#
+# type_list = [".png", ".pdf"]
+#
+# for tl in type_list:
+#     print(any( [tl in fl for fl in files_list] ) )
 
-files_list = fm.get_files(os.getcwd())
-[print("["+str(entry)+"]", files_list[entry], ) for entry in range( len(files_list) )]
+drcty = fm.drcty()
 
-type_list = [".png", ".pdf"]
+print(drcty.files)
 
-for tl in type_list:
-    print(any( [tl in fl for fl in files_list] ) )
+drcty.types = [
+    ".bmp", ".png", ".jpg", ".gif", ## pictures
+    ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
+    ".mov", ".mp4" ## movies
+    ]
+print(drcty.types)
+
+print(drcty.print_types())
