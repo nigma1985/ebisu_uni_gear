@@ -39,14 +39,17 @@ class file:
                     pass
 
     def move(self, orig, dest):
-        pass
+        print(self.element, orig, dest, self.tid, self.type)
 
     def auto_move(self, orig = None, dest = None):
         if orig is None:
-            orig = self.orig
+            orig = self.directory
         if dest is None:
-            dest = self.dest
-        self.move(orig = orig, dest = dest)
+            dest = self.directory
+        if self.tid == -1 or self.tid == 1:
+            self.move(orig = orig, dest = dest)
+        else:
+            pass
 
 
 class drcty:
@@ -80,6 +83,16 @@ class drcty:
         return lst
 
     def move_one(self, orig, elem, dest):
-        f = file(directory = self.orig, element = elem, types = self.types)
-        f.auto_move(dest = self.dest)
-    def move_all(self)
+        f = file(directory = orig, element = elem, types = self.types)
+        f.auto_move(dest = dest)
+
+    def move_all(self, orig = None, files = None, dest = None):
+        if orig is None:
+            orig = self.orig
+        if files is None or len(file) == 0:
+            files = self.files
+        if dest is None:
+            dest = self.dest
+
+        for elem in files:
+            self.move_one(orig = orig, elem = elem, dest = dest)

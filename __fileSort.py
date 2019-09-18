@@ -21,7 +21,7 @@ print(os.getcwd())
 # for tl in type_list:
 #     print(any( [tl in fl for fl in files_list] ) )
 
-drcty = fm.drcty()
+drcty = fm.drcty(orig = os.getcwd())
 
 print(drcty.files)
 
@@ -31,5 +31,6 @@ drcty.types = [
     ".mov", ".mp4" ## movies
     ]
 print(drcty.types)
+print(drcty.orig, drcty.dest)
 
-print(drcty.print_types())
+print(drcty.move_all())
