@@ -46,7 +46,10 @@ class file:
             orig = self.directory
         if dest is None:
             dest = self.directory
-        if self.tid == -1 or self.tid == 1:
+
+        if self.tid == -1: ## handle folders
+            self.move(orig = orig, dest = dest + "_folder")
+        elif self.tid == 1: ## handle file
             self.move(orig = orig, dest = dest)
         else:
             pass
@@ -96,3 +99,4 @@ class drcty:
 
         for elem in files:
             self.move_one(orig = orig, elem = elem, dest = dest)
+            # print(e, "/", len(files)-1, " || ", round(e/(len(files)-1)*100,1), "%")

@@ -27,7 +27,9 @@ print(drcty.files)
 
 drcty.types = [
     ".bmp", ".png", ".jpg", ".gif", ## pictures
-    ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
+    # ".xcf", ## editor
+    # ".eps", ".svg", ## vector
+    # ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
     ".mov", ".mp4" ## movies
     ]
 print(drcty.types)
