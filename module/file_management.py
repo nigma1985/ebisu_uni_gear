@@ -40,47 +40,94 @@ def dt_min_max(dictionary = {}, key = "Date"):
 ###############################################################################
 
 class file:
+    def get_type(self, in_types = [], element = None):
+        if is_folder(element = element):
+            return ("folder", -1)
+        elif types is None:
+            return (None, None)
+        else:
+            for type in types:
+                # if type in element:
+                if is_file_type(element = element, type = type):
+                    return (type, 1)
+                    # self.tags = read_tags(path_name = self.file_path)
+                else:
+                    pass
+            return ("other", 0)
+
+
     def __init__(self, directory = None, element = None, types = []):
         self.directory = directory
         self.element = element
         self.file_path = directory + sep + element
 
         self.tags = None
-        self.model = None
-        self.make = None
-        self.dt_min = None
-        self.mt_max = None
         # self.model = None
+        # self.make = None
+        # self.dt_min = None
+        # self.mt_max = None
 
-        if is_folder(element = element):
-            self.type = "folder"
-            self.tid = -1
-        elif types is None:
-            self.type = None
-            self.tid = None
-            # self.tags = read_tags(path_name = self.file_path)
-        # elif isinstance(types, [list, tuple]) and len(types) > 0:
+        # if is_folder(element = element):
+        #     self.type = "folder"
+        #     self.tid = -1
+        # elif types is None:
         #     self.type = None
-        else:
-            self.type = "other"
-            self.tid = 0
-            for type in types:
-                # if type in element:
-                if is_file_type(element = element, type = type):
-                    self.type = type
-                    self.tid = 1
-                    self.tags = read_tags(path_name = self.file_path)
-                else:
-                    pass
+        #     self.tid = None
+        #     # self.tags = read_tags(path_name = self.file_path)
+        # # elif isinstance(types, [list, tuple]) and len(types) > 0:
+        # #     self.type = None
+        # else:
+        #     self.type = "other"
+        #     self.tid = 0
+        #     for type in types:
+        #         # if type in element:
+        #         if is_file_type(element = element, type = type):
+        #             self.type = type
+        #             self.tid = 1
+        #             self.tags = read_tags(path_name = self.file_path)
+        #         else:
+        #             pass
 
+        self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
+        
         if self.tags is None:
             pass
         elif len(self.tags) == 0:
             self.tags = None
         else:
-            self.model = key_value(dictionary = self.tags, key = "Image Model")
-            self.make = key_value(dictionary = self.tags, key = "Image Make")
-            self.dt_min, self.dt_max = dt_min_max(dictionary = self.tags)
+            pass
+            # self.model = key_value(dictionary = self.tags, key = "Image Model")
+            # self.make = key_value(dictionary = self.tags, key = "Image Make")
+            # self.dt_min, self.dt_max = dt_min_max(dictionary = self.tags)
+
+    def get_path(self, directory = None):
+        if directory is None:
+            directory = self.tags
+        # elif len(directory) < 1:
+        #     return
+        else:
+            pass
+
+        cam = ""
+        date = ""
+        model = key_value(dictionary = dictionary, key = "Image Model")
+        make = key_value(dictionary = dictionary, key = "Image Make")
+        dt_exif_min, dt_exif_max = dt_min_max(dictionary = dictionary)
+        dt_file_min, dt_file_max = (None, None) #
+        dt_name = None #
+
+        if model is not None and make is not None:
+            cam = "{} {}".format(make, model)
+        elif model is None and make is None:
+            cam = ""
+        elif model is None:
+            cam = make
+        elif make is None:
+            cam = model
+        else:
+            pass
+
+        date = min(dt_exif_min, dt_file_min, dt_name)
 
     def move(self, orig, dest):
         print(self.element, orig, dest, self.tid, self.type)

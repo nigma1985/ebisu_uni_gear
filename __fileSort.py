@@ -38,16 +38,16 @@ drcty.types = [
 # print(drcty.move_all())
 print(drcty.get_tags())
 
-# for item in drcty.get_tags():
-#     try:
-#         print(
-#             item["Image Make"],
-#             item["Image Model"],
-#             [(i, item[i]) for i in item if "Date" in i])
-#     except:
-#         pass
+for item in drcty.get_tags():
+    try:
+        print(
+            item["Image Make"],
+            item["Image Model"],
+            [(i, item[i]) for i in item if "Date" in i])
+    except:
+        pass
 
-print(drcty.model, drcty.make)
+# print(drcty.model, drcty.make)
 # print(drcty.model, drcty.make, drcty.dt_min, drcty.dt_max)
 
 # f = open("2018_11_01 18_34 Office Lens (5).jpg", 'rb')
