@@ -25,6 +25,8 @@ drcty = fm.drcty(orig = os.getcwd())
 
 print(drcty.files)
 
+# print(drcty.get_tags())
+
 drcty.types = [
     ".bmp", ".png", ".jpg", ".jpeg", ".gif", ## pictures
     # ".xcf", ## editor
@@ -36,16 +38,17 @@ drcty.types = [
 # print(drcty.orig, drcty.dest)
 
 # print(drcty.move_all())
+print(drcty.types)
 print(drcty.get_tags())
 
-for item in drcty.get_tags():
-    try:
-        print(
-            item["Image Make"],
-            item["Image Model"],
-            [(i, item[i]) for i in item if "Date" in i])
-    except:
-        pass
+# for item in drcty.get_tags():
+#     try:
+#         print(
+#             item["Image Make"],
+#             item["Image Model"],
+#             [(i, item[i]) for i in item if "Date" in i])
+#     except:
+#         pass
 
 # print(drcty.model, drcty.make)
 # print(drcty.model, drcty.make, drcty.dt_min, drcty.dt_max)

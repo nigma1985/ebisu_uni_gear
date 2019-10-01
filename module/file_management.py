@@ -22,9 +22,15 @@ def is_file_type(element = None, type = None, regex = None):
         pass
     return re.search(regex, element, re.IGNORECASE)
 
-def read_tags(path_name = None):
-    f = open(path_name, 'rb')
-    return exifread.process_file(f, details=True)
+def read_tags(path_name = None, do = 1):
+    if do == 1:
+        try:
+            f = open(path_name, 'rb')
+            return exifread.process_file(f, details=True)
+        except:
+            return None
+    else:
+        return None
 
 def key_value(dictionary = {}, key = None):
     try:
@@ -42,26 +48,31 @@ def dt_min_max(dictionary = {}, key = "Date"):
 class file:
     def get_type(self, in_types = [], element = None):
         if is_folder(element = element):
-            return ("folder", -1)
-        elif types is None:
-            return (None, None)
+            # print('folder')
+            return ["folder", -1]
+        elif in_types is None:
+            # print('nothing')
+            return [None, None]
         else:
-            for type in types:
+            for type in in_types:
                 # if type in element:
                 if is_file_type(element = element, type = type):
-                    return (type, 1)
+                    # print('type')
+                    return [type, 1]
                     # self.tags = read_tags(path_name = self.file_path)
                 else:
                     pass
-            return ("other", 0)
+            # print('other')
+            return ["other", 0]
 
 
     def __init__(self, directory = None, element = None, types = []):
         self.directory = directory
         self.element = element
         self.file_path = directory + sep + element
+        self.types = types
 
-        self.tags = None
+        # self.tags = None
         # self.model = None
         # self.make = None
         # self.dt_min = None
@@ -89,13 +100,13 @@ class file:
         #             pass
 
         self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
-        
-        if self.tags is None:
-            pass
-        elif len(self.tags) == 0:
-            self.tags = None
-        else:
-            pass
+        self.tags = read_tags(path_name = self.file_path, do = self.tid)
+        # if self.tags is None:
+        #     pass
+        # elif len(self.tags) == 0:
+        #     self.tags = None
+        # else:
+        #     pass
             # self.model = key_value(dictionary = self.tags, key = "Image Model")
             # self.make = key_value(dictionary = self.tags, key = "Image Make")
             # self.dt_min, self.dt_max = dt_min_max(dictionary = self.tags)
@@ -187,6 +198,7 @@ class drcty:
 
     def get_tags(self):
         lst = []
+        print(self.types)
         for elem in self.files:
             f = file(directory = self.orig, element = elem, types = self.types)
             lst.append(f.tags)
