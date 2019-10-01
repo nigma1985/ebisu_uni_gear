@@ -1,4 +1,4 @@
-import glob, os, re, exifread
+import glob, os, re, exifread, time, datetime
 sep = os.path.sep
 
 def get_files(path = ""):
@@ -72,44 +72,15 @@ class file:
         self.file_path = directory + sep + element
         self.types = types
 
-        # self.tags = None
-        # self.model = None
-        # self.make = None
-        # self.dt_min = None
-        # self.mt_max = None
-
-        # if is_folder(element = element):
-        #     self.type = "folder"
-        #     self.tid = -1
-        # elif types is None:
-        #     self.type = None
-        #     self.tid = None
-        #     # self.tags = read_tags(path_name = self.file_path)
-        # # elif isinstance(types, [list, tuple]) and len(types) > 0:
-        # #     self.type = None
-        # else:
-        #     self.type = "other"
-        #     self.tid = 0
-        #     for type in types:
-        #         # if type in element:
-        #         if is_file_type(element = element, type = type):
-        #             self.type = type
-        #             self.tid = 1
-        #             self.tags = read_tags(path_name = self.file_path)
-        #         else:
-        #             pass
-
         self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
         self.tags = read_tags(path_name = self.file_path, do = self.tid)
-        # if self.tags is None:
-        #     pass
-        # elif len(self.tags) == 0:
-        #     self.tags = None
-        # else:
-        #     pass
-            # self.model = key_value(dictionary = self.tags, key = "Image Model")
-            # self.make = key_value(dictionary = self.tags, key = "Image Make")
-            # self.dt_min, self.dt_max = dt_min_max(dictionary = self.tags)
+        self.make = key_value(dictionary = self.tags, key = "Image Make")
+        self.model = key_value(dictionary = self.tags, key = "Image Model")
+        # self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime = os.stat(element)
+        self.atime, self.mtime, self.ctime = [
+            datetime.datetime.fromtimestamp(os.path.getatime(element)), 
+            datetime.datetime.fromtimestamp(os.path.getmtime(element)),
+            datetime.datetime.fromtimestamp(os.path.getctime(element))]
 
     def get_path(self, directory = None):
         if directory is None:
@@ -198,7 +169,7 @@ class drcty:
 
     def get_tags(self):
         lst = []
-        print(self.types)
+        # print(self.types)
         for elem in self.files:
             f = file(directory = self.orig, element = elem, types = self.types)
             lst.append(f.tags)
