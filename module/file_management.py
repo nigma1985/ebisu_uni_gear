@@ -22,6 +22,15 @@ def is_file_type(element = None, type = None, regex = None):
         pass
     return re.search(regex, element, re.IGNORECASE)
 
+def contains_date(element = None):
+    if element is None:
+        return None
+    elif regex is None and type is not None:
+        regex = "\\{}$".format(type)
+    else:
+        pass
+    return re.search(regex, element, re.IGNORECASE)
+
 def read_tags(path_name = None, do = 1):
     if do == 1:
         try:
@@ -78,9 +87,16 @@ class file:
         self.model = key_value(dictionary = self.tags, key = "Image Model")
         # self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime = os.stat(element)
         self.atime, self.mtime, self.ctime = [
-            datetime.datetime.fromtimestamp(os.path.getatime(element)), 
+            datetime.datetime.fromtimestamp(os.path.getatime(element)),
             datetime.datetime.fromtimestamp(os.path.getmtime(element)),
             datetime.datetime.fromtimestamp(os.path.getctime(element))]
+
+        exif_dates =
+
+        self.date_from_name, self.exif_min_date, self.exif_max_date = [
+            None,
+            None,
+            None]
 
     def get_path(self, directory = None):
         if directory is None:

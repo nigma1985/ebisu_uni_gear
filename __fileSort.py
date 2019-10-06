@@ -13,13 +13,13 @@ import time, sys, os, exifread
 os.chdir("C:\\Users\\Konrad\\Desktop\\")
 print(os.getcwd())
 #
-# files_list = fm.get_files(os.getcwd())
+files_list = fm.get_files(os.getcwd())
 # [print("["+str(entry)+"]", files_list[entry], ) for entry in range( len(files_list) )]
 #
-# type_list = [".png", ".pdf"]
+type_list = [".png", ".pdf"]
 #
-# for tl in type_list:
-#     print(any( [tl in fl for fl in files_list] ) )
+for tl in type_list:
+    print(any( [tl in fl for fl in files_list] ) )
 
 drcty = fm.drcty(orig = os.getcwd())
 
