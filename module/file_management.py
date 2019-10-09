@@ -91,9 +91,9 @@ class file:
             datetime.datetime.fromtimestamp(os.path.getmtime(element)),
             datetime.datetime.fromtimestamp(os.path.getctime(element))]
 
-        exif_dates =
+        exif_dates = None  ### raw date-texts
 
-        self.date_from_name, self.exif_min_date, self.exif_max_date = [
+        self.date_from_name, self.exif_min_date, self.exif_max_date = [  ### dates from texts
             None,
             None,
             None]
