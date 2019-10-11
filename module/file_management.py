@@ -1,4 +1,6 @@
 import glob, os, re, exifread, time, datetime
+# from datetime import datetime
+# from dateutil import parser
 sep = os.path.sep
 
 def get_files(path = ""):
@@ -51,6 +53,74 @@ def dt_min_max(dictionary = {}, key = "Date"):
     result = [(d, dictionary[d]) for d in dictionary if key in dictionary]
     return (result, result)
 
+def find_date(string = None):
+    regex_time = "((0[0-9]|1[0-9]|2[0-3]\\W?[0-5][0-9])(\\W?[0-5][0-9])?)"
+    regex_date = "(((19|20)([2468][048]|[13579][26]|0[48])|2000)\\W?02\\W?29|((19|20)[0-9]{2}\\W?(0[469]|11)\\W?(0[1-9]|[12][0-9]|30)|(19|20)[0-9]{2}\\W?(0[13578]|1[02])\\W?(0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}\\W?02\\W?(0[1-9]|1[0-9]|2[0-8])))"
+    regex = "\\D?({}\\D?({})?)\\D?".format(regex_date, regex_time)
+    found = None
+
+    try:
+        # print("00", found)
+        found = re.search(regex, str(string), re.IGNORECASE)
+        # print("01", found)
+        if found:
+            # return parser.parse(found.group(1)) ### only date/time with symbols in between
+            ### add other string types
+            found = re.sub(r'\D', "", found.group(1))
+            # print("02", found, len(found))
+            if len(found) == 14:
+                # print(datetime.datetime.strptime(found, '%Y%m%d%H%M%S'))
+                return datetime.datetime.strptime(found, '%Y%m%d%H%M%S')
+                # pass
+            elif len(found) == 12:
+                # print(datetime.datetime.strptime(found, '%Y%m%d%H%M'))
+                return datetime.datetime.strptime(found, '%Y%m%d%H%M')
+                # found = found + "00"
+            # elif len(found) == 10:
+            #     found = found + "0000"
+            elif len(found) == 8:
+                # print(datetime.datetime.strptime(found, '%Y%m%d'))
+                return datetime.datetime.strptime(found, '%Y%m%d')
+                # found = found + "000000"
+            else:
+                pass
+            # print("03", found)
+
+            # return datetime.strptime(found, '%Y%m%d%H%M%S')
+        else:
+            return None
+    except:
+        # print("xx", found)
+        return None
+
+
+    #
+    # for item in lst:
+    #     dt = None
+    #     found = re.search(regex, str(item), re.IGNORECASE)
+    #     if found:
+    #         dt = re.sub(r'\D', "", found.group(1))
+    #         if len(dt) == 14:
+    #             pass
+    #         elif len(dt) == 12:
+    #             dt = dt + "00"
+    #         # elif len(dt) == 10:
+    #         #     dt = dt + "0000"
+    #         elif len(dt) == 8:
+    #             dt = dt + "000000"
+    #         else:
+    #             pass
+    #
+    #         dt = datetime.strptime(dt, '%Y%m%d%H%M%S')
+    #         print(item, dt, type(dt))
+    #     else:
+    #         "empty"
+
+
+
+
+
+
 ###############################################################################
 ###############################################################################
 
@@ -91,12 +161,16 @@ class file:
             datetime.datetime.fromtimestamp(os.path.getmtime(element)),
             datetime.datetime.fromtimestamp(os.path.getctime(element))]
 
-        exif_dates = None  ### raw date-texts
+        exif_dates = [ self.tags[entry] for entry in self.tags if "Date" in entry ]  ### raw date-texts
+        exif_dates = [find_date(string = item) for item in exif_dates]
+        # exif_dates = [find_date(string = item) for item in [ self.tags[entry] for entry in self.tags if "Date" in entry ]]  ### raw date-texts
 
         self.date_from_name, self.exif_min_date, self.exif_max_date = [  ### dates from texts
-            None,
-            None,
-            None]
+            find_date(string = self.element),
+            # None, None
+            min(exif_dates),
+            max(exif_dates)
+            ]
 
     def get_path(self, directory = None):
         if directory is None:
