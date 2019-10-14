@@ -35,68 +35,14 @@ drcty.types = [
     ".mov", ".mp4" ## movies
     ]
 
-# print(drcty.types)
-# print(drcty.get_tags())
-
-# print(drcty.model, drcty.model)
-
 
 tst_file = "IMG-20180906-WA0006.jpeg"
 tst = fm.file(directory = os.getcwd(), element = tst_file, types = drcty.types)
 print(tst.element, tst.make, tst.model, min(tst.atime, tst.mtime, tst.ctime))
-# print(type(tst.element), type(tst.make), type(tst.model), type(tst.atime), type(tst.mtime), type(tst.ctime))
 
-# import dateparser
-# from dateparser.search import search_dates
-
-
-# entry for entry in tst.tags if 'date' in entry
-
-
-# print('tags', tst.tags)
 
 
 lst = [ tst.tags[entry] for entry in tst.tags if "Date" in entry]
-#
-# https://regex101.com/
-# http://www.regexlib.com/Search.aspx?k=yyyy-mm-dd&c=-1&m=-1&ps=20
-# IMG-20180906-WA0006.jpeg
-# (0x0132) ASCII=2018:09:06 21:42:59 @ 171
-# (0x9004) ASCII=2018:09:06 20:29:09 @ 613
-# (0x9003) ASCII=2018:09:06 20:29:09 @ 641
-#
-# ((\d{2}(([02468][048])|([13579][26]))\W?((((0?[13578])|(1[02]))\W?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))\W?((0?[1-9])|([1-2][0-9])|(30)))|(0?2\W?((0?[1-9])|([1-2][0-9])))))|(\d{2}(([02468][1235679])|([13579][01345789]))\W?((((0?[13578])|(1[02]))\W?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))\W?((0?[1-9])|([1-2][0-9])|(30)))|(0?2\W?((0?[1-9])|(1[0-9])|(2[0-8]))))))(.?(((0?[1-9])|(1[0-9])|(2[0-3]))\W?([0-5][0-9])((\s)|(\W?([0-5][0-9])))?))?
-# regex_time = "((0[0-9]|1[0-9]|2[0-3]\\W?[0-5][0-9])(\\W?[0-5][0-9])?)"
-# regex_date = "(((19|20)([2468][048]|[13579][26]|0[48])|2000)\\W?02\\W?29|((19|20)[0-9]{2}\\W?(0[469]|11)\\W?(0[1-9]|[12][0-9]|30)|(19|20)[0-9]{2}\\W?(0[13578]|1[02])\\W?(0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}\\W?02\\W?(0[1-9]|1[0-9]|2[0-8])))"
-# # (((\d{4}\W?((0[13578]\W?|1[02]\W?)(0[1-9]|[12]\d|3[01])|(0[13456789]\W?|1[012]\W?)(0[1-9]|[12]\d|30)|02\W?(0[1-9]|1\d|2[0-8])))|((([02468][048]|[13579][26])00|\d{2}([13579][26]|0[48]|[2468][048])))\W?02\W?29)){0,10}
-# regex = "\\D?({}\\D?({})?)\\D?".format(regex_date, regex_time)
-#
-# # [ tst.tags[entry] if 'date' in entry for entry in tst.tags ]
-# print('lst', lst)
-# from dateutil import parser
-#
-# lst.append(tst_file)
-#
-# for item in lst:
-#     dt = None
-#     found = re.search(regex, str(item), re.IGNORECASE)
-#     if found:
-#         dt = re.sub(r'\D', "", found.group(1))
-#         if len(dt) == 14:
-#             pass
-#         elif len(dt) == 12:
-#             dt = dt + "00"
-#         # elif len(dt) == 10:
-#         #     dt = dt + "0000"
-#         elif len(dt) == 8:
-#             dt = dt + "000000"
-#         else:
-#             pass
-#
-#         dt = datetime.strptime(dt, '%Y%m%d%H%M%S')
-#         print(item, dt, type(dt))
-#     else:
-#         "empty"
-#
+
 print(tst_file, fm.find_date(string = tst_file))
 print(tst.date_from_name, tst.exif_min_date, tst.exif_max_date)
