@@ -37,6 +37,12 @@
 # # print([i.lower() for i in liste])
 # print([i.upper() if i is not None else None for i in liste])
 
-tst = ['Ich', 123, None]
-x, y, z = tst
-print("print:", x, y, z)
+# tst = ['Ich', 123, None]
+# x, y, z = tst
+# print("print:", x, y, z)
+
+x = 1 + 1
+if x:
+    print(x)
+else:
+    print("nothing")

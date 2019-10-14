@@ -94,31 +94,6 @@ def find_date(string = None):
         return None
 
 
-    #
-    # for item in lst:
-    #     dt = None
-    #     found = re.search(regex, str(item), re.IGNORECASE)
-    #     if found:
-    #         dt = re.sub(r'\D', "", found.group(1))
-    #         if len(dt) == 14:
-    #             pass
-    #         elif len(dt) == 12:
-    #             dt = dt + "00"
-    #         # elif len(dt) == 10:
-    #         #     dt = dt + "0000"
-    #         elif len(dt) == 8:
-    #             dt = dt + "000000"
-    #         else:
-    #             pass
-    #
-    #         dt = datetime.strptime(dt, '%Y%m%d%H%M%S')
-    #         print(item, dt, type(dt))
-    #     else:
-    #         "empty"
-
-
-
-
 
 
 ###############################################################################
@@ -144,7 +119,6 @@ class file:
             # print('other')
             return ["other", 0]
 
-
     def __init__(self, directory = None, element = None, types = []):
         self.directory = directory
         self.element = element
@@ -161,16 +135,33 @@ class file:
             datetime.datetime.fromtimestamp(os.path.getmtime(element)),
             datetime.datetime.fromtimestamp(os.path.getctime(element))]
 
-        exif_dates = [ self.tags[entry] for entry in self.tags if "Date" in entry ]  ### raw date-texts
-        exif_dates = [find_date(string = item) for item in exif_dates]
-        # exif_dates = [find_date(string = item) for item in [ self.tags[entry] for entry in self.tags if "Date" in entry ]]  ### raw date-texts
+        exif_dates = None
+        if self.tags is None:
+            pass
+        elif len(self.tags) == 0:
+            pass
+        else:
+            exif_dates = [ self.tags[entry] for entry in self.tags if "Date" in entry ]  ### raw date-texts
+            if len(exif_dates) == 0:
+                exif_dates = None
+            else:
+                exif_dates = [find_date(string = item) for item in exif_dates]
 
         self.date_from_name, self.exif_min_date, self.exif_max_date = [  ### dates from texts
             find_date(string = self.element),
-            # None, None
-            min(exif_dates),
-            max(exif_dates)
+            min(exif_dates) if exif_dates else None,
+            max(exif_dates) if exif_dates else None
             ]
+
+    def get_date(self):
+        if self.date_from_name:
+            return self.date_from_name
+        elif self.exif_min_date:
+            return self.exif_min_date
+        elif self.atime is not None or self.mtime is not None or self.ctime is not None:
+            return min(self.atime, self.mtime, self.ctime)
+        else:
+            return None
 
     def get_path(self, directory = None):
         if directory is None:
@@ -203,6 +194,7 @@ class file:
 
     def move(self, orig, dest):
         print(self.element, orig, dest, self.tid, self.type)
+        print("---", self.get_date(), "|", self.make, self.model, "|", self.date_from_name, min(self.atime, self.mtime, self.ctime), self.exif_min_date)
 
     def auto_move(self, orig = None, dest = None):
         if orig is None:

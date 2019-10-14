@@ -35,12 +35,13 @@ drcty.types = [
     ".mov", ".mp4" ## movies
     ]
 
+drcty.move_all()
+
+################################################################################
 
 tst_file = "IMG-20180906-WA0006.jpeg"
 tst = fm.file(directory = os.getcwd(), element = tst_file, types = drcty.types)
 print(tst.element, tst.make, tst.model, min(tst.atime, tst.mtime, tst.ctime))
-
-
 
 lst = [ tst.tags[entry] for entry in tst.tags if "Date" in entry]
 
