@@ -47,3 +47,5 @@ lst = [ tst.tags[entry] for entry in tst.tags if "Date" in entry]
 
 print(tst_file, fm.find_date(string = tst_file))
 print(tst.date_from_name, tst.exif_min_date, tst.exif_max_date)
+
+print(drcty._listDir())

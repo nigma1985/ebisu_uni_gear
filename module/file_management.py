@@ -242,6 +242,13 @@ class drcty:
             lst.append(f.type)
         return lst
 
+    def get_tids(self):
+        lst = []
+        for elem in self.files:
+            f = file(directory = self.orig, element = elem, types = self.types)
+            lst.append(f.tid)
+        return lst
+
     def get_crt(self):
         lst = []
         for elem in self.files:
@@ -256,6 +263,14 @@ class drcty:
             f = file(directory = self.orig, element = elem, types = self.types)
             lst.append(f.tags)
         return lst
+
+    def _listDir(self):
+        fls = self.files
+        tps = self.get_tids()
+        res = [ i for i in range( len(fls)-1 ) if tps == -1 ]
+        print(fls, "|", tps, "|", res)
+        return res
+
 
     def move_one(self, orig, elem, dest):
         f = file(directory = orig, element = elem, types = self.types)
