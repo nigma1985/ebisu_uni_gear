@@ -1,4 +1,5 @@
 import glob, os, re, exifread, time, datetime
+import module.file_management as fm
 # from datetime import datetime
 # from dateutil import parser
 sep = os.path.sep
@@ -92,6 +93,19 @@ def find_date(string = None):
     except:
         # print("xx", found)
         return None
+        
+def extract_list(input):
+    if input:
+        pass
+    else:
+        return
+
+    if isinstance(input, dict):
+        pass
+    elif isinstance(input, [list, tuple]):
+        pass
+    else:
+        return
 
 
 
@@ -163,9 +177,32 @@ class file:
         else:
             return None
 
+    def _findDate_in_Dir(self, directory = None, date = None):
+        if date is None:
+            date = self.get_date()
+        else:
+            pass
+
+        if directory is None:
+            directory = self.directory
+        else:
+            pass
+
+        drcty = fm.drcty(orig = directory)
+        list_dir = drcty._listDir()
+
+        for dir in list_dir:
+            if re.search("^{}".format(date.strftime('%Y-%m-%d')), dir, re.IGNORECASE):
+            # if date.strftime('%Y-%m-%d') in dir:
+                return dir
+            else:
+                pass
+
+        return None
+
     def get_path(self, directory = None):
         if directory is None:
-            directory = self.tags
+            directory = self.directory
         # elif len(directory) < 1:
         #     return
         else:
@@ -173,11 +210,8 @@ class file:
 
         cam = ""
         date = ""
-        model = key_value(dictionary = dictionary, key = "Image Model")
-        make = key_value(dictionary = dictionary, key = "Image Make")
-        dt_exif_min, dt_exif_max = dt_min_max(dictionary = dictionary)
-        dt_file_min, dt_file_max = (None, None) #
-        dt_name = None #
+        model = self.model
+        make = self.make
 
         if model is not None and make is not None:
             cam = "{} {}".format(make, model)
@@ -190,7 +224,26 @@ class file:
         else:
             pass
 
-        date = min(dt_exif_min, dt_file_min, dt_name)
+        # cam = " ".join([make, model])
+        cam = "{}{}".format(sep, cam) if cam is not None or cam != "" else ""
+
+        date = self._findDate_in_Dir()
+        if date:
+            pass
+        else:
+            date = self.get_date().strftime('%Y-%m-%d')
+        date = "{}{}".format(sep, date) if date is not None or date != "" else ""
+
+        # return str(directory) + str(date) + str(cam) + str(self.element)
+        res1 = "{}".format(sep).join([directory, date, cam])
+        res2 = None
+        if res1:
+            while res1 != res2:
+                res2 = res1
+                res1 = res2.replace("{}{}".format(sep, sep), "{}".format(sep))
+            return res1
+        else:
+            return
 
     def move(self, orig, dest):
         print(self.element, orig, dest, self.tid, self.type)
@@ -203,7 +256,23 @@ class file:
             dest = self.directory
 
         if self.tid == -1: ## handle folders
-            self.move(orig = orig, dest = dest + "_folder")
+            regex_date = "(((19|20)([2468][048]|[13579][26]|0[48])|2000)\\-02\\-29|((19|20)[0-9]{2}\\-(0[469]|11)\\-(0[1-9]|[12][0-9]|30)|(19|20)[0-9]{2}\\-(0[13578]|1[02])\\-(0[1-9]|[12][0-9]|3[01])|(19|20)[0-9]{2}\\-02\\-(0[1-9]|1[0-9]|2[0-8])))"
+            found = None
+
+            try:
+                # print("00", found)
+                found = re.search("^{}(\\ \\-\\ )?".format(regex_date), str(self.element), re.IGNORECASE)
+            except:
+                pass
+
+            if found: ## foldername already has date
+                pass ## don't move
+            elif True: ## folder contains image series
+                pass ## move entire folder (use details from images)
+            else:
+                pass ## move file by file
+
+            self.move(orig = orig, dest = self.get_path())
         elif self.tid == 1: ## handle file
             self.move(orig = orig, dest = dest)
         else:
@@ -267,10 +336,36 @@ class drcty:
     def _listDir(self):
         fls = self.files
         tps = self.get_tids()
-        res = [ i for i in range( len(fls)-1 ) if tps == -1 ]
+        res = [ fls[i] for i in range( len(fls)-1 ) if tps[i] == -1 ]
         print(fls, "|", tps, "|", res)
         return res
 
+    def allDict(self):
+        fls = self.files
+        _dictionary = {}
+        for elem in self.files:
+            f = file(directory = self.orig, element = elem, types = self.types)
+            _dictionary[elem] = {
+                'directory': f.directory,
+                'element': f.element,
+                'file_path': f.file_path,
+                'types': f.types,
+                'type': f.type,
+                'tid': f.tid,
+                'tags': f.tags,
+                'make': f.make,
+                'model': f.model,
+                'atime': f.atime,
+                'mtime': f.mtime,
+                'ctime': f.ctime,
+                'date_from_name': f.date_from_name,
+                'exif_min_date': f.exif_min_date,
+                'exif_max_date': f.exif_max_date,
+                'get_date': f.get_date(),
+                '_findDate_in_Dir': f._findDate_in_Dir(),
+                'get_path': f.get_path()
+            }
+        return _dictionary
 
     def move_one(self, orig, elem, dest):
         f = file(directory = orig, element = elem, types = self.types)
