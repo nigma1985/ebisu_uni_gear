@@ -60,3 +60,6 @@ print()
 #     tst._findDate_in_Dir()   if   tst._findDate_in_Dir() is not None   else   tst.get_date().strftime('%Y-%m-%d')
 #     )
 print('path: ', tst.get_path())
+
+tst_list = ["mein", "dein", "unser"]
+print('item:', fm.get_attr(attr_list = tst_list))

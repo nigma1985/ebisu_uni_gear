@@ -93,21 +93,40 @@ def find_date(string = None):
     except:
         # print("xx", found)
         return None
-        
-def extract_list(input):
+
+def extract_list(input = None, output = None):
     if input:
         pass
     else:
         return
 
+    result = []
+
     if isinstance(input, dict):
-        pass
-    elif isinstance(input, [list, tuple]):
-        pass
+        for item in input:
+            for i in input[item]:
+                result.append(i)
     else:
         return
+    return result
 
+def first(item_list):
+    return item_list[0]
 
+def last(item_list):
+    return item_list[-1]
+
+def get_attr(attr_list = []):
+    attr = []
+    for item in attr_list:
+        if item:
+            attr.append(item)
+        else:
+            pass
+
+    attr = attr.sort()
+
+    return first(attr) if first(attr) == last(attr) else None
 
 
 ###############################################################################
@@ -265,10 +284,25 @@ class file:
             except:
                 pass
 
+            folder = drcty(orig = "{}{}{}".format(self.directory, sep, self.element), dest = self.directory)
+            folder = folder.allDict()
+            model = extract_list(input = folder, output = 'model')
+            make = extract_list(input = folder, output = 'make')
+            atime = extract_list(input = folder, output = 'atime')
+            mtime = extract_list(input = folder, output = 'mtime')
+            ctime = extract_list(input = folder, output = 'ctime')
+            xtime = []
+            min_time, max_time = None
+            if atime and mtime and ctime:
+                for n in range( len(ctime)-1 ):
+                    xtime.append(min(atime[n], mtime[n], ctime[n]))
+                min_time, max_time = min(xtime), max(xtime)
+
             if found: ## foldername already has date
                 pass ## don't move
             elif True: ## folder contains image series
-                pass ## move entire folder (use details from images)
+                return
+                # pass ## move entire folder (use details from images)
             else:
                 pass ## move file by file
 
