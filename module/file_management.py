@@ -111,12 +111,18 @@ def extract_list(input = None, output = None):
     return result
 
 def first(item_list):
-    return item_list[0]
+    if item_list:
+        return item_list[0]
+    else:
+        return None
 
 def last(item_list):
-    return item_list[-1]
+    if item_list:
+        return item_list[-1]
+    else:
+        return None
 
-def get_attr(attr_list = []):
+def clean_list(attr_list = []):
     attr = []
     for item in attr_list:
         if item:
@@ -124,10 +130,56 @@ def get_attr(attr_list = []):
         else:
             pass
 
-    attr = attr.sort()
+    return attr
 
-    return first(attr) if first(attr) == last(attr) else None
+def get_attr(attr_list = []):
+    # attr = []
+    # for item in attr_list:
+    #     if item:
+    #         attr.append(item)
+    #     else:
+    #         pass
+    attr = attr_list
+    attr.sort()
+    
+    attr_f = first(attr)
 
+    return attr_f if attr_f == last(attr) else None
+
+def get_moda(attr_list = []):
+    # attr = []
+
+    # for item in attr_list:
+    #     if item:
+    #         attr.append(item)
+    #     else:
+    #         pass
+    attr = attr_list
+    attr_sets = []
+    attr_dict = {}
+
+    if attr:
+        attr_sets = set(attr)
+    else:
+        return
+
+
+    for key in attr_sets:
+        attr_dict[key] = attr.count(key)
+
+    if attr_dict and isinstance(attr_dict, dict):
+        attr_len = 0
+        for key, value in attr_dict.items():
+            if value > 0.5 * len(attr):
+                return key
+            else:
+                pass
+        return
+        #     attr_len = value if value > attr_len else attr_len
+        # return attr_len if attr_len > 0.5 * len(attr) else None
+    else:
+        return
+    # return attr_dict if attr_dict else None
 
 ###############################################################################
 ###############################################################################

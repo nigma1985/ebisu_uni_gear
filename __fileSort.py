@@ -61,5 +61,13 @@ print()
 #     )
 print('path: ', tst.get_path())
 
-tst_list = ["mein", "dein", "unser"]
-print('item:', fm.get_attr(attr_list = tst_list))
+tst_list = [None, "ich", None, "ich", None, "du", None, "ich", None, "ich", None]
+# tst_list = ["mein", "dein", "unser", None, "mein"]
+
+tst_list_clean = fm.clean_list(tst_list)
+print('list', tst_list_clean)
+
+
+print('get_attr:', fm.get_attr(attr_list = tst_list_clean))
+
+print('get_moda:', fm.get_moda(attr_list = tst_list_clean))
