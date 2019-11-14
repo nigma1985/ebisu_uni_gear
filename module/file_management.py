@@ -4,16 +4,21 @@ import module.file_management as fm
 # from dateutil import parser
 sep = os.path.sep
 
+import numpy as np
+# import pandas as pd
+# import scipy as spy
+from sklearn.linear_model import LinearRegression
+
 def get_files(path = ""):
     if path != "":
         return os.listdir(path)
 
 def is_folder(element = ""):
-    if element != "":
+    if element:
         return "." not in element
 
 def is_file(element = ""):
-    if element != "":
+    if element:
         return "." in element
 
 def is_file_type(element = None, type = None, regex = None):
@@ -141,7 +146,7 @@ def get_attr(attr_list = []):
     #         pass
     attr = attr_list
     attr.sort()
-    
+
     attr_f = first(attr)
 
     return attr_f if attr_f == last(attr) else None
@@ -181,10 +186,54 @@ def get_moda(attr_list = []):
         return
     # return attr_dict if attr_dict else None
 
+def get_regr(attr_list = []):
+    if not attr_list:
+        return
+    elif len(attr_list) == 1:
+        return True
+    else:
+        pass
+
+    attr = attr_list
+    attr.sort()
+    cnt, diff = [], []
+    for n in range( 1, len(attr) ):
+        cnt.append(n)
+        diff.append(attr[n] - attr[n-1])
+
+    x = np.array(cnt).reshape((-1, 1))
+    y = np.array(diff)
+
+    model = LinearRegression().fit(x, y)
+    r_sq = model.score(x, y)
+
+    return r_sq #> .5
+
+def extract(dict_list = [], key = None):
+    result = []
+    for row in dict_list:
+        try:
+            result.append(row[key])
+        except:
+            pass
+    return result
 ###############################################################################
 ###############################################################################
 
 class file:
+    def get_from_many(self, dict_list = [], key = None):
+        result = None
+        extract_list = extract(dict_list = dict_list, key = key)
+        extract_list = clean_list(attr_list = extract_list)
+
+        if not extract_list:
+            return None
+        elif len(extract_list) == 1:
+            return extract_list[0]
+        else:
+            result = get_attr(attr_list = extract_list)
+            return result if result else get_moda(attr_list = extract_list)
+
     def get_type(self, in_types = [], element = None):
         if is_folder(element = element):
             # print('folder')
@@ -207,18 +256,23 @@ class file:
     def __init__(self, directory = None, element = None, types = []):
         self.directory = directory
         self.element = element
-        self.file_path = directory + sep + element
+        self.file_path = "{}{}{}".format(self.directory, sep, self.element)
         self.types = types
 
         self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
+
+        folder = drcty(orig = self.file_path, dest = self.directory) if self.tid == -1 else None
+        print('tid:', self.tid, self.file_path)
+        self.folder = folder.allDict() if folder else None
+
         self.tags = read_tags(path_name = self.file_path, do = self.tid)
-        self.make = key_value(dictionary = self.tags, key = "Image Make")
-        self.model = key_value(dictionary = self.tags, key = "Image Model")
+        self.make = key_value(dictionary = self.tags, key = "Image Make") if self.tid != -1 else None #self.get_from_many(dict_list = self.folder, key = 'make')
+        self.model = key_value(dictionary = self.tags, key = "Image Model") if self.tid != -1 else None #self.get_from_many(dict_list = self.folder, key = 'model')
         # self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime = os.stat(element)
         self.atime, self.mtime, self.ctime = [
-            datetime.datetime.fromtimestamp(os.path.getatime(element)),
-            datetime.datetime.fromtimestamp(os.path.getmtime(element)),
-            datetime.datetime.fromtimestamp(os.path.getctime(element))]
+            datetime.datetime.fromtimestamp(os.path.getatime(self.file_path)),
+            datetime.datetime.fromtimestamp(os.path.getmtime(self.file_path)),
+            datetime.datetime.fromtimestamp(os.path.getctime(self.file_path))]
 
         exif_dates = None
         if self.tags is None:
@@ -233,7 +287,7 @@ class file:
                 exif_dates = [find_date(string = item) for item in exif_dates]
 
         self.date_from_name, self.exif_min_date, self.exif_max_date = [  ### dates from texts
-            find_date(string = self.element),
+            find_date(string = self.file_path),
             min(exif_dates) if exif_dates else None,
             max(exif_dates) if exif_dates else None
             ]
