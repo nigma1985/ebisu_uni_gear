@@ -261,9 +261,9 @@ class file:
 
         self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
 
-        folder = drcty(orig = self.file_path, dest = self.directory) if self.tid == -1 else None
-        print('tid:', self.tid, self.file_path)
-        self.folder = folder.allDict() if folder else None
+        # folder = drcty(orig = self.file_path, dest = self.directory) if self.tid == -1 else None
+        # print('tid:', self.tid, self.file_path)
+        # self.folder = folder.allDict() if folder else None
 
         self.tags = read_tags(path_name = self.file_path, do = self.tid)
         self.make = key_value(dictionary = self.tags, key = "Image Make") if self.tid != -1 else None #self.get_from_many(dict_list = self.folder, key = 'make')
@@ -439,49 +439,50 @@ class drcty:
         else:
             self.dest = dest
 
-        self.files = get_files(self.orig)
-
         self.types = types
         self.regex = self.type2regex(regex = regex, types = self.types)
 
+        self.files = {}
+        for f in get_files(self.orig):
+            # print('file:', self.orig, type(self.orig), f, type(f))
+            self.files[f] = file(directory = self.orig, element = f, types = self.types)
+
     def get_types(self):
         lst = []
-        for elem in self.files:
-            f = file(directory = self.orig, element = elem, types = self.types)
-            lst.append(f.type)
+        for f in self.files:
+            lst.append(self.files[f].type)
         return lst
 
     def get_tids(self):
         lst = []
-        for elem in self.files:
-            f = file(directory = self.orig, element = elem, types = self.types)
-            lst.append(f.tid)
+        for f in self.files:
+            lst.append(self.files[f].tid)
         return lst
 
     def get_crt(self):
         lst = []
-        for elem in self.files:
-            f = file(directory = self.orig, element = elem, types = self.types)
-            lst.append(f.tid)
+        for f in self.files:
+            lst.append(self.files[f].tid)
         return lst
 
     def get_tags(self):
         lst = []
-        # print(self.types)
-        for elem in self.files:
-            f = file(directory = self.orig, element = elem, types = self.types)
-            lst.append(f.tags)
+        for f in self.files:
+            lst.append(self.files[f].tags)
         return lst
 
     def _listDir(self):
-        fls = self.files
-        tps = self.get_tids()
-        res = [ fls[i] for i in range( len(fls)-1 ) if tps[i] == -1 ]
-        print(fls, "|", tps, "|", res)
+        # fls = [key for key in self.files]
+        # tps = self.get_tids()
+        # res = [ fls[i] for i in range( len(fls)-1 ) if tps[i] == -1 ]
+        # print(fls, "|", tps, "|", res)
+        res = []
+        for f in self.files:
+            res.append(f if self.files[f].tid < 0 else None)
         return res
 
     def allDict(self):
-        fls = self.files
+        fls = [key for key in self.files]
         _dictionary = {}
         for elem in self.files:
             f = file(directory = self.orig, element = elem, types = self.types)

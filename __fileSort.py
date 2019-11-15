@@ -21,19 +21,24 @@ files_list = fm.get_files(os.getcwd())
 # for tl in type_list:
 #     print(any( [tl in fl for fl in files_list] ) )
 
-drcty = fm.drcty(orig = os.getcwd())
-
-print(drcty.files)
-
-# print(drcty.get_tags())
-
-drcty.types = [
+drcty = fm.drcty(orig = os.getcwd(), types = [
     ".bmp", ".png", ".jpg", ".jpeg", ".gif", ## pictures
     ".xcf", ## editor
     ".eps", ".svg", ## vector
     ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
     ".mov", ".mp4" ## movies
-    ]
+    ])
+
+print(drcty.files)
+
+# print(drcty.get_tags())
+# drcty.types = [
+#     ".bmp", ".png", ".jpg", ".jpeg", ".gif", ## pictures
+#     ".xcf", ## editor
+#     ".eps", ".svg", ## vector
+#     ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
+#     ".mov", ".mp4" ## movies
+#     ]
 
 # drcty.move_all()
 
