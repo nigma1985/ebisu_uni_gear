@@ -83,3 +83,8 @@ tst_list = [None, 2, 3,  6, 7,  10, 11,  14, None]
 tst_list_clean = fm.clean_list(tst_list)
 print('get_regr:', fm.get_regr(attr_list = tst_list_clean))
 ###############################################################################
+
+for elem in drcty.files:
+    print(drcty.files[elem].tid, elem.strip(), "|",
+        str(drcty.files[elem].make).strip() if drcty.files[elem].make else None,
+        str(drcty.files[elem].model).strip() if drcty.files[elem].model else None)

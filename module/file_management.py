@@ -25,7 +25,7 @@ def is_file_type(element = None, type = None, regex = None):
     if element is None or (type is None and regex is None):
         return None
     elif regex is None and type is not None:
-        regex = "\\{}$".format(type)
+        regex = "{}$".format(type)
     else:
         pass
     return re.search(regex, element, re.IGNORECASE)
@@ -40,7 +40,7 @@ def contains_date(element = None):
     return re.search(regex, element, re.IGNORECASE)
 
 def read_tags(path_name = None, do = 1):
-    if do == 1:
+    if True: #do >= 0:
         try:
             f = open(path_name, 'rb')
             return exifread.process_file(f, details=True)
@@ -145,7 +145,13 @@ def get_attr(attr_list = []):
     #     else:
     #         pass
     attr = attr_list
-    attr.sort()
+    try:
+        attr.sort()
+    except:
+        try:
+            [str(item) for item in attr].sort()
+        except:
+            return None
 
     attr_f = first(attr)
 
@@ -209,6 +215,15 @@ def get_regr(attr_list = []):
 
     return r_sq #> .5
 
+def extract_dict(dict_list = [], key = None):
+    result = []
+    for row in dict_list:
+        try:
+            result.append(row[key])
+        except:
+            pass
+    return result
+
 def extract(dict_list = [], key = None):
     result = []
     for row in dict_list:
@@ -217,14 +232,21 @@ def extract(dict_list = [], key = None):
         except:
             pass
     return result
+
 ###############################################################################
 ###############################################################################
 
 class file:
-    def get_from_many(self, dict_list = [], key = None):
-        result = None
-        extract_list = extract(dict_list = dict_list, key = key)
-        extract_list = clean_list(attr_list = extract_list)
+    def get_from_many(self, objt_list = [], attr_list = [], key = None):
+        result, extract_list = None, None
+        if attr_list:
+            extract_list = clean_list(attr_list = attr_list)
+        else:
+            if objt_list or key:
+                extract_list = extract(dict_list = objt_list, key = key)
+            else:
+                return None
+            extract_list = clean_list(attr_list = extract_list)
 
         if not extract_list:
             return None
@@ -264,10 +286,18 @@ class file:
         # folder = drcty(orig = self.file_path, dest = self.directory) if self.tid == -1 else None
         # print('tid:', self.tid, self.file_path)
         # self.folder = folder.allDict() if folder else None
+        self.folder = drcty(orig = self.file_path, dest = self.directory) if self.tid < 0 else None
 
         self.tags = read_tags(path_name = self.file_path, do = self.tid)
-        self.make = key_value(dictionary = self.tags, key = "Image Make") if self.tid != -1 else None #self.get_from_many(dict_list = self.folder, key = 'make')
-        self.model = key_value(dictionary = self.tags, key = "Image Model") if self.tid != -1 else None #self.get_from_many(dict_list = self.folder, key = 'model')
+        self.make, self.model = None, None
+        if self.tid < 0:
+            self.make = self.get_from_many(attr_list = [str(self.folder.files[f].make) for f in self.folder.files if self.folder.files[f].make])
+            self.model = self.get_from_many(attr_list = [str(self.folder.files[f].model) for f in self.folder.files if self.folder.files[f].model])
+        else:
+            self.make = key_value(dictionary = self.tags, key = "Image Make")
+            self.model = key_value(dictionary = self.tags, key = "Image Model")
+        # self.make = self.get_from_many(attr_list = [self.folder.files[f].make for f in self.folder.files]) if self.tid < 0 else key_value(dictionary = self.tags, key = "Image Make")
+        # self.model = self.get_from_many(attr_list = [self.folder.files[f].model for f in self.folder.files]) if self.tid < 0 else key_value(dictionary = self.tags, key = "Image Model")
         # self.mode, self.ino, self.dev, self.nlink, self.uid, self.gid, self.size, self.atime, self.mtime, self.ctime = os.stat(element)
         self.atime, self.mtime, self.ctime = [
             datetime.datetime.fromtimestamp(os.path.getatime(self.file_path)),
