@@ -26,7 +26,8 @@ drcty = fm.drcty(orig = os.getcwd(), types = [
     ".xcf", ## editor
     ".eps", ".svg", ## vector
     ".raw", ".tiff", ".dng", ".orf", ".heic", ## raw-pictures
-    ".mov", ".mp4" ## movies
+    ".mov", ".mp4", ".wmv", ## movies
+    ".mp3", ".wma", ".ogg" ## audio
     ])
 
 print(drcty.files)
@@ -88,3 +89,8 @@ for elem in drcty.files:
     print(drcty.files[elem].tid, elem.strip(), "|",
         str(drcty.files[elem].make).strip() if drcty.files[elem].make else None,
         str(drcty.files[elem].model).strip() if drcty.files[elem].model else None)
+    if drcty.files[elem].tid < 0:
+        for e in drcty.files[elem].folder.files:
+            print("|", drcty.files[elem].folder.files[e].tid, e.strip(), "|",
+                str(drcty.files[elem].folder.files[e].make).strip() if drcty.files[elem].folder.files[e].make else None,
+                str(drcty.files[elem].folder.files[e].model).strip() if drcty.files[elem].folder.files[e].model else None)

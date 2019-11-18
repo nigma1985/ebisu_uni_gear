@@ -281,12 +281,12 @@ class file:
         self.file_path = "{}{}{}".format(self.directory, sep, self.element)
         self.types = types
 
-        self.type, self.tid = self.get_type(in_types = self.types, element = self.file_path)
+        self.type, self.tid = self.get_type(in_types = self.types, element = self.element)
 
         # folder = drcty(orig = self.file_path, dest = self.directory) if self.tid == -1 else None
         # print('tid:', self.tid, self.file_path)
         # self.folder = folder.allDict() if folder else None
-        self.folder = drcty(orig = self.file_path, dest = self.directory) if self.tid < 0 else None
+        self.folder = drcty(orig = self.file_path, dest = self.directory, types = self.types) if self.tid < 0 else None
 
         self.tags = read_tags(path_name = self.file_path, do = self.tid)
         self.make, self.model = None, None
